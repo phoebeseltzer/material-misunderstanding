@@ -5,51 +5,83 @@
   <title>The Atlas</title>
   <style>
     body {
-      background-color: #fefefe;
-      font-family: Georgia, serif;
       margin: 0;
-      padding: 3rem;
+      padding: 0;
+      background-color: #eaf0f3;
+      font-family: Georgia, serif;
+      overflow: hidden;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 3rem;
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
     }
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-    }
-    .tile {
-      width: 180px;
-      height: 180px;
-      background-color: #d7e3ea;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+
+    .node {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.75rem 1rem;
+      border-radius: 5px;
       text-decoration: none;
-      color: #000;
-      font-weight: bold;
-      padding: 1rem;
-      transition: background 0.3s;
+      color: #222;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1rem;
+      text-align: center;
+      width: 120px;
     }
-    .tile:hover {
-      background-color: #c1d4dc;
+
+    .node:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
+
+    /* Example positions — adjust freely */
+    .glass { top: 15%; left: 20%; }
+    .carbon { top: 40%; left: 10%; }
+    .salt { top: 65%; left: 30%; }
+    .plastic { top: 25%; right: 20%; }
+    .iron { bottom: 20%; right: 15%; }
+    .mycelium { bottom: 10%; left: 50%; }
+
+    h1 {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.8rem;
+      color: #444;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      text-decoration: none;
+      color: #666;
+      font-size: 0.9rem;
+      border: 1px solid #aaa;
+      padding: 0.5rem 1rem;
+      background: #fff;
+    }
+
   </style>
 </head>
 <body>
 
-  <h1>The Atlas</h1>
+  <div class="container">
+    <h1>The Atlas</h1>
 
-  <div class="grid">
-    <!-- ADD OR REMOVE AS NEEDED -->
-    <a href="glass.html" class="tile">Glass</a>
-    <a href="carbon.html" class="tile">Carbon</a>
-    <a href="salt.html" class="tile">Salt</a>
-    <a href="plastic.html" class="tile">Plastic</a>
-    <!-- Add more materials here -->
+    <a href="index.html" class="back-button">← Return</a>
+
+    <!-- ADD OR REMOVE MATERIALS AS NEEDED -->
+    <a href="glass.html" class="node glass">Glass</a>
+    <a href="carbon.html" class="node carbon">Carbon</a>
+    <a href="salt.html" class="node salt">Salt</a>
+    <a href="plastic.html" class="node plastic">Plastic</a>
+    <a href="iron.html" class="node iron">Iron</a>
+    <a href="mycelium.html" class="node mycelium">Mycelium</a>
   </div>
 
 </body>
