@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Material Misunderstandings</title>
 
-  <!-- ✅ Importing Chaparral Pro (fallback to serif if unavailable) -->
-  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
+  <!-- Thematic serif font -->
+  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet" />
 
   <style>
     body {
       margin: 0;
       background-color: #f0f5f9;
-      font-family: 'Domine', serif; /* Substitute for Chaparral Pro */
+      font-family: 'Domine', serif;
       color: #111;
       overflow: hidden;
     }
@@ -25,24 +25,15 @@
 
     .node {
       position: absolute;
-      max-width: 320px;
-      background: rgba(255, 255, 255, 0.85);
+      max-width: 300px;
+      background: rgba(255, 255, 255, 0.9);
       padding: 1rem;
       border-radius: 4px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       font-size: 1rem;
-      animation-duration: 28s;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
+      pointer-events: none;
+      z-index: 1;
     }
-
-    /* Assign individual animations + locations */
-    .n1 { top: 10%; left: 10%; animation-name: drift1; }
-    .n2 { top: 30%; right: 10%; animation-name: drift2; }
-    .n3 { top: 55%; left: 18%; animation-name: drift3; }
-    .n4 { bottom: 28%; right: 18%; animation-name: drift4; }
-    .n5 { bottom: 12%; left: 35%; animation-name: drift5; }
 
     .enter-node {
       position: absolute;
@@ -56,71 +47,77 @@
       padding: 0.75rem 1.25rem;
       letter-spacing: 0.05em;
       border-radius: 4px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      animation-name: drift6;
-      animation-duration: 22s;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      pointer-events: auto;
     }
 
     .enter-node:hover {
       background: #333;
     }
-
-    /* ✅ Individual keyframes for subtle movement */
-    @keyframes drift1 {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(8px, -10px); }
-    }
-    @keyframes drift2 {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-12px, 6px); }
-    }
-    @keyframes drift3 {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(10px, 10px); }
-    }
-    @keyframes drift4 {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-8px, -12px); }
-    }
-    @keyframes drift5 {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(6px, 14px); }
-    }
-    @keyframes drift6 {
-      0% { transform: translate(-50%, 0); }
-      100% { transform: translate(-50%, -10px); }
-    }
   </style>
 </head>
 <body>
   <div class="container">
-
-    <div class="node n1">
+    <!-- ✏️ Your updated floating nodes -->
+    <div class="node" id="n1">
       <p>We live in an age that claims to understand the world through replication.</p>
     </div>
-    <div class="node n2">
+    <div class="node" id="n2">
       <p>But this is not reverence. It is simulation without context.</p>
     </div>
-    <div class="node n3">
+    <div class="node" id="n3">
       <p>It borrows from biological and ecological intelligence while erasing the cultural systems that have lived symbiotically with nature for millennia.</p>
     </div>
-
-        <div class="node n4">
+    <div class="node" id="n4">
       <p>Nature becomes interface. Knowledge becomes product.</p>
     </div>
-    <div class="node n5">
+    <div class="node" id="n5">
       <p>Can we ever understand a system we are inside of?</p>
     </div>
-    <div class="node n6">
+    <div class="node" id="n6">
       <p>This is not a warning. It is a record of our confidence.</p>
     </div>
 
-    <!-- ✅ Floating, readable "Enter Atlas" button -->
+    <!-- 🧭 Entry Button -->
     <a href="map.html" class="enter-node">Enter the Atlas</a>
-
   </div>
+
+  <!-- 💫 Floating behavior -->
+  <script>
+    const nodes = document.querySelectorAll('.node');
+    const speeds = [];
+
+    // Initialize node positions + movement
+    nodes.forEach((node, i) => {
+      const top = Math.random() * 70 + 5;
+      const left = Math.random() * 70 + 5;
+      node.style.top = `${top}%`;
+      node.style.left = `${left}%`;
+
+      speeds[i] = {
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2,
+      };
+    });
+
+    function animate() {
+      nodes.forEach((node, i) => {
+        let top = parseFloat(node.style.top);
+        let left = parseFloat(node.style.left);
+
+        // Constrain to page
+        if (top < 0 || top > 85) speeds[i].dy *= -1;
+        if (left < 0 || left > 85) speeds[i].dx *= -1;
+
+        node.style.top = `${top + speeds[i].dy}%`;
+        node.style.left = `${left + speeds[i].dx}%`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
 </body>
 </html>
