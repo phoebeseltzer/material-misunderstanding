@@ -1,162 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Glass</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material Misunderstandings</title>
   <style>
     body {
-      background-color: #f9f9f9;
+      margin: 0;
+      background-color: #f0f5f9;
       font-family: Georgia, serif;
       color: #111;
-      line-height: 1.6;
-      margin: 0;
-      padding: 3rem 10%;
+      overflow: hidden;
     }
-
-    h1 {
-      font-size: 2.2em;
-    }
-
-    section {
-      margin-bottom: 3rem;
-      max-width: 800px;
-      transition: background 0.4s ease;
-    }
-
-    section:hover {
-      background-color: #eef2f4;
-      border-left: 4px solid #a8c0d6;
-      padding-left: 1rem;
-    }
-
-    .label {
-      font-weight: bold;
-      color: #555;
-      font-size: 0.9em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    video {
-      display: block;
-      width: 100%;
-      max-width: 800px;
-      margin: 2rem 0;
-    }
-
-    audio {
-      margin: 1rem 0;
-    }
-
-    nav {
-      margin-top: 3rem;
-    }
-
-    nav a {
-      margin-right: 2rem;
-      text-decoration: none;
-      color: #444;
-    }
-
-    .reveal {
-      color: #666;
-      cursor: pointer;
+    .container {
       position: relative;
+      width: 100vw;
+      height: 100vh;
+      padding: 4rem;
     }
-
-    .reveal::after {
-      content: attr(data-more);
-      display: block;
-      color: #000;
-      font-style: italic;
-      font-size: 0.9em;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      margin-top: 0.5em;
+    .node {
+      position: absolute;
+      max-width: 320px;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      font-size: 0.95rem;
     }
+    .n1 { top: 10%; left: 10%; }
+    .n2 { top: 30%; right: 12%; }
+    .n3 { top: 50%; left: 20%; }
+    .n4 { bottom: 30%; right: 20%; }
+    .n5 { bottom: 15%; left: 35%; }
 
-    .reveal:hover::after {
-      opacity: 1;
+    .enter-button {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: black;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-family: sans-serif;
+      letter-spacing: 0.05em;
+    }
+    .enter-button:hover {
+      background-color: #333;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="node n1">
+      <p>We live in a moment where technological systems increasingly claim to be “inspired by nature.”</p>
+    </div>
+    <div class="node n2">
+      <p>This is not deference. It is mimicry without context.</p>
+    </div>
+    <div class="node n3">
+      <p>It strips away ecological and Indigenous knowledge. What remains is a pattern — optimized, but severed from ethic.</p>
+    </div>
+    <div class="node n4">
+      <p>Can we ever understand a system we are inside of?</p>
+    </div>
+    <div class="node n5">
+      <p>This is not a warning. It is a record of our confidence.</p>
+    </div>
 
-  <h1>Glass</h1>
-
-    <!-- Audio -->
-
-  <audio controls>
-    <source src="audio/ethel.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-     <!-- Video -->
-
-  <video autoplay muted loop>
-    <source src="videos/cyanotype_main.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-
-  <!--  Voiceover / Main Reflection -->
-  <section>
-    <span class="label">Voiceover</span>
-    <p>
-      Glass is made from melted sand. It flows, but we call it solid.<br>
-      We built windows to keep out weather, then forgot the weather was part of the system.<br>
-      When we learned to make clear glass, we called it vision. But seeing is not the same as understanding.
-    </p>
-  </section>
-
-  <!-- The Known -->
-  <section>
-    <span class="label">The Known</span>
-    <p>
-      Silica. Transparent. Shatters clean. Melting point: 1700°C.<br>
-      Used for sight, containment, insulation, <span class="reveal" data-more="Lenses, mirrors, fiber optics. Ritual and surveillance.">control</span>.
-    </p>
-  </section>
-
-  <!--  The Misunderstanding -->
-  <section>
-    <span class="label">The Misunderstanding</span>
-    <p>
-      Glass gave us the illusion of clarity.<br>
-      But it reflects more than it reveals.
-    </p>
-  </section>
-
-  <!-- ✅ What Was Forgotten -->
-  <section>
-    <span class="label">What Was Forgotten</span>
-    <p>
-      Glass was once a barrier between realms — used in ritual, symbol, containment.<br>
-      Now it is everywhere, unconsidered. It hides its fragility in modernity’s surface.
-    </p>
-  </section>
-
-  <!-- ✅ Echo -->
-  <section>
-    <span class="label">Echo</span>
-    <blockquote>
-      “Nothing is ever seen completely.” — Optical handbook, 1894
-    </blockquote>
-  </section>
-
-  <!-- ✅ Trace -->
-  <section>
-    <span class="label">Trace</span>
-    <img src="images/glass-still.jpg" alt="Cyanotype still of glass" width="100%" />
-    <!-- Replace with any still, diagram, or microscopy -->
-  </section>
-
-  <!-- ✅ Navigation -->
-  <nav>
-    <a href="map.html">← Back to Atlas</a>
-    <a href="carbon.html">Next Material →</a>
-  </nav>
-
+    <a href="map.html" class="enter-button">Enter the Atlas</a>
+  </div>
 </body>
 </html>
+
 
