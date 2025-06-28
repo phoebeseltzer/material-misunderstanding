@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Atlas</title>
+  <style>
+    body {
+      background-color: #fefefe;
+      font-family: Georgia, serif;
+      margin: 0;
+      padding: 3rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .tile {
+      width: 180px;
+      height: 180px;
+      background-color: #d7e3ea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+      padding: 1rem;
+      transition: background 0.3s;
+    }
+    .tile:hover {
+      background-color: #c1d4dc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>The Atlas</h1>
+
+  <div class="grid">
+    <!-- ADD OR REMOVE AS NEEDED -->
+    <a href="glass.html" class="tile">Glass</a>
+    <a href="carbon.html" class="tile">Carbon</a>
+    <a href="salt.html" class="tile">Salt</a>
+    <a href="plastic.html" class="tile">Plastic</a>
+    <!-- Add more materials here -->
+  </div>
+
+</body>
+</html>
