@@ -20,7 +20,7 @@
 
     .node {
       position: absolute;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.85);
       padding: 0.75rem 1rem;
       border-radius: 5px;
       text-decoration: none;
@@ -30,20 +30,14 @@
       font-size: 1rem;
       text-align: center;
       width: 120px;
+      pointer-events: auto;
+      z-index: 1;
     }
 
     .node:hover {
       transform: scale(1.08);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
-
-    /* Example positions — adjust freely */
-    .glass { top: 15%; left: 20%; }
-    .carbon { top: 40%; left: 10%; }
-    .salt { top: 65%; left: 30%; }
-    .plastic { top: 25%; right: 20%; }
-    .iron { bottom: 20%; right: 15%; }
-    .mycelium { bottom: 10%; left: 50%; }
 
     h1 {
       position: absolute;
@@ -52,6 +46,7 @@
       transform: translateX(-50%);
       font-size: 1.8rem;
       color: #444;
+      z-index: 5;
     }
 
     .back-button {
@@ -64,8 +59,8 @@
       border: 1px solid #aaa;
       padding: 0.5rem 1rem;
       background: #fff;
+      z-index: 5;
     }
-
   </style>
 </head>
 <body>
@@ -75,14 +70,50 @@
 
     <a href="index.html" class="back-button">← Return</a>
 
-    <!-- ADD OR REMOVE MATERIALS AS NEEDED -->
-    <a href="glass.html" class="node glass">Glass</a>
-    <a href="carbon.html" class="node carbon">Carbon</a>
-    <a href="salt.html" class="node salt">Salt</a>
-    <a href="plastic.html" class="node plastic">Plastic</a>
-    <a href="iron.html" class="node iron">Iron</a>
-    <a href="mycelium.html" class="node mycelium">Mycelium</a>
+    <!-- MATERIAL LINKS -->
+    <a href="glass.html" class="node" id="glass">Glass</a>
+    <a href="carbon.html" class="node" id="carbon">Carbon</a>
+    <a href="salt.html" class="node" id="salt">Salt</a>
+    <a href="plastic.html" class="node" id="plastic">Plastic</a>
+    <a href="iron.html" class="node" id="iron">Iron</a>
+    <a href="mycelium.html" class="node" id="mycelium">Mycelium</a>
   </div>
+
+  <!-- JavaScript: Floating Motion -->
+  <script>
+    const nodes = document.querySelectorAll('.node');
+    const speeds = [];
+
+    nodes.forEach((node, i) => {
+      const top = Math.random() * 70 + 5;
+      const left = Math.random() * 70 + 5;
+      node.style.top = `${top}%`;
+      node.style.left = `${left}%`;
+
+      speeds[i] = {
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2,
+      };
+    });
+
+    function animate() {
+      nodes.forEach((node, i) => {
+        let top = parseFloat(node.style.top);
+        let left = parseFloat(node.style.left);
+
+        // Keep nodes within bounds
+        if (top < 0 || top > 85) speeds[i].dy *= -1;
+        if (left < 0 || left > 85) speeds[i].dx *= -1;
+
+        node.style.top = `${top + speeds[i].dy}%`;
+        node.style.left = `${left + speeds[i].dx}%`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
 
 </body>
 </html>
