@@ -12,12 +12,13 @@
       color: #111;
       overflow: hidden;
     }
+
     .container {
       position: relative;
       width: 100vw;
       height: 100vh;
-      padding: 4rem;
     }
+
     .node {
       position: absolute;
       max-width: 320px;
@@ -26,32 +27,71 @@
       border-radius: 4px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
       font-size: 0.95rem;
+      animation: drift 40s ease-in-out infinite alternate;
     }
-    .n1 { top: 10%; left: 10%; }
-    .n2 { top: 30%; right: 12%; }
-    .n3 { top: 50%; left: 20%; }
-    .n4 { bottom: 30%; right: 20%; }
-    .n5 { bottom: 15%; left: 35%; }
 
-    .enter-button {
+    /* Define unique positions and drift offsets */
+    .n1 { top: 10%; left: 12%; animation-delay: 0s; animation-name: drift1; }
+    .n2 { top: 30%; right: 14%; animation-delay: 4s; animation-name: drift2; }
+    .n3 { top: 55%; left: 20%; animation-delay: 2s; animation-name: drift3; }
+    .n4 { bottom: 30%; right: 20%; animation-delay: 6s; animation-name: drift4; }
+    .n5 { bottom: 12%; left: 35%; animation-delay: 3s; animation-name: drift5; }
+
+    .enter-node {
       position: absolute;
-      bottom: 5%;
+      bottom: 8%;
       left: 50%;
       transform: translateX(-50%);
-      background: black;
-      color: white;
-      padding: 0.75rem 1.5rem;
+      background: #111;
+      color: #fff;
       text-decoration: none;
       font-family: sans-serif;
+      padding: 0.75rem 1.25rem;
       letter-spacing: 0.05em;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: drift6 35s ease-in-out infinite alternate;
     }
-    .enter-button:hover {
-      background-color: #333;
+
+    .enter-node:hover {
+      background: #333;
+    }
+
+    /* Unique drifting keyframes for variation */
+    @keyframes drift1 {
+      0% { transform: translate(0px, 0px); }
+      100% { transform: translate(10px, -15px); }
+    }
+
+    @keyframes drift2 {
+      0% { transform: translate(0px, 0px); }
+      100% { transform: translate(-8px, 12px); }
+    }
+
+    @keyframes drift3 {
+      0% { transform: translate(0px, 0px); }
+      100% { transform: translate(14px, 6px); }
+    }
+
+    @keyframes drift4 {
+      0% { transform: translate(0px, 0px); }
+      100% { transform: translate(-10px, -10px); }
+    }
+
+    @keyframes drift5 {
+      0% { transform: translate(0px, 0px); }
+      100% { transform: translate(6px, 14px); }
+    }
+
+    @keyframes drift6 {
+      0% { transform: translate(-50%, 0); }
+      100% { transform: translate(-50%, -10px); }
     }
   </style>
 </head>
 <body>
   <div class="container">
+
     <div class="node n1">
       <p>We live in a moment where technological systems increasingly claim to be “inspired by nature.”</p>
     </div>
@@ -68,9 +108,7 @@
       <p>This is not a warning. It is a record of our confidence.</p>
     </div>
 
-    <a href="map.html" class="enter-button">Enter the Atlas</a>
+    <a href="map.html" class="enter-node">Enter the Atlas</a>
   </div>
 </body>
 </html>
-
-
