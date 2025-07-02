@@ -13,24 +13,7 @@
       overflow-x: hidden;
     }
 
-    section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      font-size: 1.4rem;
-      line-height: 1.8;
-      letter-spacing: 0.015em;
-      opacity: 0;
-      transition: opacity 1.2s ease-in-out;
-    }
-
-    section.visible {
-      opacity: 1;
-    }
-
-    .back-button {
+    a.back-button {
       position: fixed;
       top: 2%;
       left: 3%;
@@ -43,24 +26,84 @@
       z-index: 10;
     }
 
-    .back-button:hover {
+    a.back-button:hover {
       color: #fff;
       border-color: #fff;
     }
 
-    .title {
-      font-size: 2rem;
-      letter-spacing: 0.03em;
-      color: #ddd;
+    .title-block {
       text-align: center;
-      padding-bottom: 1.5rem;
+      padding: 10vh 2rem 4rem;
     }
 
-    .caption {
-      font-size: 1rem;
+    .title-block h1 {
+      font-size: 2.2rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .title-block em {
+      font-size: 1.1rem;
       color: #aaa;
+    }
+
+    .video-container {
+      width: 100%;
+      height: 60vh;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .essay-block {
+      max-width: 720px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      letter-spacing: 0.015em;
+    }
+
+    .overlay {
+      position: absolute;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.4rem 0.6rem;
+      border-radius: 3px;
+      font-family: monospace;
+      color: #ccc;
+    }
+
+    .overlay.top-left {
+      top: 5%;
+      left: 4%;
+    }
+
+    .overlay.top-right {
+      top: 5%;
+      right: 4%;
+    }
+
+    .overlay.bottom-left {
+      bottom: 5%;
+      left: 4%;
+    }
+
+    .overlay.bottom-right {
+      bottom: 5%;
+      right: 4%;
+    }
+
+    .closing-line {
       text-align: center;
-      margin-top: 0.5rem;
+      margin: 6rem 2rem 4rem;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: #aaa;
     }
   </style>
 </head>
@@ -68,55 +111,41 @@
 
 <a href="map.html" class="back-button">← Back to Atlas</a>
 
-<!-- Title -->
-<section>
-  <div>
-    <div class="title">Plastic</div>
-    <p><em>The synthetic solution</em></p>
-    <div class="caption">Invented 1869 as a substitute for ivory</div>
+<div class="title-block">
+  <h1>Plastic</h1>
+  <em>The synthetic solution</em><br />
+  <span style="font-size: 0.9rem; color: #777;">Invented 1869 as an ivory substitute</span>
+</div>
+
+<!-- Cyanotype or video placeholder -->
+<div class="video-container">
+  <!-- 🌀 Replace with your actual video embed or canvas -->
+  <div style="color:#444; font-style:italic;">[ Cyanotype video placeholder ]</div>
+
+  <!-- HUD-style overlays -->
+  <div class="overlay top-left">
+    STRUCTURE: (C₂H₄)<sub>n</sub>
   </div>
-</section>
+  <div class="overlay top-right">
+    STATUS: PERSISTENT
+  </div>
+  <div class="overlay bottom-left">
+    ORIGIN: 1869 · PARKESINE
+  </div>
+  <div class="overlay bottom-right">
+    HALF-LIFE: UNKNOWN
+  </div>
+</div>
 
-<!-- Fragments -->
-<section>
-  <p>It began as imitation. Ivory, tortoiseshell, coral. The first plastics weren’t meant to replace nature — just to relieve it. Fewer elephants. Same combs.</p>
-</section>
+<!-- Longform essay placeholder -->
+<div class="essay-block">
+  <p>[Insert your full text here: the deep historical arc from conservation material to synthetic overflow. Include philosophical observation, modern recursion, biomimetic degradation, and reflection on systems. Aim for 600–800 words — clear, poetic, layered.]</p>
+</div>
 
-<section>
-  <p>Then came war. Nylon for parachutes, polyethylene for radar, Bakelite in weapons. The same materials that mimicked elegance were turned toward survival.</p>
-</section>
-
-<section>
-  <p>Plastic doesn’t decay. It fragments. Not into soil, but into data: microplastic, nanoparticle, traceable but unresolved. A slow unmaking without return.</p>
-</section>
-
-<section>
-  <p>We now engineer enzymes to degrade it. Worms and fungi, trained to digest what we built to last. Nature, hired to erase our imitation of nature.</p>
-</section>
-
-<section>
-  <p>Polymer chains hold their shape. Systems do too. Once built, they tend to repeat — regardless of what they were made for.</p>
-</section>
-
-<section>
-  <p>Plastic was sold as freedom. Now it lines the blood, the soil, the milk. Ubiquity is not invisibility — only fatigue.</p>
-</section>
-
-<section>
-  <p>It still works. That’s the problem.</p>
-</section>
-
-<script>
-  const sections = document.querySelectorAll('section');
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      entry.target.classList.toggle('visible', entry.isIntersecting);
-    });
-  }, { threshold: 0.3 });
-
-  sections.forEach(section => observer.observe(section));
-</script>
+<!-- Closing poetic line -->
+<div class="closing-line">
+  It still works. That’s the problem.
+</div>
 
 </body>
 </html>
