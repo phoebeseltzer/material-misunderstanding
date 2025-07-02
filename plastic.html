@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plastic – The Synthetic Solution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #0f1111;
+      color: #e6e6e6;
+      font-family: 'Domine', serif;
+      overflow-x: hidden;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      font-size: 1.4rem;
+      line-height: 1.8;
+      letter-spacing: 0.015em;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+
+    section.visible {
+      opacity: 1;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 2%;
+      left: 3%;
+      text-decoration: none;
+      color: #aaa;
+      font-size: 0.9rem;
+      border: 1px solid #888;
+      padding: 0.4rem 1rem;
+      background: transparent;
+      z-index: 10;
+    }
+
+    .back-button:hover {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    .title {
+      font-size: 2rem;
+      letter-spacing: 0.03em;
+      color: #ddd;
+      text-align: center;
+      padding-bottom: 1.5rem;
+    }
+
+    .caption {
+      font-size: 1rem;
+      color: #aaa;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<a href="map.html" class="back-button">← Back to Atlas</a>
+
+<!-- Title -->
+<section>
+  <div>
+    <div class="title">Plastic</div>
+    <p><em>The synthetic solution</em></p>
+    <div class="caption">Invented 1869 as a substitute for ivory</div>
+  </div>
+</section>
+
+<!-- Fragments -->
+<section>
+  <p>It began as imitation. Ivory, tortoiseshell, coral. The first plastics weren’t meant to replace nature — just to relieve it. Fewer elephants. Same combs.</p>
+</section>
+
+<section>
+  <p>Then came war. Nylon for parachutes, polyethylene for radar, Bakelite in weapons. The same materials that mimicked elegance were turned toward survival.</p>
+</section>
+
+<section>
+  <p>Plastic doesn’t decay. It fragments. Not into soil, but into data: microplastic, nanoparticle, traceable but unresolved. A slow unmaking without return.</p>
+</section>
+
+<section>
+  <p>We now engineer enzymes to degrade it. Worms and fungi, trained to digest what we built to last. Nature, hired to erase our imitation of nature.</p>
+</section>
+
+<section>
+  <p>Polymer chains hold their shape. Systems do too. Once built, they tend to repeat — regardless of what they were made for.</p>
+</section>
+
+<section>
+  <p>Plastic was sold as freedom. Now it lines the blood, the soil, the milk. Ubiquity is not invisibility — only fatigue.</p>
+</section>
+
+<section>
+  <p>It still works. That’s the problem.</p>
+</section>
+
+<script>
+  const sections = document.querySelectorAll('section');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('visible', entry.isIntersecting);
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
