@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>Plastic – The Synthetic Solution</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
+      padding: 0;
+      font-family: 'Domine', serif;
       background-color: #0f1111;
       color: #e6e6e6;
-      font-family: 'Domine', serif;
-      overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     a.back-button {
@@ -31,79 +33,91 @@
       border-color: #fff;
     }
 
-    .title-block {
-      text-align: center;
-      padding: 10vh 2rem 4rem;
+    section {
+      padding: 8vh 4vw;
+      max-width: 800px;
+      margin: auto;
     }
 
-    .title-block h1 {
-      font-size: 2.2rem;
-      letter-spacing: 0.05em;
+    .intro {
+      text-align: center;
+      padding-top: 20vh;
+    }
+
+    .intro h1 {
+      font-size: 3rem;
       margin-bottom: 0.5rem;
     }
 
-    .title-block em {
-      font-size: 1.1rem;
+    .subtitle {
+      font-size: 1.2rem;
       color: #aaa;
     }
 
-    .video-container {
+    .meta {
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 0.5rem;
+    }
+
+    .video-block {
+      position: relative;
       width: 100%;
       height: 60vh;
+      margin: 6vh auto;
       background: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
       overflow: hidden;
     }
 
-    .essay-block {
-      max-width: 720px;
-      margin: 4rem auto;
-      padding: 0 2rem;
-      font-size: 1.2rem;
-      line-height: 1.8;
-      letter-spacing: 0.015em;
+    .video-block video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
     }
 
     .overlay {
       position: absolute;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0.4rem 0.6rem;
-      border-radius: 3px;
+      padding: 0.5rem 0.7rem;
+      border-radius: 4px;
       font-family: monospace;
       color: #ccc;
+      backdrop-filter: blur(3px);
+      animation: glitch 3s infinite alternate;
+      white-space: nowrap;
     }
 
-    .overlay.top-left {
-      top: 5%;
-      left: 4%;
+    .top-left { top: 6%; left: 5%; }
+    .top-right { top: 6%; right: 5%; }
+    .bottom-left { bottom: 6%; left: 5%; }
+    .bottom-right { bottom: 6%; right: 5%; }
+
+    @keyframes glitch {
+      0% { transform: translate(0, 0); opacity: 0.9; }
+      20% { transform: translate(-1px, 1px); }
+      40% { transform: translate(1px, -1px); }
+      60% { transform: translate(-1px, 0px); }
+      80% { transform: translate(0px, 1px); }
+      100% { transform: translate(0, 0); opacity: 1; }
     }
 
-    .overlay.top-right {
-      top: 5%;
-      right: 4%;
+    .essay {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 10vh;
     }
 
-    .overlay.bottom-left {
-      bottom: 5%;
-      left: 4%;
-    }
-
-    .overlay.bottom-right {
-      bottom: 5%;
-      right: 4%;
-    }
-
-    .closing-line {
+    .closing {
       text-align: center;
-      margin: 6rem 2rem 4rem;
-      font-size: 1.3rem;
       font-style: italic;
       color: #aaa;
+      margin-bottom: 15vh;
     }
   </style>
 </head>
@@ -111,41 +125,36 @@
 
 <a href="map.html" class="back-button">← Back to Atlas</a>
 
-<div class="title-block">
+<section class="intro">
   <h1>Plastic</h1>
-  <em>The synthetic solution</em><br />
-  <span style="font-size: 0.9rem; color: #777;">Invented 1869 as an ivory substitute</span>
-</div>
+  <p class="subtitle">The synthetic solution</p>
+  <p class="meta">Invented 1869 as an ivory substitute</p>
+</section>
 
-<!-- Cyanotype or video placeholder -->
-<div class="video-container">
-  <!-- 🌀 Replace with your actual video embed or canvas -->
-  <div style="color:#444; font-style:italic;">[ Cyanotype video placeholder ]</div>
+<!-- Cyanotype video with HUD overlays -->
+<section class="video-block">
+  <video autoplay muted loop playsinline>
+    <source src="your-cyanotype-video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
-  <!-- HUD-style overlays -->
-  <div class="overlay top-left">
-    STRUCTURE: (C₂H₄)<sub>n</sub>
-  </div>
-  <div class="overlay top-right">
-    STATUS: PERSISTENT
-  </div>
-  <div class="overlay bottom-left">
-    ORIGIN: 1869 · PARKESINE
-  </div>
-  <div class="overlay bottom-right">
-    HALF-LIFE: UNKNOWN
-  </div>
-</div>
+  <div class="overlay top-left">STRUCTURE: (C₂H₄)<sub>n</sub></div>
+  <div class="overlay top-right">STATUS: PERSISTENT</div>
+  <div class="overlay bottom-left">ORIGIN: 1869 · PARKESINE</div>
+  <div class="overlay bottom-right">HALF-LIFE: UNKNOWN</div>
+</section>
 
-<!-- Longform essay placeholder -->
-<div class="essay-block">
-  <p>[Insert your full text here: the deep historical arc from conservation material to synthetic overflow. Include philosophical observation, modern recursion, biomimetic degradation, and reflection on systems. Aim for 600–800 words — clear, poetic, layered.]</p>
-</div>
+<!-- Longform essay block -->
+<section class="essay">
+  <p>
+    [Insert your full text here — beginning with imitation, the moral logic of substitution, expansion through war, consumer freedom, scientific longevity, ecological embeddedness, and recursive biological correction.]
+  </p>
+</section>
 
-<!-- Closing poetic line -->
-<div class="closing-line">
-  It still works. That’s the problem.
-</div>
+<!-- Closing sentence -->
+<section class="closing">
+  <p>It still works. That’s the problem.</p>
+</section>
 
 </body>
 </html>
