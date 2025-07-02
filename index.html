@@ -2,101 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The System Tried to Understand Itself</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Domine', serif;
+      margin: 0;
       background-color: #0f1111;
       color: #e6e6e6;
+      font-family: 'Domine', serif;
       overflow-x: hidden;
       scroll-behavior: smooth;
     }
 
     section {
-      height: 100vh;
-      width: 100vw;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 2rem;
-      font-size: 1.5rem;
-      line-height: 1.7;
+      justify-content: center;
+      padding: 0 2rem;
+      font-size: 1.6rem;
+      line-height: 1.75;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .title-block {
+      text-align: center;
+      font-size: 2.5rem;
+      padding-top: 25vh;
+      padding-bottom: 10vh;
+      line-height: 1.3;
+      letter-spacing: 0.015em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #999;
+      margin-top: 1rem;
       letter-spacing: 0.02em;
     }
 
-    .fade {
-      opacity: 0;
-      transition: opacity 1.2s ease-in-out;
-    }
-
-    .fade.visible {
-      opacity: 1;
-    }
-
     .enter-button {
-      text-align: center;
-    }
-
-    .enter-button a {
       display: inline-block;
-      margin-top: 2rem;
-      background: #e6e6e6;
-      color: #111;
+      margin-top: 4rem;
+      background: transparent;
+      border: 1px solid #888;
+      color: #e6e6e6;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
       text-decoration: none;
-      padding: 1.2rem 2.5rem;
-      font-size: 1.2rem;
+      transition: background 0.3s ease, color 0.3s ease;
       letter-spacing: 0.05em;
-      border-radius: 3px;
-      transition: background 0.3s ease;
     }
 
-    .enter-button a:hover {
-      background: #ccc;
+    .enter-button:hover {
+      background: #e6e6e6;
+      color: #0f1111;
     }
   </style>
 </head>
 <body>
 
-  <section class="fade">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</section>
+<!-- Landing block -->
+<section class="visible">
+  <div class="title-block">
+    The System Tried to Understand Itself  
+    <div class="subtitle">a nonlinear archive of materials and their misreadings</div>
+    <a href="map.html" class="enter-button">enter the atlas</a>
+  </div>
+</section>
 
-  <section class="fade">This project begins not with inventions, but with substances — plastic, silicon, salt — things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world. But they carried consequences that were not failures of chemistry — they were failures of relationship.</section>
+<!-- Scrollable blocks -->
+<section><p>Progress prefers invention over reflection. It points to materials and says: "Look what we’ve made." It rarely asks: what did this replace?</p></section>
+<section><p>Plastic was invented to protect nature. Lead was used to sweeten water. Salt once sparked revolutions. Each material left something else behind.</p></section>
+<section><p>We borrow from nature — its patterns, efficiencies, and aesthetics — but rarely from the relationships that held it in place.</p></section>
+<section><p>This archive does not predict. It records. Not the materials themselves, but the systems that misunderstood them.</p></section>
+<section><p>Begin anywhere. You won’t get the full picture. But you may feel the outline of what we lost.</p></section>
 
-  <section class="fade">We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</section>
+<script>
+  const sections = document.querySelectorAll('section');
 
-  <section class="fade">This is a gallery of materials that became systems. And of systems that no longer know how to stop.</section>
-
-  <section class="fade">Each entry in this archive traces a contradiction — where a material’s intended purpose diverged from its cultural effect. Plastic was invented to save nature. Now it pollutes every ecosystem on Earth. Silicon began as sand. It became the metaphor for thought. Salt sparked revolutions. Now it hides in processed food and road slush. Lead was used to sweeten wine, then water, then paint — before we finally remembered what it does to the brain.</section>
-
-  <section class="fade">This archive does not offer a solution. It’s not a warning. It’s a record of how modern systems learned to use matter without memory. A way of asking: What do we know, when we’re no longer embedded in what we’re using? What remains, when the purpose of a material outlives the system it served?</section>
-
-  <section class="fade">Begin anywhere. You won’t get a full picture. But you may feel the outlines of what we lost.</section>
-
-  <section class="fade enter-button">
-    <a href="map.html">enter the atlas</a>
-  </section>
-
-  <script>
-    const fades = document.querySelectorAll('.fade');
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('visible', entry.isIntersecting);
-      });
-    }, {
-      threshold: 0.4
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
     });
+  }, { threshold: 0.25 });
 
-    fades.forEach(fade => observer.observe(fade));
-  </script>
+  sections.forEach(section => observer.observe(section));
+</script>
 
 </body>
 </html>
-
