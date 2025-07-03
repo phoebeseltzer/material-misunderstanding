@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The System Tried to Understand Itself</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -16,28 +16,28 @@
       font-family: 'Domine', serif;
       background-color: #0f1111;
       color: #e6e6e6;
-      overflow-x: hidden;
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
-    section {
-      height: 100vh;
-      width: 100vw;
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      font-size: 1.5rem;
-      line-height: 1.7;
-      letter-spacing: 0.02em;
+      flex-direction: column;
+      gap: 20vh;
     }
 
-    .fade {
+    .text-block {
+      font-size: 1.3rem;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
       opacity: 0;
-      transition: opacity 1.2s ease-in-out;
+      transition: opacity 1.5s ease-out;
     }
 
-    .fade.visible {
+    .text-block.visible {
       opacity: 1;
     }
 
@@ -46,13 +46,15 @@
     }
 
     .enter-button a {
+      font-family: 'Inter', sans-serif;
       display: inline-block;
       margin-top: 2rem;
       background: #e6e6e6;
       color: #111;
       text-decoration: none;
       padding: 1.2rem 2.5rem;
-      font-size: 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
       letter-spacing: 0.05em;
       border-radius: 3px;
       transition: background 0.3s ease;
@@ -61,42 +63,41 @@
     .enter-button a:hover {
       background: #ccc;
     }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 3rem 1rem;
+        gap: 10vh;
+      }
+
+      .text-block {
+        font-size: 1.1rem;
+      }
+
+      .enter-button a {
+        font-size: 0.95rem;
+        padding: 1rem 2rem;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <section class="fade">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</section>
+  <div class="container">
+    <div class="text-block">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</div>
 
-  <section class="fade">This project begins not with inventions, but with substances — plastic, silicon, salt — things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world. But they carried consequences that were not failures of chemistry — they were failures of relationship.</section>
+    <div class="text-block">This project begins not with inventions, but with substances — plastic, silicon, salt — things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world. But they carried consequences that were not failures of chemistry — they were failures of relationship.</div>
 
-  <section class="fade">We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</section>
+    <div class="text-block">We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</div>
 
-  <section class="fade">This is a gallery of materials that became systems. And of systems that no longer know how to stop.</section>
+    <div class="text-block">This is a gallery of materials that became systems. And of systems that no longer know how to stop.</div>
 
-  <section class="fade">Each entry in this archive traces a contradiction — where a material’s intended purpose diverged from its cultural effect. Plastic was invented to save nature. Now it pollutes every ecosystem on Earth. Silicon began as sand. It became the metaphor for thought. Salt sparked revolutions. Now it hides in processed food and road slush. Lead was used to sweeten wine, then water, then paint — before we finally remembered what it does to the brain.</section>
+    <div class="text-block">Each entry in this archive traces a contradiction — where a material’s intended purpose diverged from its cultural effect. Plastic was invented to save nature. Now it pollutes every ecosystem on Earth. Silicon began as sand. It became the metaphor for thought. Salt sparked revolutions. Now it hides in processed food and road slush. Lead was used to sweeten wine, then water, then paint — before we finally remembered what it does to the brain.</div>
 
-  <section class="fade">This archive does not offer a solution. It’s not a warning. It’s a record of how modern systems learned to use matter without memory. A way of asking: What do we know, when we’re no longer embedded in what we’re using? What remains, when the purpose of a material outlives the system it served?</section>
+    <div class="text-block">This archive does not offer a solution. It’s not a warning. It’s a record of how modern systems learned to use matter without memory. A way of asking: What do we know, when we’re no longer embedded in what we’re using? What remains, when the purpose of a material outlives the system it served?</div>
 
-  <section class="fade">Begin anywhere. You won’t get a full picture. But you may feel the outlines of what we lost.</section>
+    <div class="text-block">Begin anywhere. You won’t get a full picture. But you may feel the outlines of what we lost.</div>
 
-  <section class="fade enter-button">
-    <a href="map.html">enter the atlas</a>
-  </section>
+    <div c
 
-  <script>
-    const fades = document.querySelectorAll('.fade');
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('visible', entry.isIntersecting);
-      });
-    }, {
-      threshold: 0.4
-    });
-
-    fades.forEach(fade => observer.observe(fade));
-  </script>
-
-</body>
-</html>
 
