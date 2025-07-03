@@ -14,27 +14,7 @@
       color: #e6e6e6;
       overflow-x: hidden;
     }
-    .ghost-fragment {
-      position: absolute;
-      opacity: 0;
-      font-size: 0.85rem;
-      font-family: 'Courier New', monospace;
-      color: rgba(255, 255, 255, 0.08);
-      pointer-events: none;
-      animation: fadeInOut 10s ease-in-out forwards;
-      white-space: nowrap;
-      z-index: 10;
-    }
-    .ghost-fragment.visible {
-      opacity: 0.15;
-    }
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: scale(0.96); }
-      20% { opacity: 0.15; transform: scale(1.02); }
-      80% { opacity: 0.1; transform: scale(1); }
-      100% { opacity: 0; }
-    }
-    .back-button {
+    a.back-button {
       position: fixed;
       top: 2%;
       left: 3%;
@@ -78,6 +58,227 @@
       letter-spacing: 0.1em;
       white-space: nowrap;
     }
+    .hud-bottom {
+      position: absolute;
+      bottom: 7%; /* pushed up to avoid tooltip overlap */
+      left: 5%;
+      display: flex;
+      gap: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00faff;
+      z-index: 5;
+    }
+    .hud-topright {
+      position: absolute;
+      top: 4%;
+      right: 4%;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00faff;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 170px;
+    }
+    .hud-topleft {
+      position: absolute;
+      top: 20%;
+      left: 4%;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00faff;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 140px;
+      padding: 0.6rem 1rem;
+      border: 1px solid #00faff44;
+      border-radius: 6px;
+      background: rgba(0, 255, 255, 0.08);
+      text-align: center;
+      user-select: none;
+      box-shadow: 0 0 8px #00faff99 inset;
+    }
+    /* Circular HUD style */
+    .hud-circular {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      box-sizing: border-box;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #001f3f 60%, transparent 80%),
+        repeating-conic-gradient(rgba(0,255,255,0.1) 0deg 15deg, transparent 15deg 20deg);
+      box-shadow:
+        0 0 14px #00faffcc,
+        inset 0 0 22px #00eaffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00faff;
+      text-align: center;
+      cursor: default;
+      user-select: none;
+      outline-offset: 2px;
+    }
+    .hud-circular .value {
+      font-size: 2.3rem;
+      white-space: nowrap;
+      overflow: visible;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 6px #00faff;
+      user-select: text;
+      position: relative;
+      z-index: 1; /* above svg circle */
+    }
+    .hud-circular .label {
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+      letter-spacing: 0.15em;
+      color: #00b3ccdd;
+      text-transform: uppercase;
+      user-select: text;
+      position: relative;
+      z-index: 1; /* above svg circle */
+    }
+    .svg-circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 170px;
+      height: 170px;
+      transform: rotate(-90deg);
+      z-index: 0; /* behind text */
+    }
+    .svg-circle circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+    .svg-circle .bg {
+      stroke: #00334455;
+    }
+    .svg-circle .progress {
+      stroke: #00faff;
+      filter: drop-shadow(0 0 6px #00faffaa);
+      transition: stroke-dashoffset 0.3s ease;
+    }
+    /* Tooltip styles */
+    .hud-tooltip {
+      position: absolute;
+      width: 260px;
+      background: rgba(0, 255, 255, 0.12);
+      color: #00faff;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      border-radius: 6px;
+      border: 1px solid #00faffcc;
+      box-shadow: 0 0 8px #00faff88;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      user-select: none;
+      z-index: 100;
+    }
+    .hud-circular-large {
+      width: 170px;
+      height: 170px;
+      padding: 1.5rem;
+      position: relative;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #001f3f 60%, transparent 80%),
+        repeating-conic-gradient(rgba(0,255,255,0.1) 0deg 15deg, transparent 15deg 20deg);
+      box-shadow:
+        0 0 14px #00faffcc,
+        inset 0 0 22px #00eaffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00faff;
+      text-align: center;
+      cursor: default;
+      user-select: none;
+      outline-offset: 2px;
+    }
+    .hud-circular-large .svg-circle {
+      width: 170px !important;
+      height: 170px !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+    .hud-circular-large .value {
+      font-size: 2.5rem;
+      white-space: nowrap;
+      overflow: visible;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 6px #00faff;
+      user-select: text;
+      position: relative;
+      z-index: 1;
+    }
+    /* Plastic Produced tooltip right side */
+    #tooltip-production {
+      top: 0;
+      left: 100%;
+      margin-left: 1rem;
+      right: auto;
+      transform: none;
+    }
+    #tooltip-production::after {
+      top: 1.2rem;
+      left: auto;
+      right: 100%;
+      margin-left: 0;
+      margin-right: -6px;
+      border-color: transparent rgba(0, 255, 255, 0.12) transparent transparent;
+      border-width: 6px 6px 6px 0;
+      border-style: solid;
+      position: absolute;
+      content: "";
+    }
+    #tooltip-use-time {
+      top: 0;
+      right: 100%;
+      margin-right: 1rem;
+    }
+    #tooltip-degrade-time {
+      top: 13rem;
+      right: 100%;
+      margin-right: 1rem;
+    }
+    #tooltip-lifespan {
+      top: 25rem;
+      right: 100%;
+      margin-right: 1rem;
+    }
+    #tooltip-use-time::after,
+    #tooltip-degrade-time::after,
+    #tooltip-lifespan::after {
+      top: 1.2rem;
+      left: 100%;
+      margin-left: 0;
+      border-color: transparent transparent transparent rgba(0, 255, 255, 0.12);
+      border-width: 6px 0 6px 6px;
+      border-style: solid;
+      position: absolute;
+      content: "";
+    }
+    /* Show tooltip on hover or focus of HUD */
+    .hud-circular:hover + .hud-tooltip,
+    .hud-circular:focus + .hud-tooltip,
+    .hud-topright div:hover + .hud-tooltip,
+    .hud-topright div:focus + .hud-tooltip {
+      opacity: 1;
+      pointer-events: auto;
+    }
     .slider-wrap {
       max-width: 900px;
       margin: 4rem auto 1rem;
@@ -103,6 +304,13 @@
       min-height: 3.2em;
       line-height: 1.4;
     }
+    .essay {
+      max-width: 800px;
+      margin: 4rem auto 6rem;
+      padding: 0 1rem;
+      line-height: 1.7;
+      font-size: 1.1rem;
+    }
     .chapter {
       margin-top: 2rem;
       font-weight: bold;
@@ -123,36 +331,6 @@
     .citation a:hover {
       text-decoration: underline;
     }
-    .essay {
-      max-width: 800px;
-      margin: 4rem auto 6rem;
-      padding: 0 1rem;
-      line-height: 1.7;
-      font-size: 1.1rem;
-    }
-    .enter-button {
-      text-align: center;
-      margin: 6rem auto;
-    }
-    .enter-button a {
-      display: inline-block;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.04em;
-      color: #8feaff;
-      background: rgba(0, 255, 255, 0.06);
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 5px;
-      text-decoration: none;
-      box-shadow: 0 0 6px #00f0ff33;
-      transition: all 0.3s ease;
-    }
-    .enter-button a:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 10px #00f0ff88;
-      transform: scale(1.03);
-    }
   </style>
 </head>
 <body>
@@ -164,12 +342,75 @@
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
   <div class="video-title">Plastic</div>
+  <div class="hud-bottom">
+    <div class="hud-circular hud-circular-large" tabindex="0" aria-describedby="tooltip-production">
+      <svg class="svg-circle" viewBox="0 0 170 170" aria-hidden="true">
+        <circle class="bg" r="78" cx="85" cy="85"></circle>
+        <circle class="progress" r="78" cx="85" cy="85" stroke-dasharray="490" stroke-dashoffset="490"></circle>
+      </svg>
+      <div class="value"><span id="plastic-count">0</span> Mt</div>
+      <div class="label">Plastic Produced</div>
+    </div>
+    <div id="tooltip-production" class="hud-tooltip" role="tooltip">
+      Plastic production is a ledger of modernity, of mastery over matter and progress divorced from consequence.
+      We engineered longevity into disposability, and called it efficiency.
+    </div>
+  </div>
+
+  <div class="hud-topright">
+    <div tabindex="0" aria-describedby="tooltip-use-time" class="hud-circular">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value" id="use-time-value">0.5</div>
+      <div class="label">Avg Use Time (yrs)</div>
+    </div>
+    <div id="tooltip-use-time" class="hud-tooltip" role="tooltip">
+      We built endurance into a material, then used it to cradle the ephemeral.<br>
+      Designed to hold seconds, it survives centuries.
+    </div>
+
+    <div tabindex="0" aria-describedby="tooltip-degrade-time" class="hud-circular">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value" id="degrade-time-value">400</div>
+      <div class="label">Degradation Time (yrs)</div>
+    </div>
+    <div id="tooltip-degrade-time" class="hud-tooltip" role="tooltip">
+      Plastic does not vanish, it fragments.<br>
+      Into particles, into currents, into breath.<br>
+      What was made to imitate life now outlives every body it serves.
+    </div>
+
+    <div tabindex="0" aria-describedby="tooltip-lifespan" class="hud-circular">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value" id="lifespan-percent">99.9%</div>
+      <div class="label">Lifespan After Use</div>
+    </div>
+    <div id="tooltip-lifespan" class="hud-tooltip" role="tooltip">
+      Over 99% of plastic’s existence unfolds after it’s discarded.<br>
+      It is most present when we’ve decided it no longer matters.
+    </div>
+  </div>
+
+  <div class="hud-topleft">
+    <div>
+      <strong>Structure</strong><br>(C₂H₄)<sub>n</sub>
+    </div>
+  </div>
 </section>
 
 <div class="slider-wrap">
   <input type="range" id="yearSlider" min="1900" max="2025" value="1900" />
   <div id="year-caption" class="caption"></div>
 </div>
+
 <canvas id="degradation-chart" height="300"></canvas>
 
 <section class="essay">
@@ -189,127 +430,130 @@
   </div>
 </section>
 
-<section class="fade enter-button">
-  <a href="index.html?loop=plastic">Plastic does not return. But you do.</a>
-</section>
-
 <script>
-const plasticEquations = [
-  "(C₈H₈)n → styrene",
-  "Tg > 100°C",
-  "[–CH₂–CHCl–]ₙ",
-  "polymer backbone = time arrest",
-  "amorphous phase > crystal",
-  "chain length = half-life",
-  "PETase :: hydrolysis",
-  "density = 0.94 g/cm³",
-  "nanoplastic detected in placenta",
-  "π-bond ≠ decay",
-  "synthetic → uncyclical"
-];
-
-function spawnPlasticFragment() {
-  const frag = document.createElement('div');
-  frag.className = 'ghost-fragment visible';
-  frag.textContent = plasticEquations[Math.floor(Math.random() * plasticEquations.length)];
-  frag.style.top = `${Math.random() * window.innerHeight * 0.8}px`;
-  frag.style.left = `${Math.random() * window.innerWidth * 0.8}px`;
-  document.body.appendChild(frag);
-  setTimeout(() => frag.remove(), 10000);
-}
-
-window.addEventListener('scroll', () => {
-  if (Math.random() < 0.25) {
-    spawnPlasticFragment();
+  // Helper to update circular progress bars
+  function updateCircularProgress(element, percent) {
+    const circle = element.querySelector('.progress');
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference * (1 - percent / 100);
+    circle.style.strokeDasharray = circumference;
+    circle.style.strokeDashoffset = offset;
   }
-});
-</script>
 
-<script>
-const years = Array.from({length: 126}, (_, i) => 1900 + i);
-const production = [], cumulative = [], degraded = [];
-let total = 0;
+  document.addEventListener('DOMContentLoaded', function () {
+    const years = Array.from({length: 2025 - 1900 + 1}, (_, i) => 1900 + i);
+    const production = [], cumulative = [], degraded = [];
+    let total = 0;
 
-for (let i = 0; i < years.length; i++) {
-  const y = years[i];
-  let prod = y < 1950 ? Math.max(0.1 * (y - 1907), 0) : 2 * Math.pow(1.07, y - 1950);
-  production.push(+prod.toFixed(1));
-  total += prod / 1000;
-  cumulative.push(+total.toFixed(2));
-  degraded.push(y === 2025 ? +(total * 0.09).toFixed(2) : 0);
-}
+    // Hide fills on static HUDs (set outlines only)
+    const radius = 50;
+    const circumference = 2 * Math.PI * radius;
+    ['use-time-value', 'degrade-time-value', 'lifespan-percent'].forEach(id => {
+      const el = document.getElementById(id).parentElement.querySelector('.progress');
+      el.style.strokeDasharray = circumference;
+      el.style.strokeDashoffset = circumference; // fully hide fill stroke
+    });
 
-const ctx = document.getElementById('degradation-chart').getContext('2d');
-const chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [
-      { label: 'Annual Production (Mt)', data: [], borderColor: '#00f0ff', yAxisID: 'y1', tension: 0.25 },
-      { label: 'Cumulative Production (Bt)', data: [], borderColor: '#00ff88', yAxisID: 'y2', tension: 0.25 },
-      { label: 'Estimated Degraded (Bt)', data: [], borderColor: '#ff568f', yAxisID: 'y2', tension: 0.25 }
-    ]
-  },
-  options: {
-    responsive: true,
-    interaction: { intersect: false, mode: 'index' },
-    scales: {
-      y1: {
-        type: 'linear',
-        position: 'left',
-        beginAtZero: true,
-        title: { display: true, text: 'Annual Production (Mt)' },
-        ticks: { color: '#ccc' }
+    for (let i = 0; i < years.length; i++) {
+      const y = years[i];
+      let prod = y < 1950 ? Math.max(0.1 * (y - 1907), 0) : 2 * Math.pow(1.07, y - 1950);
+      production.push(+prod.toFixed(1));
+      total += prod / 1000;
+      cumulative.push(+total.toFixed(2));
+      degraded.push(y === 2025 ? +(total * 0.09).toFixed(2) : 0);
+    }
+
+    const ctx = document.getElementById('degradation-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'Annual Production (Mt)', data: [], borderColor: '#00f0ff', yAxisID: 'y1', tension: 0.25 },
+          { label: 'Cumulative Production (Bt)', data: [], borderColor: '#00ff88', yAxisID: 'y2', tension: 0.25 },
+          { label: 'Estimated Degraded (Bt)', data: [], borderColor: '#ff568f', yAxisID: 'y2', tension: 0.25 }
+        ]
       },
-      y2: {
-        type: 'linear',
-        position: 'right',
-        beginAtZero: true,
-        title: { display: true, text: 'Cumulative Production (Bt)' },
-        grid: { drawOnChartArea: false },
-        ticks: { color: '#ccc' }
-      },
-      x: {
-        ticks: {
-          color: '#ccc',
-          stepSize: 10,
-          callback: function(value) {
-            return this.getLabelForValue(value) % 10 === 0 ? this.getLabelForValue(value) : '';
+      options: {
+        responsive: true,
+        interaction: { intersect: false, mode: 'index' },
+        scales: {
+          y1: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            title: { display: true, text: 'Annual Production (Mt)' },
+            ticks: { color: '#ccc' }
+          },
+          y2: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: true,
+            title: { display: true, text: 'Cumulative Production (Bt)' },
+            grid: { drawOnChartArea: false },
+            ticks: { color: '#ccc' }
+          },
+          x: {
+            ticks: {
+              color: '#ccc',
+              stepSize: 10,
+              callback: function(value) {
+                return this.getLabelForValue(value) % 10 === 0 ? this.getLabelForValue(value) : '';
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#e6e6e6' }
           }
         }
       }
-    },
-    plugins: {
-      legend: {
-        labels: { color: '#e6e6e6' }
-      }
+    });
+
+    function updateChartToIndex(i) {
+      chart.data.labels = years.slice(0, i + 1);
+      chart.data.datasets[0].data = production.slice(0, i + 1);
+      chart.data.datasets[1].data = cumulative.slice(0, i + 1);
+      chart.data.datasets[2].data = degraded.slice(0, i + 1);
+      chart.update();
     }
-  }
-});
 
-function updateChartToIndex(i) {
-  chart.data.labels = years.slice(0, i + 1);
-  chart.data.datasets[0].data = production.slice(0, i + 1);
-  chart.data.datasets[1].data = cumulative.slice(0, i + 1);
-  chart.data.datasets[2].data = degraded.slice(0, i + 1);
-  chart.update();
-}
+    const slider = document.getElementById('yearSlider');
+    slider.addEventListener('input', (e) => {
+      const year = +e.target.value;
+      const i = years.indexOf(year);
+      const prod = production[i];
+      const cum = cumulative[i];
+      const deg = degraded[i];
+      const lifespanPercent = 99.9;
 
-document.getElementById('yearSlider').addEventListener('input', (e) => {
-  const year = +e.target.value;
-  const i = years.indexOf(year);
-  const prod = production[i];
-  const cum = cumulative[i];
-  const deg = degraded[i];
+      // Update text values
+      document.getElementById('plastic-count').innerText = prod.toFixed(0);
+      document.getElementById('use-time-value').innerText = "0.5"; // static value
+      document.getElementById('degrade-time-value').innerText = "400"; // static value
+      document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
 
-  document.getElementById('year-caption').innerHTML =
-    `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
-    `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).`;
+      // Update circular progress bars
+      updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 320) * 100, 100));
+     
+      // Update bar plastic fill for backward compatibility (optional)
+      const barPlastic = document.getElementById('bar-plastic');
+      if(barPlastic) {
+        barPlastic.style.width = (prod / 320) * 100 + '%';
+      }
 
-  updateChartToIndex(i);
-});
+      // Update caption below slider
+      document.getElementById('year-caption').innerHTML =
+        `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
+        `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).`;
 
-updateChartToIndex(0);
+      updateChartToIndex(i);
+    });
+
+    updateChartToIndex(0);
+  });
 </script>
 
 </body>
