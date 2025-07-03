@@ -54,11 +54,13 @@
       z-index: 5;
     }
     .hud-panel {
+      position: relative;
       background: rgba(0,255,255,0.05);
       padding: 1rem;
       border-radius: 6px;
       border: 1px solid #00f0ff33;
       min-width: 140px;
+      cursor: help;
     }
     .hud-title {
       font-size: 0.75rem;
@@ -103,6 +105,49 @@
       border: 1px solid #00f0ff33;
       font-size: 0.9rem;
       text-align: center;
+      cursor: help;
+      position: relative;
+    }
+    /* Tooltip styles */
+    .hud-tooltip {
+      visibility: hidden;
+      width: 260px;
+      background-color: rgba(0, 255, 255, 0.12);
+      color: #8feaff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      position: absolute;
+      z-index: 20;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 1px solid #00f0ffcc;
+      box-shadow: 0 0 6px #00f0ff55;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      user-select: none;
+    }
+    .hud-tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: rgba(0, 255, 255, 0.12) transparent transparent transparent;
+    }
+    .hud-panel:hover .hud-tooltip,
+    .hud-panel:focus-within .hud-tooltip,
+    .hud-topright div:hover .hud-tooltip,
+    .hud-topright div:focus-within .hud-tooltip {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
     }
     .slider-wrap {
       max-width: 900px;
@@ -162,18 +207,41 @@
   </video>
 
   <div class="hud-bottom">
-    <div class="hud-panel">
+    <div class="hud-panel" tabindex="0" aria-describedby="tooltip-production">
       <div class="hud-title">Plastic Produced</div>
       <div class="hud-metric"><span id="plastic-count">0</span> Mt</div>
       <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
+      <div class="hud-tooltip" id="tooltip-production" role="tooltip">
+        This is the amount of plastic produced each year, reflecting human industrial scale and consumption.
+      </div>
     </div>
   </div>
 
   <div class="hud-topright">
-    <div><strong>Avg Use Time</strong><br>0.5 yrs</div>
-    <div><strong>Degradation Time</strong><br>400 yrs</div>
-    <div><strong>Lifespan After Use</strong><br><span id="lifespan-percent">99.9%</span></div>
-    <div><strong>Structure</strong><br>(C₂H₄)<sub>n</sub></div>
+    <div tabindex="0" aria-describedby="tooltip-use-time">
+      <strong>Avg Use Time</strong><br>0.5 yrs
+      <div class="hud-tooltip" id="tooltip-use-time" role="tooltip">
+        The average duration plastic serves its purpose before disposal—typically very short.
+      </div>
+    </div>
+    <div tabindex="0" aria-describedby="tooltip-degrade-time">
+      <strong>Degradation Time</strong><br>400 yrs
+      <div class="hud-tooltip" id="tooltip-degrade-time" role="tooltip">
+        The estimated time plastic takes to break down in the environment—persisting for centuries.
+      </div>
+    </div>
+    <div tabindex="0" aria-describedby="tooltip-lifespan">
+      <strong>Lifespan After Use</strong><br><span id="lifespan-percent">99.9%</span>
+      <div class="hud-tooltip" id="tooltip-lifespan" role="tooltip">
+        Most plastic’s lifetime occurs <em>after</em> it has finished its use, polluting ecosystems for centuries.
+      </div>
+    </div>
+    <div tabindex="0" aria-describedby="tooltip-structure">
+      <strong>Structure</strong><br>(C₂H₄)<sub>n</sub>
+      <div class="hud-tooltip" id="tooltip-structure" role="tooltip">
+        The chemical formula for polyethylene, the most common plastic polymer.
+      </div>
+    </div>
   </div>
 </section>
 
@@ -273,13 +341,13 @@
       const prod = production[i];
       const cum = cumulative[i];
       const deg = degraded[i];
-      const lifespanPercent = 99.9; // Fixed lifespan after use (could be refined if you want)
+      const lifespanPercent = 99.9; // Fixed lifespan after use (could be refined)
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
       document.getElementById('bar-plastic').style.width = (prod / 500) * 100 + '%';
       document.getElementById('lifespan-percent').innerText = lifespanPercent + '%';
       document.getElementById('year-caption').innerHTML =
         `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
-        `Cumulative: <b>${cum.toFixed(2)} Bt</b>. Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).` +
+        `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).` +
         `<br><em>Designed to disappear in use, destined to remain in form.</em>`;
       updateChartToIndex(i);
     });
