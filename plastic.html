@@ -84,7 +84,6 @@
       transition: transform 0.3s ease-out;
     }
 
-    /* HUD Overlay Styles */
     .hud-overlay {
       position: absolute;
       max-width: 220px;
@@ -101,6 +100,7 @@
 
     .top-left { top: 5%; left: 5%; }
     .top-right { top: 5%; right: 5%; }
+    .bottom-left { bottom: 5%; left: 5%; }
 
     .hud-title {
       font-size: 0.75rem;
@@ -159,26 +159,26 @@
   <p class="meta">Invented 1869 as an ivory substitute</p>
 </section>
 
-<!-- Cyanotype video with HUD overlays -->
 <section class="video-block" id="video-block">
   <video autoplay muted loop playsinline id="cyanotypeVideo">
     <source src="videos/videoplayback.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <!-- HUD Overlays -->
+  <!-- HUD Block -->
+  <div class="hud-overlay bottom-left">
+    <div class="hud-title">O₂ SATURATION</div>
+    <div class="hud-bar"><div id="oxygen-fill" class="hud-fill" style="width: 68%;"></div></div>
 
-  <!-- New Dynamic HUD Block -->
-<div class="hud-overlay bottom-left">
-  <div class="hud-title">O₂ SATURATION</div>
-  <div class="hud-bar"><div id="oxygen-fill" class="hud-fill" style="width: 68%;"></div></div>
+    <div class="hud-title" style="margin-top:1rem;">GLOBAL MASS</div>
+    <div class="hud-metric"><span id="plastic-count">0</span> billion tons</div>
 
-  <div class="hud-title" style="margin-top:1rem;">GLOBAL MASS</div>
-  <div class="hud-metric"><span id="plastic-count">0</span> billion tons</div>
+    <div class="hud-title" style="margin-top:1rem;">WASTE GENERATED</div>
+    <div class="hud-metric"><span id="waste-count">0</span> million tons</div>
 
-  <div class="hud-title" style="margin-top:1rem;">TIME SINCE ORIGIN</div>
-  <div class="hud-metric"><span id="year-count">0</span> years</div>
-</div>
+    <div class="hud-title" style="margin-top:1rem;">TIME SINCE ORIGIN</div>
+    <div class="hud-metric"><span id="year-count">0</span> years</div>
+  </div>
 
   <div class="hud-overlay top-left">
     <div class="hud-title">MATERIAL STATUS</div>
@@ -191,39 +191,21 @@
   <div class="hud-overlay top-right">
     <div class="hud-title">STRUCTURE</div>
     <div class="hud-metric">(C₂H₄)<sub>n</sub></div>
-    <div class="hud-title" style="margin-top:1rem;">HALF-LIFE</div>
-    <div class="hud-metric">UNKNOWN</div>
   </div>
 </section>
 
-<!-- Longform essay block -->
 <section class="essay">
   <p>
     [Insert your full text here — beginning with imitation, the moral logic of substitution, expansion through war, consumer freedom, scientific longevity, ecological embeddedness, and recursive biological correction.]
   </p>
 </section>
 
-<!-- Closing sentence -->
 <section class="closing">
   <p>It still works. That’s the problem.</p>
 </section>
 
 <script>
-  // Scroll-responsive parallax video effect
-  const video = document.getElementById('cyanotypeVideo');
-
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const blockTop = document.getElementById('video-block').offsetTop;
-    const distance = scrollY - blockTop;
-
-    if (distance >= 0 && distance <= 800) {
-      video.style.transform = `translateY(${distance * 0.1}px)`;
-    }
-  });
-</script>
-<script>
-  // Scroll parallax effect
+  // Parallax effect
   const video = document.getElementById('cyanotypeVideo');
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
@@ -234,39 +216,56 @@
     }
   });
 
-  // Count-up for plastic mass
-  let plasticStarted = false;
-  function animatePlasticCount() {
-    if (plasticStarted) return;
-    plasticStarted = true;
-
-    let count = 0;
-    const target = 8.3; // You can update this value
-    const plasticCounter = document.getElementById("plastic-count");
-
-    const interval = setInterval(() => {
-      count += 0.1;
-      if (count >= target) {
-        plasticCounter.innerText = target.toFixed(1);
-        clearInterval(interval);
-      } else {
-        plasticCounter.innerText = count.toFixed(1);
-      }
-    }, 100);
-  }
-
-  window.addEventListener("scroll", () => {
-    const section = document.getElementById("video-block");
-    if (section.getBoundingClientRect().top < window.innerHeight) {
-      animatePlasticCount();
-    }
-  });
-
-  // Year tracker from 1869
+  // Year counter
   const baseYear = 1869;
   const currentYear = new Date().getFullYear();
   document.getElementById("year-count").innerText = currentYear - baseYear;
+
+  // HUD Animation Script
+  const plasticStarted = { prod: false, waste: false };
+
+  async function fetchOWID(id) {
+    const url = `https://ourworldindata.org/grapher/${id}.json`;
+    const resp = await fetch(url);
+    const json = await resp.json();
+    const series = json.data;
+    const lastYear = Object.keys(series).pop();
+    return series[lastYear].y;
+  }
+
+  function animateCount(el, target, key) {
+    if (plasticStarted[key]) return;
+    plasticStarted[key] = true;
+    let count = 0;
+    const step = target / (2000 / 50);
+
+    const timer = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.innerText = target >= 1000000
+        ? (count / 1000000000).toFixed(1)
+        : count.toFixed(0);
+      if (count >= target) clearInterval(timer);
+    }, 50);
+  }
+
+  async function initHUD() {
+    const [prodT, wasteT] = await Promise.all([
+      fetchOWID('cumulative-global-plastics'),
+      fetchOWID('plastic-waste-generation-total')
+    ]);
+    window.addEventListener('scroll', () => {
+      const vidPos = document.getElementById('video-block')
+        .getBoundingClientRect().top;
+      if (vidPos < window.innerHeight) {
+        animateCount(document.getElementById('plastic-count'), prodT, 'prod');
+        animateCount(document.getElementById('waste-count'), wasteT, 'waste');
+      }
+    });
+  }
+
+  initHUD();
 </script>
 
 </body>
 </html>
+
