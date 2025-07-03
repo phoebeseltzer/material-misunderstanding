@@ -350,7 +350,7 @@
 </head>
 <body>
 
-<a href="map.html" class="back-button">← Return</a>
+<a href="map.html?from=plastic" class="back-button">← Return</a>
 
 <section class="video-block">
   <video autoplay muted loop playsinline>
@@ -598,9 +598,10 @@ const observer = new IntersectionObserver((entries) => {
       document.body.style.opacity = '0';
 
       // Navigate after delay
-      setTimeout(() => {
-        window.location.href = "map.html"; // Change to your main page if different
-      }, 1600);
+     setTimeout(() => {
+  window.location.href = "map.html?from=plastic"; // pass the param so atlas knows what to highlight
+}, 1600);
+
     }
   });
 }, { threshold: 0.9 });
