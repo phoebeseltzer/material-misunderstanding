@@ -60,7 +60,7 @@
     <div>Structure: <strong>(C₂H₄)<sub>n</sub></strong></div>
   </div>
   <div class="hud-container">
-    <div class="hud-panel"><div class="hud-title">Total Plastic Produced</div><div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div><div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div></div>
+    <div class="hud-panel"><div class="hud-title">Annual Plastic Production</div><div class="hud-metric"><span id="plastic-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div></div>
     <div class="hud-panel"><div class="hud-title">Plastic Waste /yr</div><div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div></div>
   </div>
 </section>
@@ -87,6 +87,14 @@
 
   <div class="chapter-title">5. Imitation became replacement</div>
   <p>Plastic was the first widely used material engineered to resist biological breakdown — and today, we ask nature to solve it for us.</p>
+
+  <div class="chapter-title">Timeline Chapters</div>
+  <p><strong>1869–1945: Plastic as Promise</strong><br>
+  A moral invention. Plastic mimicked ivory, coral, shell — without taking life.</p>
+  <p><strong>1950–1975: The Rise of Synthetic Ubiquity</strong><br>
+  Mass production begins. Packaging. Convenience. Disposability. Growth becomes exponential.</p>
+  <p><strong>1980–2025: The Age of Accumulation</strong><br>
+  Waste outpaces reuse. Recycling myths collapse. Enzymes and fungi try to fix what humans can't undo.</p>
 
   <p style="font-size:0.9rem; color:#888;">Data based on: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data</a> & <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" style="color:#8feaff;">Geyer et al. (2017)</a></p>
 </section>
@@ -115,31 +123,4 @@
     chart=new Chart(ctx,{
       type:'line',
       data:{ labels:years, datasets:[
-        { label:'Cumulative Plastic Produced (Bt)', data:cumulative, borderColor:'#00f0ff', tension:0.25 },
-        { label:'Estimated Degraded Plastic (Bt)', data:degraded, borderColor:'#ff568f', tension:0.25 }
-      ]},
-      options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
-        scales:{ y:{ beginAtZero:true, title:{ display:true, text:'Billion Tons' } } },
-        plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
-      }
-    });
-  }
-
-  document.getElementById('yearSlider').addEventListener('input',(e)=>{
-    const year=+e.target.value;
-    const i=years.indexOf(year);
-    const prod=cumulative[i];
-    const w=waste[i];
-    document.getElementById('plastic-count').innerText=prod.toFixed(1);
-    document.getElementById('waste-count').innerText=Math.round(w);
-    document.getElementById('bar-plastic').style.width=(prod/7)*100+'%';
-    document.getElementById('bar-waste').style.width=(w/500)*100+'%';
-    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>. Approx. <b>${Math.round(w)} million tons</b> of plastic became waste.`;
-    if(chart){ chart.tooltip.setActiveElements([{datasetIndex:0,index:i}],{x:0,y:0}); chart.setActiveElements([{datasetIndex:0,index:i}]); chart.update(); }
-  });
-
-  renderChart();
-</script>
-
-</body>
-</html>
+        { label:'Annual Plastic Production (Mt)', data:production, borderColor:'#00f0ff', tension:
