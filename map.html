@@ -111,13 +111,72 @@
     }
 
     /* Apply pink glow + glitch animation to highlight */
-    .material-highlight {
-      animation: glowPulse 2s ease-in-out 2, glitchMove 0.6s ease-in-out 4;
-      animation-fill-mode: forwards;
-      color: #ff568f; /* pink text color */
-      box-shadow: 0 0 12px 4px rgba(255, 86, 143, 0.9) !important;
-      border-color: #ff568f !important;
-    }
+ .material-highlight {
+  animation: glowPulse 2s ease-in-out 2, glitchMove 0.6s ease-in-out 4;
+  animation-fill-mode: forwards;
+  color: #ff568f; /* pink text color */
+  box-shadow: 0 0 12px 4px rgba(255, 86, 143, 0.9) !important;
+  border-color: #ff568f !important;
+  position: relative; /* needed for pseudo-elements */
+}
+
+/* Glitch text effect overlays */
+.material-highlight::before,
+.material-highlight::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  color: #ff568f;
+  background: transparent;
+  overflow: hidden;
+  clip-path: inset(0 0 0 0);
+  animation: glitchText 0.7s infinite;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.material-highlight::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff568f;
+  animation-delay: 0.1s;
+}
+
+.material-highlight::after {
+  left: -2px;
+  text-shadow: 2px 0 #ff568f;
+  animation-delay: 0.3s;
+}
+
+@keyframes glitchText {
+  0% {
+    clip-path: inset(0 0 90% 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(0 0 10% 0);
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    clip-path: inset(40% 0 10% 0);
+    transform: translate(2px, -2px);
+  }
+  60% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(-1px, 1px);
+  }
+  80% {
+    clip-path: inset(20% 0 40% 0);
+    transform: translate(1px, -1px);
+  }
+  100% {
+    clip-path: inset(0 0 90% 0);
+    transform: translate(0);
+  }
+}
+
   </style>
 </head>
 <body>
@@ -126,7 +185,7 @@
   <h1>Material Atlas</h1>
 
   <div class="container">
-    <a href="plastic.html?from=plastic" class="node" id="plastic-area">Plastic<br><small>(the synthetic solution)</small></a>
+<a href="plastic.html?from=plastic" class="node" id="plastic-area" data-text="Plastic (the synthetic solution)">Plastic<br><small>(the synthetic solution)</small></a>
     <a href="silicon.html?from=silicon" class="node" id="silicon-area">Silicon<br><small>(memory carved in sand)</small></a>
     <a href="lead.html?from=lead" class="node" id="lead-area">Lead<br><small>(slow violence in plain sight)</small></a>
     <a href="mycelium.html?from=mycelium" class="node" id="mycelium-area">Mycelium<br><small>(borrowed intelligence)</small></a>
