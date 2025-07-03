@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Plastic – The Synthetic Solution</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plastic – The Synthetic Solution</title>
   <link href="https://fonts.googleapis.com/css2?family=Domine&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -17,16 +17,28 @@
       overflow-x: hidden;
     }
 
-    section {
-      padding: 8vh 4vw;
-      max-width: 800px;
-      margin: auto;
+    a.back-button {
+      position: fixed;
+      top: 2%;
+      left: 3%;
+      text-decoration: none;
+      color: #aaa;
+      font-size: 0.9rem;
+      border: 1px solid #888;
+      padding: 0.4rem 1rem;
+      background: transparent;
+      z-index: 10;
+    }
+
+    a.back-button:hover {
+      color: #fff;
+      border-color: #fff;
     }
 
     .video-block {
       position: relative;
       width: 100%;
-      height: 80vh;
+      height: 85vh;
       background: #111;
       display: flex;
       align-items: center;
@@ -42,6 +54,19 @@
       min-height: 100%;
       object-fit: cover;
       opacity: 0.25;
+    }
+
+    .chemical-label {
+      position: absolute;
+      top: 3%;
+      right: 3%;
+      font-family: monospace;
+      font-size: 1.2rem;
+      color: #8feaff;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.4rem 0.6rem;
+      border-radius: 5px;
+      text-shadow: 0 0 2px #00f0ff55;
     }
 
     .hud-container {
@@ -98,148 +123,66 @@
     #degradation-chart {
       width: 100%;
       max-width: 900px;
-      margin: 8vh auto;
+      margin: 8vh auto 2rem;
+    }
+
+    .essay {
+      max-width: 720px;
+      margin: 0 auto 10vh;
+      padding: 0 1rem;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #cccccc;
     }
   </style>
 </head>
 <body>
+
+<a href="map.html" class="back-button">&larr; Back</a>
 
 <section class="video-block" id="video-block">
   <video autoplay muted loop playsinline id="cyanotypeVideo">
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
 
-  <!-- HUD -->
-  <div class="hud-container">
- 
+  <div class="chemical-label">(C₂H₄)<sub>n</sub></div>
     <div class="hud-panel">
       <div class="hud-title">AVG USE TIME</div>
       <div class="hud-metric">~<span id="avg-lifetime">0.5</span><span class="unit"> yrs</span></div>
     </div>
-
     <div class="hud-panel">
       <div class="hud-title">EST. DEGRADATION TIME</div>
       <div class="hud-metric">~<span id="degrade-time">400</span><span class="unit"> yrs</span></div>
     </div>
-   <div class="hud-panel">
+  <div class="hud-container">
+    <div class="hud-panel">
       <div class="hud-title">TOTAL PLASTIC PRODUCED</div>
       <div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div>
       <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
     </div>
-
     <div class="hud-panel">
       <div class="hud-title">PLASTIC WASTE GENERATED /yr</div>
       <div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div>
       <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
     </div>
 
-    <div class="hud-panel">
-      <div class="hud-title">CHEMICAL STRUCTURE</div>
-      <div class="hud-metric">(C₂H₄)<sub>n</sub></div>
-    </div>
   </div>
 </section>
 
-<!-- Interactive Timeline + Scrubber -->
 <section style="padding: 4rem 2vw; max-width: 900px; margin: auto;">
   <input type="range" id="yearSlider" min="1950" max="2025" value="2025" style="width: 100%; margin-bottom: 1rem;">
   <canvas id="degradation-chart"></canvas>
   <div id="year-caption" style="margin-top: 2rem; font-size: 1.1rem; line-height: 1.7;">
-    In 2025, cumulative plastic production is projected to exceed <b>8.3 billion tons</b>, while only a fraction has degraded. Most waste was designed to be disposable, but built to last for centuries.
+    In 2025, cumulative plastic production is projected to exceed <b>8.3 billion tons</b>, while only a fraction has degraded.
   </div>
 </section>
 
-<!-- Interactive Timeline Chart -->
-<canvas id="degradation-chart"></canvas>
+<section class="essay">
+  <p>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic.<br><br>
+  Originally created as a substitute for ivory, coral, shell — the form but not the ecology — plastic became our most durable pollutant. It simulates flexibility but resists decay. Over time, it replaced natural cycles with synthetic stasis. Today, we turn to enzymes and microbes, hoping they will undo what we once called innovation.</p>
+</section>
 
 <script>
-  let animated = false;
-
-  // Static data (can be replaced with API in future)
-  const years = Array.from({length: 2025 - 1950 + 1}, (_, i) => 1950 + i);
-  const production = [];
-  const cumulative = [];
-  const degraded = [];
-  let totalProd = 0;
-
-  years.forEach((year, i) => {
-    let yearly = year <= 2017 ? (year - 1949) * 0.1 : 0.4;
-    totalProd += yearly;
-    production.push(+yearly.toFixed(2));
-    cumulative.push(+totalProd.toFixed(2));
-    let decay = i > 10 ? production.slice(0, i - 10).reduce((a, b) => a + b * 0.001, 0) : 0;
-    degraded.push(+decay.toFixed(2));
-  });
-
-  // Counter animation
-  function animateHUD(prodT, wasteT) {
-    if (animated) return;
-    animated = true;
-    const pc = document.getElementById('plastic-count');
-    const wc = document.getElementById('waste-count');
-    let cp = 0, cw = 0;
-    const steps = 100, sp = prodT / steps, sw = wasteT / steps;
-
-    const interval = setInterval(() => {
-      cp += sp; cw += sw;
-      pc.innerText = cp.toFixed(1);
-      wc.innerText = Math.round(cw);
-      document.getElementById('bar-plastic').style.width = (cp / prodT * 100) + '%';
-      document.getElementById('bar-waste').style.width = (cw / wasteT * 100) + '%';
-      if (cp >= prodT && cw >= wasteT) clearInterval(interval);
-    }, 20);
-  }
-
-  // Chart rendering
-  function renderChart() {
-    const ctx = document.getElementById('degradation-chart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: years,
-        datasets: [
-          {
-            label: 'Cumulative Plastic Produced (Bt)',
-            data: cumulative,
-            borderColor: '#00f0ff',
-            tension: 0.25
-          },
-          {
-            label: 'Estimated Degraded Plastic (Bt)',
-            data: degraded,
-            borderColor: '#ff568f',
-            tension: 0.25
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Billion Tons'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            labels: { color: '#e6e6e6' }
-          }
-        }
-      }
-    });
-  }
-
-  window.addEventListener('scroll', () => {
-    const top = document.getElementById('video-block').getBoundingClientRect().top;
-    if (top < window.innerHeight * 0.8) animateHUD(8.3, 350);
-  });
-
-  renderChart();
-</script>
-  <script>
   const years = Array.from({length: 2025 - 1950 + 1}, (_, i) => 1950 + i);
   const production = [], cumulative = [], degraded = [];
   let totalProd = 0;
@@ -253,7 +196,6 @@
     degraded.push(+decay.toFixed(2));
   });
 
-  // Chart
   let chart;
   function renderChart() {
     const ctx = document.getElementById('degradation-chart').getContext('2d');
@@ -262,40 +204,19 @@
       data: {
         labels: years,
         datasets: [
-          {
-            label: 'Cumulative Plastic Produced (Bt)',
-            data: cumulative,
-            borderColor: '#00f0ff',
-            tension: 0.25
-          },
-          {
-            label: 'Estimated Degraded Plastic (Bt)',
-            data: degraded,
-            borderColor: '#ff568f',
-            tension: 0.25
-          }
+          { label: 'Cumulative Plastic Produced (Bt)', data: cumulative, borderColor: '#00f0ff', tension: 0.25 },
+          { label: 'Estimated Degraded Plastic (Bt)', data: degraded, borderColor: '#ff568f', tension: 0.25 }
         ]
       },
       options: {
         responsive: true,
-        interaction: {
-          intersect: false,
-          mode: 'index'
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: { display: true, text: 'Billion Tons' }
-          }
-        },
-        plugins: {
-          legend: { labels: { color: '#e6e6e6' } }
-        }
+        interaction: { intersect: false, mode: 'index' },
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'Billion Tons' } } },
+        plugins: { legend: { labels: { color: '#e6e6e6' } } }
       }
     });
   }
 
-  // HUD and chart sync
   document.getElementById('yearSlider').addEventListener('input', (e) => {
     const year = +e.target.value;
     const i = years.indexOf(year);
@@ -307,10 +228,7 @@
     document.getElementById('bar-plastic').style.width = (prod / 8.3) * 100 + '%';
     document.getElementById('bar-waste').style.width = (waste / 400) * 100 + '%';
     document.getElementById('year-caption').innerHTML = `
-      In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>.
-      Annual plastic waste was approximately <b>${Math.round(waste)} million tons</b>.
-      Most of this plastic still exists today.
-    `;
+      In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>. Annual plastic waste was approximately <b>${Math.round(waste)} million tons</b>. Most of this plastic still exists today.`;
 
     if (chart) {
       chart.tooltip.setActiveElements([{datasetIndex: 0, index: i}], {x: 0, y: 0});
@@ -321,7 +239,6 @@
 
   renderChart();
 </script>
-
 
 </body>
 </html>
