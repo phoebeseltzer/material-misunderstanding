@@ -418,7 +418,7 @@
   <input type="range" id="yearSlider" min="1900" max="2025" value="1900" />
   <div id="year-caption" class="caption"></div>
 </div>
-<div id="recursive-caption" class="caption" style="opacity: 0.7;"></div>
+<div class="caption timeline-text" id="recursive-caption"></div>
 
 <canvas id="degradation-chart" height="300"></canvas>
 
@@ -575,6 +575,33 @@ document.getElementById('recursive-caption').innerText = sentence ? `"${sentence
 
     updateChartToIndex(0);
   });
+</script>
+<div id="exit-trigger" style="height: 100px;"></div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+ // Scroll return observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Optional: fade everything out
+      document.body.style.transition = 'opacity 1.5s ease';
+      document.body.style.opacity = '0';
+
+      // Navigate after delay
+      setTimeout(() => {
+        window.location.href = "map.html"; // Change to your main page if different
+      }, 1600);
+    }
+  });
+}, { threshold: 0.9 });
+
+const trigger = document.getElementById('exit-trigger');
+if (trigger) {
+  observer.observe(trigger);
+}
+
+});
 </script>
 
 </body>
