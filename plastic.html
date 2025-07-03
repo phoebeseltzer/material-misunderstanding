@@ -474,7 +474,7 @@
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
       document.getElementById('use-time-value').innerText = "0.5"; // static value
       document.getElementById('degrade-time-value').innerText = "400"; // static value
-      document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed
+document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
 
       // Update circular progress bars
       updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 500) * 100, 100));
