@@ -36,6 +36,7 @@
       overflow: hidden;
     }
     video {
+      <div class="video-title">Plastic</div>
       position: absolute;
       top: 0; left: 0;
       min-width: 100%;
@@ -43,6 +44,21 @@
       object-fit: cover;
       opacity: 0.25;
     }
+      .video-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 6rem;
+  color: rgba(0, 255, 255, 0.15);
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  pointer-events: none;
+  user-select: none;
+  z-index: 3;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
     .hud-bottom {
       position: absolute;
       bottom: 7%; /* pushed up to avoid tooltip overlap */
