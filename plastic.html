@@ -60,7 +60,8 @@
       border-radius: 6px;
       border: 1px solid #00f0ff33;
       min-width: 140px;
-      cursor: help;
+      cursor: pointer;
+      outline-offset: 2px;
     }
     .hud-title {
       font-size: 0.75rem;
@@ -99,38 +100,49 @@
       min-width: 180px;
     }
     .hud-topright div {
+      position: relative;
       background: rgba(0,255,255,0.05);
       padding: 0.6rem;
       border-radius: 4px;
       border: 1px solid #00f0ff33;
       font-size: 0.9rem;
       text-align: center;
-      cursor: help;
-      position: relative;
+      cursor: pointer;
+      outline-offset: 2px;
     }
     /* Tooltip styles */
     .hud-tooltip {
-      visibility: hidden;
+      position: absolute;
       width: 260px;
-      background-color: rgba(0, 255, 255, 0.12);
+      background: rgba(0, 255, 255, 0.12);
       color: #8feaff;
-      text-align: left;
-      border-radius: 6px;
       padding: 0.75rem 1rem;
       font-size: 0.85rem;
       line-height: 1.3;
-      position: absolute;
-      z-index: 20;
-      bottom: 130%;
-      left: 50%;
-      transform: translateX(-50%);
+      border-radius: 6px;
       border: 1px solid #00f0ffcc;
       box-shadow: 0 0 6px #00f0ff55;
-      pointer-events: none;
       opacity: 0;
+      pointer-events: none;
       transition: opacity 0.3s ease;
       user-select: none;
+      z-index: 100;
     }
+    /* Position tooltips outside, above the HUDs */
+    #tooltip-production {
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    #tooltip-use-time,
+    #tooltip-degrade-time,
+    #tooltip-lifespan,
+    #tooltip-structure {
+      bottom: 120%;
+      right: 100%;
+      margin-right: 1rem;
+    }
+    /* Tooltip arrow */
     .hud-tooltip::after {
       content: "";
       position: absolute;
@@ -141,11 +153,11 @@
       border-style: solid;
       border-color: rgba(0, 255, 255, 0.12) transparent transparent transparent;
     }
-    .hud-panel:hover .hud-tooltip,
-    .hud-panel:focus-within .hud-tooltip,
-    .hud-topright div:hover .hud-tooltip,
-    .hud-topright div:focus-within .hud-tooltip {
-      visibility: visible;
+    /* Show tooltip on hover or focus of HUD */
+    .hud-panel:hover + .hud-tooltip,
+    .hud-panel:focus + .hud-tooltip,
+    .hud-topright div:hover + .hud-tooltip,
+    .hud-topright div:focus + .hud-tooltip {
       opacity: 1;
       pointer-events: auto;
     }
@@ -211,36 +223,39 @@
       <div class="hud-title">Plastic Produced</div>
       <div class="hud-metric"><span id="plastic-count">0</span> Mt</div>
       <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
-      <div class="hud-tooltip" id="tooltip-production" role="tooltip">
-        This is the amount of plastic produced each year, reflecting human industrial scale and consumption.
-      </div>
+    </div>
+    <div id="tooltip-production" class="hud-tooltip" role="tooltip">
+      Plastic production measures humanity’s industrial scale — a material we trust but rarely consider lasting consequences for.
     </div>
   </div>
 
   <div class="hud-topright">
     <div tabindex="0" aria-describedby="tooltip-use-time">
       <strong>Avg Use Time</strong><br>0.5 yrs
-      <div class="hud-tooltip" id="tooltip-use-time" role="tooltip">
-        The average duration plastic serves its purpose before disposal—typically very short.
-      </div>
     </div>
+    <div id="tooltip-use-time" class="hud-tooltip" role="tooltip">
+      Most plastic’s function is fleeting — just months of use before disposal, contrasting its persistence.
+    </div>
+
     <div tabindex="0" aria-describedby="tooltip-degrade-time">
       <strong>Degradation Time</strong><br>400 yrs
-      <div class="hud-tooltip" id="tooltip-degrade-time" role="tooltip">
-        The estimated time plastic takes to break down in the environment—persisting for centuries.
-      </div>
     </div>
+    <div id="tooltip-degrade-time" class="hud-tooltip" role="tooltip">
+      Plastic endures centuries beyond use, refusing to return to nature’s cycles — a monument to synthetic permanence.
+    </div>
+
     <div tabindex="0" aria-describedby="tooltip-lifespan">
       <strong>Lifespan After Use</strong><br><span id="lifespan-percent">99.9%</span>
-      <div class="hud-tooltip" id="tooltip-lifespan" role="tooltip">
-        Most plastic’s lifetime occurs <em>after</em> it has finished its use, polluting ecosystems for centuries.
-      </div>
     </div>
+    <div id="tooltip-lifespan" class="hud-tooltip" role="tooltip">
+      Over 99% of plastic’s existence unfolds post-disposal, polluting landscapes far longer than it ever served.
+    </div>
+
     <div tabindex="0" aria-describedby="tooltip-structure">
       <strong>Structure</strong><br>(C₂H₄)<sub>n</sub>
-      <div class="hud-tooltip" id="tooltip-structure" role="tooltip">
-        The chemical formula for polyethylene, the most common plastic polymer.
-      </div>
+    </div>
+    <div id="tooltip-structure" class="hud-tooltip" role="tooltip">
+      Polyethylene — a carbon chain polymer, deceptively simple yet deeply embedded in modern life and waste.
     </div>
   </div>
 </section>
@@ -341,7 +356,7 @@
       const prod = production[i];
       const cum = cumulative[i];
       const deg = degraded[i];
-      const lifespanPercent = 99.9; // Fixed lifespan after use (could be refined)
+      const lifespanPercent = 99.9;
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
       document.getElementById('bar-plastic').style.width = (prod / 500) * 100 + '%';
       document.getElementById('lifespan-percent').innerText = lifespanPercent + '%';
