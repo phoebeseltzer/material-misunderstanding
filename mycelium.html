@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mycelium – The Living Network</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #0d0e0e;
+      color: #e6e6e6;
+      font-family: 'Domine', serif;
+      overflow-x: hidden;
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .spiral-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .info {
+      position: absolute;
+      text-align: center;
+      max-width: 600px;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #00faff66;
+      border-radius: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      backdrop-filter: blur(5px);
+    }
+    .chapter {
+      font-size: 0.85rem;
+      color: #00faff;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .content {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="spiralCanvas"></canvas>
+
+<div class="spiral-container">
+  <div class="info" id="infoBox">
+    <div class="chapter">GENESIS</div>
+    <div class="content">Mycelium networks have always existed underground, but only recently have we learned to listen.</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('spiralCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let angle = 0;
+let radius = 2;
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+const spiralPath = [];
+
+for (let i = 0; i < 1500; i++) {
+  angle += 0.1;
+  radius += 0.05;
+  const x = centerX + radius * Math.cos(angle);
+  const y = centerY + radius * Math.sin(angle);
+  spiralPath.push({ x, y });
+}
+
+function drawSpiral(path) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.moveTo(path[0].x, path[0].y);
+  for (let i = 1; i < path.length; i++) {
+    ctx.lineTo(path[i].x, path[i].y);
+  }
+  ctx.strokeStyle = '#00faff';
+  ctx.lineWidth = 1.2;
+  ctx.shadowBlur = 4;
+  ctx.shadowColor = '#00faff88';
+  ctx.stroke();
+}
+
+drawSpiral(spiralPath);
+
+// Demo logic: Change text content as user scrolls
+const infoTexts = [
+  { title: 'GENESIS', text: 'Mycelium networks have always existed underground, but only recently have we learned to listen.' },
+  { title: 'SYMBIOSIS', text: 'They connect trees, share nutrients, and carry chemical signals: a fungal internet beneath our feet.' },
+  { title: 'MIMICRY', text: 'Humans now emulate mycelium: packaging, leather, building materials — all from fungal threads.' },
+  { title: 'CIRCULARITY', text: 'Unlike plastic, mycelium returns to the earth. Decomposes. Begins again.' },
+  { title: 'FUTURITY', text: 'What grows next may not be engineered — but cultured.' }
+];
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const index = Math.min(Math.floor(scrollY / 300), infoTexts.length - 1);
+  document.getElementById('infoBox').innerHTML = `
+    <div class="chapter">${infoTexts[index].title}</div>
+    <div class="content">${infoTexts[index].text}</div>
+  `;
+});
+</script>
+
+</body>
+</html>
