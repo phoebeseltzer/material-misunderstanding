@@ -377,6 +377,14 @@
     const production = [], cumulative = [], degraded = [];
     let total = 0;
 
+// Hide fills on static HUDs (set outlines only)
+  const radius = 50;
+  const circumference = 2 * Math.PI * radius;
+  ['use-time-value', 'degrade-time-value', 'lifespan-percent'].forEach(id => {
+    const el = document.getElementById(id).parentElement.querySelector('.progress');
+    el.style.strokeDasharray = circumference;
+    el.style.strokeDashoffset = circumference; // fully hide fill stroke
+  });
     for (let i = 0; i < years.length; i++) {
       const y = years[i];
       let prod = y < 1950 ? Math.max(0.1 * (y - 1907), 0) : 2 * Math.pow(1.07, y - 1950);
@@ -459,10 +467,7 @@
 
       // Update circular progress bars
       updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 500) * 100, 100));
-      updateCircularProgress(document.getElementById('use-time-value').parentElement, 0.5 / 1 * 100); // scale 0.5 years out of 1 year
-      updateCircularProgress(document.getElementById('degrade-time-value').parentElement, Math.min(400 / 500, 1) * 100); // scale to max 500 years
-      updateCircularProgress(document.getElementById('lifespan-percent').parentElement, lifespanPercent);
-
+     
       // Update bar plastic fill for backward compatibility (optional)
       const barPlastic = document.getElementById('bar-plastic');
       if(barPlastic) {
