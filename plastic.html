@@ -45,137 +45,166 @@
     }
     .hud-bottom {
       position: absolute;
-      bottom: 7%; /* pushed up a bit to avoid tooltip overlap */
+      bottom: 7%; /* pushed up to avoid tooltip overlap */
       left: 5%;
       display: flex;
-      gap: 0.5rem; /* tighter spacing */
-      font-family: monospace;
-      color: #8feaff;
+      gap: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00faff;
       z-index: 5;
-    }
-    .hud-panel {
-      position: relative;
-      background: rgba(0,255,255,0.05);
-      padding: 1rem;
-      border-radius: 6px;
-      border: 1px solid #00f0ff33;
-      min-width: 140px;
-      cursor: pointer;
-      outline-offset: 2px;
-    }
-    .hud-title {
-      font-size: 0.75rem;
-      color: #8feaffaa;
-      margin-bottom: 0.2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .hud-metric {
-      font-size: 1.3rem;
-      line-height: 1.2;
-    }
-    .hud-bar {
-      height: 6px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-top: 0.4rem;
-    }
-    .hud-fill {
-      height: 100%;
-      width: 0%;
-      background: #00faff;
-      transition: width 0.3s ease-out;
     }
     .hud-topright {
       position: absolute;
       top: 4%;
       right: 4%;
-      font-family: monospace;
-      color: #8feaff;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00faff;
       z-index: 5;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem; /* tighter spacing */
-      min-width: 180px;
-    }
-    .hud-topright div {
-      position: relative;
-      background: rgba(0,255,255,0.05);
-      padding: 0.6rem;
-      border-radius: 4px;
-      border: 1px solid #00f0ff33;
-      font-size: 0.9rem;
-      text-align: center;
-      cursor: pointer;
-      outline-offset: 2px;
+      gap: 1rem;
+      min-width: 170px;
     }
     .hud-topleft {
       position: absolute;
       top: 20%;
       left: 4%;
-      font-family: monospace;
-      color: #8feaff;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00faff;
       z-index: 5;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 1rem;
       min-width: 140px;
+      padding: 0.6rem 1rem;
+      border: 1px solid #00faff44;
+      border-radius: 6px;
+      background: rgba(0, 255, 255, 0.08);
+      text-align: center;
+      user-select: none;
+      box-shadow: 0 0 8px #00faff99 inset;
     }
-    .hud-topleft div {
+    /* Circular HUD style */
+    .hud-circular {
       position: relative;
-      background: rgba(0,255,255,0.05);
-      padding: 0.6rem;
-      border-radius: 4px;
-      border: 1px solid #00f0ff33;
-      font-size: 0.9rem;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #001f3f 60%, transparent 80%),
+        repeating-conic-gradient(rgba(0,255,255,0.1) 0deg 15deg, transparent 15deg 20deg);
+      box-shadow:
+        0 0 14px #00faffcc,
+        inset 0 0 22px #00eaffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00faff;
       text-align: center;
       cursor: default;
+      user-select: none;
       outline-offset: 2px;
+    }
+    .hud-circular .value {
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 6px #00faff;
+      user-select: text;
+    }
+    .hud-circular .label {
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+      letter-spacing: 0.15em;
+      color: #00b3ccdd;
+      text-transform: uppercase;
+      user-select: text;
+    }
+    .svg-circle {
+      position: absolute;
+      top: 10px; left: 10px;
+      width: 110px;
+      height: 110px;
+      transform: rotate(-90deg);
+      z-index: 0;
+    }
+    .svg-circle circle {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+    }
+    .svg-circle .bg {
+      stroke: #00334455;
+    }
+    .svg-circle .progress {
+      stroke: #00faff;
+      filter: drop-shadow(0 0 6px #00faffaa);
+      transition: stroke-dashoffset 0.3s ease;
     }
     /* Tooltip styles */
     .hud-tooltip {
       position: absolute;
       width: 260px;
       background: rgba(0, 255, 255, 0.12);
-      color: #8feaff;
+      color: #00faff;
       padding: 0.75rem 1rem;
       font-size: 0.85rem;
       line-height: 1.3;
       border-radius: 6px;
-      border: 1px solid #00f0ffcc;
-      box-shadow: 0 0 6px #00f0ff55;
+      border: 1px solid #00faffcc;
+      box-shadow: 0 0 8px #00faff88;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
       user-select: none;
       z-index: 100;
     }
-    /* Position all tooltips directly left, top-aligned with HUD */
+    /* Plastic Produced tooltip right side */
     #tooltip-production {
-  top: 0;
-  left: 100%;
-  margin-left: 1rem;
-  right: auto;
-  transform: none;
-}
-#tooltip-production::after {
-  top: 1.2rem;
-  left: auto;
-  right: 100%;
-  margin-left: 0;
-  margin-right: -6px;
-  border-color: transparent rgba(0, 255, 255, 0.12) transparent transparent;
-  border-width: 6px 6px 6px 0;
-  border-style: solid;
-  position: absolute;
-  content: "";
-}
-
-
+      top: 0;
+      left: 100%;
+      margin-left: 1rem;
+      right: auto;
+      transform: none;
+    }
+    #tooltip-production::after {
+      top: 1.2rem;
+      left: auto;
+      right: 100%;
+      margin-left: 0;
+      margin-right: -6px;
+      border-color: transparent rgba(0, 255, 255, 0.12) transparent transparent;
+      border-width: 6px 6px 6px 0;
+      border-style: solid;
+      position: absolute;
+      content: "";
+    }
+    /* Other tooltips left side */
+    #tooltip-use-time,
+    #tooltip-degrade-time,
+    #tooltip-lifespan {
+      top: 0;
+      right: 100%;
+      margin-right: 1rem;
+      transform: none;
+    }
+    #tooltip-use-time::after,
+    #tooltip-degrade-time::after,
+    #tooltip-lifespan::after {
+      top: 1.2rem;
+      left: 100%;
+      margin-left: 0;
+      border-color: transparent transparent transparent rgba(0, 255, 255, 0.12);
+      border-width: 6px 0 6px 6px;
+      border-style: solid;
+      position: absolute;
+      content: "";
+    }
     /* Show tooltip on hover or focus of HUD */
-    .hud-panel:hover + .hud-tooltip,
-    .hud-panel:focus + .hud-tooltip,
+    .hud-circular:hover + .hud-tooltip,
+    .hud-circular:focus + .hud-tooltip,
     .hud-topright div:hover + .hud-tooltip,
     .hud-topright div:focus + .hud-tooltip {
       opacity: 1;
@@ -216,17 +245,23 @@
     .chapter {
       margin-top: 2rem;
       font-weight: bold;
-      color: #8feaff;
+      color: #00faff;
       text-transform: uppercase;
       font-size: 0.95rem;
     }
     .citation {
       font-size: 0.9rem;
-      color: #888;
+      color: #555;
       margin-top: 3rem;
       text-align: center;
     }
-    .citation a { color: #8feaff; }
+    .citation a {
+      color: #00faff;
+      text-decoration: none;
+    }
+    .citation a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -239,10 +274,13 @@
   </video>
 
   <div class="hud-bottom">
-    <div class="hud-panel" tabindex="0" aria-describedby="tooltip-production">
-      <div class="hud-title">Plastic Produced</div>
-      <div class="hud-metric"><span id="plastic-count">0</span> Mt</div>
-      <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
+    <div class="hud-circular" tabindex="0" aria-describedby="tooltip-production">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value"><span id="plastic-count">0</span> Mt</div>
+      <div class="label">Plastic Produced</div>
     </div>
     <div id="tooltip-production" class="hud-tooltip" role="tooltip">
       Plastic production is a ledger of modernity, of mastery over matter and progress divorced from consequence.
@@ -251,29 +289,44 @@
   </div>
 
   <div class="hud-topright">
-    <div tabindex="0" aria-describedby="tooltip-use-time">
-      <strong>Avg Use Time</strong><br>0.5 yrs
+    <div tabindex="0" aria-describedby="tooltip-use-time" class="hud-circular">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value" id="use-time-value">0.5</div>
+      <div class="label">Avg Use Time (yrs)</div>
     </div>
     <div id="tooltip-use-time" class="hud-tooltip" role="tooltip">
-We built endurance into a material, then used it to cradle the ephemeral.  
-Designed to hold seconds, it survives centuries.
+      We built endurance into a material, then used it to cradle the ephemeral.<br>
+      Designed to hold seconds, it survives centuries.
     </div>
 
-    <div tabindex="0" aria-describedby="tooltip-degrade-time">
-      <strong>Degradation Time</strong><br>400 yrs
+    <div tabindex="0" aria-describedby="tooltip-degrade-time" class="hud-circular">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value" id="degrade-time-value">400</div>
+      <div class="label">Degradation Time (yrs)</div>
     </div>
     <div id="tooltip-degrade-time" class="hud-tooltip" role="tooltip">
-      Plastic does not vanish, it fragments. 
-      Into particles, into currents, into breath.  
+      Plastic does not vanish, it fragments.<br>
+      Into particles, into currents, into breath.<br>
       What was made to imitate life now outlives every body it serves.
     </div>
 
-    <div tabindex="0" aria-describedby="tooltip-lifespan">
-      <strong>Lifespan After Use</strong><br><span id="lifespan-percent">99.9%</span>
+    <div tabindex="0" aria-describedby="tooltip-lifespan" class="hud-circular">
+      <svg class="svg-circle" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="bg" r="50" cx="60" cy="60"></circle>
+        <circle class="progress" r="50" cx="60" cy="60" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+      </svg>
+      <div class="value" id="lifespan-percent">99.9%</div>
+      <div class="label">Lifespan After Use</div>
     </div>
     <div id="tooltip-lifespan" class="hud-tooltip" role="tooltip">
-     Over 99% of plastic’s existence unfolds after it’s discarded.  
-It is most present when we’ve decided it no longer matters.
+      Over 99% of plastic’s existence unfolds after it’s discarded.<br>
+      It is most present when we’ve decided it no longer matters.
     </div>
   </div>
 
@@ -309,6 +362,16 @@ It is most present when we’ve decided it no longer matters.
 </section>
 
 <script>
+  // Helper to update circular progress bars
+  function updateCircularProgress(element, percent) {
+    const circle = element.querySelector('.progress');
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference * (1 - percent / 100);
+    circle.style.strokeDasharray = circumference;
+    circle.style.strokeDashoffset = offset;
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     const years = Array.from({length: 2025 - 1900 + 1}, (_, i) => 1900 + i);
     const production = [], cumulative = [], degraded = [];
@@ -358,7 +421,6 @@ It is most present when we’ve decided it no longer matters.
               color: '#ccc',
               stepSize: 10,
               callback: function(value) {
-                // Show only every 10 years label
                 return this.getLabelForValue(value) % 10 === 0 ? this.getLabelForValue(value) : '';
               }
             }
@@ -388,13 +450,31 @@ It is most present when we’ve decided it no longer matters.
       const cum = cumulative[i];
       const deg = degraded[i];
       const lifespanPercent = 99.9;
+
+      // Update text values
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
-      document.getElementById('bar-plastic').style.width = (prod / 500) * 100 + '%';
-      document.getElementById('lifespan-percent').innerText = lifespanPercent + '%';
+      document.getElementById('use-time-value').innerText = "0.5"; // static value
+      document.getElementById('degrade-time-value').innerText = "400"; // static value
+      document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
+
+      // Update circular progress bars
+      updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 500) * 100, 100));
+      updateCircularProgress(document.getElementById('use-time-value').parentElement, 0.5 / 1 * 100); // scale 0.5 years out of 1 year
+      updateCircularProgress(document.getElementById('degrade-time-value').parentElement, Math.min(400 / 500, 1) * 100); // scale to max 500 years
+      updateCircularProgress(document.getElementById('lifespan-percent').parentElement, lifespanPercent);
+
+      // Update bar plastic fill for backward compatibility (optional)
+      const barPlastic = document.getElementById('bar-plastic');
+      if(barPlastic) {
+        barPlastic.style.width = (prod / 500) * 100 + '%';
+      }
+
+      // Update caption below slider
       document.getElementById('year-caption').innerHTML =
         `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
         `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).` +
         `<br><em>Designed to disappear in use, destined to remain in form.</em>`;
+
       updateChartToIndex(i);
     });
 
