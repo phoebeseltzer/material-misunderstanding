@@ -3,101 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material Misunderstandings</title>
+
+  <!-- Thematic serif font -->
   <title>The System Tried to Understand Itself</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet" />
+
   <style>
+    body {
     * {
       box-sizing: border-box;
       margin: 0;
+      background-color: #f0f5f9;
       padding: 0;
     }
 
     body {
       font-family: 'Domine', serif;
+      color: #111;
+      overflow: hidden;
       background-color: #0f1111;
       color: #e6e6e6;
-      scroll-behavior: smooth;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 20vh;
+      position: relative;
+      width: 100vw;
+    section {
+      height: 100vh;
+      width: 100vw;
+@@ -46,27 +37,10 @@
+      transition: opacity 1.2s ease-in-out;
     }
 
-    .text-block {
-      font-size: 1.3rem;
-      line-height: 1.75;
-      letter-spacing: 0.01em;
-      opacity: 0;
-      transition: opacity 1.5s ease-out;
-    }
-
-    .text-block.visible {
+    .node {
+      position: absolute;
+      max-width: 300px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+      pointer-events: none;
+      z-index: 1;
+    .fade.visible {
       opacity: 1;
     }
 
+    .enter-node {
+      position: absolute;
+      bottom: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      color: #fff;
     .enter-button {
       text-align: center;
     }
-
-    .enter-button a {
-      font-family: 'Inter', sans-serif;
-      display: inline-block;
-      margin-top: 2rem;
+@@ -77,104 +51,26 @@
       background: #e6e6e6;
       color: #111;
       text-decoration: none;
+      font-family: sans-serif;
+      padding: 3.50rem 3.50rem;
       padding: 1.2rem 2.5rem;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.2rem;
       letter-spacing: 0.05em;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-size: 2rem;
+      z-index: 10;
+      pointer-events: auto;
       border-radius: 3px;
       transition: background 0.3s ease;
     }
 
+    .enter-node:hover {
+      background: #333;
     .enter-button a:hover {
       background: #ccc;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 3rem 1rem;
-        gap: 10vh;
-      }
-
-      .text-block {
-        font-size: 1.1rem;
-      }
-
-      .enter-button a {
-        font-size: 0.95rem;
-        padding: 1rem 2rem;
-      }
     }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <div class="text-block">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</div>
+    <!-- ✏️ Your updated floating nodes -->
+    <div class="node" id="n1">
+      <p>We live in an age that claims to understand the world through replication.</p>
+    </div>
+    <div class="node" id="n2">
+      <p>But this is not reverence. It is simulation without context.</p>
+    </div>
+    <div class="node" id="n3">
+      <p>It borrows from biological and ecological intelligence while erasing the cultural systems that have lived symbiotically with nature for millennia.</p>
+    </div>
+    <div class="node" id="n4">
+      <p>Nature becomes interface. Knowledge becomes product.</p>
+    </div>
+    <div class="node" id="n5">
+      <p>Can we ever understand a system we are inside of?</p>
+    </div>
+    <div class="node" id="n6">
+      <p>This is not a warning. It is a record of our confidence.</p>
+    </div>
+  <div class="node" id="n7">
+      <p>   You are entering a nonlinear atlas of materials. Each one shaped the world. Each one reflects a system still in tension with its own logic.</p>
+    </div>
 
-    <div class="text-block">This project begins not with inventions, but with substances — plastic, silicon, salt — things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world. But they carried consequences that were not failures of chemistry — they were failures of relationship.</div>
+      <div class="node" id="n8">
+      <p> Every act of control creates new instability. This is the recursive irony at the center of the Anthropocene and of this work.</p>
+    </div>
 
-    <div class="text-block">We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</div>
+         <div class="node" id="n9">
+      <p>  If we returned to an earlier world, what would we recognize? What would we remember how to use? </p>
+    </div>
 
-    <div class="text-block">This is a gallery of materials that became systems. And of systems that no longer know how to stop.</div>
+           <div class="node" id="n10">
+      <p>     We think we know materials because we know their structures. But structure without history is only noise. </p>
+    </div>
 
-    <div class="text-block">Each entry in this archive traces a contradiction — where a material’s intended purpose diverged from its cultural effect. Plastic was invented to save nature. Now it pollutes every ecosystem on Earth. Silicon began as sand. It became the metaphor for thought. Salt sparked revolutions. Now it hides in processed food and road slush. Lead was used to sweeten wine, then water, then paint — before we finally remembered what it does to the brain.</div>
+    <!-- 🧭 Entry Button -->
+    <a href="map.html" class="enter-node">enter the atlas</a>
+  </div>
 
-    <div class="text-block">This archive does not offer a solution. It’s not a warning. It’s a record of how modern systems learned to use matter without memory. A way of asking: What do we know, when we’re no longer embedded in what we’re using? What remains, when the purpose of a material outlives the system it served?</div>
+  <!-- 💫 Floating behavior -->
+  <script>
+    const nodes = document.querySelectorAll('.node');
+    const speeds = [];
 
-    <div class="text-block">Begin anywhere. You won’t get a full picture. But you may feel the outlines of what we lost.</div>
+    // Initialize node positions + movement
+    nodes.forEach((node, i) => {
+      const top = Math.random() * 70 + 5;
+      const left = Math.random() * 70 + 5;
+      node.style.top = `${top}%`;
+      node.style.left = `${left}%`;
 
-    <div c
+      speeds[i] = {
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2,
+      };
+    });
 
+    function animate() {
+      nodes.forEach((node, i) => {
+        let top = parseFloat(node.style.top);
+        let left = parseFloat(node.style.left);
+  <section class="fade">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</section>
 
+        // Constrain to page
+        if (top < 0 || top > 85) speeds[i].dy *= -1;
+        if (left < 0 || left > 85) speeds[i].dx *= -1;
+  <section class="fade">This project begins not with inventions, but with substances — plastic, silicon, salt — things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world. But they carried consequences that were not failures of chemistry — they were failures of relationship.</section>
+
+        node.style.top = `${top + speeds[i].dy}%`;
+        node.style.left = `${left + speeds[i].dx}%`;
+      });
+  <section class="fade">We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</section>
+
+      requestAnimationFrame(animate);
+    }
+  <section class="fade">This is a gallery of materials that became systems. And of systems that no longer know how to stop.</section>
+
+  <section class="fade">Each entry in this archive traces a contradiction — where a material’s intended purpose diverged from its cultural effect. Plastic was invented to save nature. Now it pollutes every ecosystem on Earth. Silicon began as sand. It became the metaphor for thought. Salt sparked revolutions. Now it hides in processed food and road slush. Lead was used to sweeten wine, then water, then paint — before we finally remembered what it does to the brain.</section>
+@@ -187,7 +83,6 @@
+    <a href="map.html">enter the atlas</a>
+  </section>
+
+    animate();
+  <script>
+    const fades = document.querySelectorAll('.fade');
+
+@@ -204,3 +99,4 @@
+
+</body>
+</html>
