@@ -107,29 +107,45 @@
 <section class="video-block" id="video-block">
   <video autoplay muted loop playsinline id="cyanotypeVideo">
     <source src="videos/videoplayback.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
   </video>
 
   <!-- HUD -->
   <div class="hud-container">
     <div class="hud-panel">
-      <div class="hud-title">GLOBAL MASS</div>
+      <div class="hud-title">TOTAL PLASTIC PRODUCED</div>
       <div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div>
       <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
     </div>
+
     <div class="hud-panel">
-      <div class="hud-title">WASTE GENERATED /yr</div>
+      <div class="hud-title">PLASTIC WASTE GENERATED /yr</div>
       <div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div>
       <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
     </div>
+
     <div class="hud-panel">
-      <div class="hud-title">AVG LIFESPAN</div>
-      <div class="hud-metric">~<span id="avg-lifetime">2</span><span class="unit"> yrs</span></div>
+      <div class="hud-title">AVG USE TIME</div>
+      <div class="hud-metric">~<span id="avg-lifetime">0.5</span><span class="unit"> yrs</span></div>
     </div>
+
     <div class="hud-panel">
-      <div class="hud-title">DEGRADATION TIME</div>
+      <div class="hud-title">EST. DEGRADATION TIME</div>
       <div class="hud-metric">~<span id="degrade-time">400</span><span class="unit"> yrs</span></div>
     </div>
+
+    <div class="hud-panel">
+      <div class="hud-title">CHEMICAL STRUCTURE</div>
+      <div class="hud-metric">(C₂H₄)<sub>n</sub></div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Timeline + Scrubber -->
+<section style="padding: 4rem 2vw; max-width: 900px; margin: auto;">
+  <input type="range" id="yearSlider" min="1950" max="2025" value="2025" style="width: 100%; margin-bottom: 1rem;">
+  <canvas id="degradation-chart"></canvas>
+  <div id="year-caption" style="margin-top: 2rem; font-size: 1.1rem; line-height: 1.7;">
+    In 2025, cumulative plastic production is projected to exceed <b>8.3 billion tons</b>, while only a fraction has degraded. Most waste was designed to be disposable, but built to last for centuries.
   </div>
 </section>
 
@@ -223,6 +239,89 @@
 
   renderChart();
 </script>
+  <script>
+  const years = Array.from({length: 2025 - 1950 + 1}, (_, i) => 1950 + i);
+  const production = [], cumulative = [], degraded = [];
+  let totalProd = 0;
+
+  years.forEach((year, i) => {
+    let yearly = year <= 2017 ? (year - 1949) * 0.1 : 0.4;
+    totalProd += yearly;
+    production.push(+yearly.toFixed(2));
+    cumulative.push(+totalProd.toFixed(2));
+    let decay = i > 10 ? production.slice(0, i - 10).reduce((a, b) => a + b * 0.001, 0) : 0;
+    degraded.push(+decay.toFixed(2));
+  });
+
+  // Chart
+  let chart;
+  function renderChart() {
+    const ctx = document.getElementById('degradation-chart').getContext('2d');
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'Cumulative Plastic Produced (Bt)',
+            data: cumulative,
+            borderColor: '#00f0ff',
+            tension: 0.25
+          },
+          {
+            label: 'Estimated Degraded Plastic (Bt)',
+            data: degraded,
+            borderColor: '#ff568f',
+            tension: 0.25
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Billion Tons' }
+          }
+        },
+        plugins: {
+          legend: { labels: { color: '#e6e6e6' } }
+        }
+      }
+    });
+  }
+
+  // HUD and chart sync
+  document.getElementById('yearSlider').addEventListener('input', (e) => {
+    const year = +e.target.value;
+    const i = years.indexOf(year);
+    const prod = cumulative[i];
+    const waste = year >= 2000 ? 350 : 100 + (year - 1950) * 5;
+
+    document.getElementById('plastic-count').innerText = prod.toFixed(1);
+    document.getElementById('waste-count').innerText = Math.round(waste);
+    document.getElementById('bar-plastic').style.width = (prod / 8.3) * 100 + '%';
+    document.getElementById('bar-waste').style.width = (waste / 400) * 100 + '%';
+    document.getElementById('year-caption').innerHTML = `
+      In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>.
+      Annual plastic waste was approximately <b>${Math.round(waste)} million tons</b>.
+      Most of this plastic still exists today.
+    `;
+
+    if (chart) {
+      chart.tooltip.setActiveElements([{datasetIndex: 0, index: i}], {x: 0, y: 0});
+      chart.setActiveElements([{datasetIndex: 0, index: i}]);
+      chart.update();
+    }
+  });
+
+  renderChart();
+</script>
+
 
 </body>
 </html>
