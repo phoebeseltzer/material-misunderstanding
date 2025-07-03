@@ -132,19 +132,30 @@
       z-index: 100;
     }
     /* Position tooltips outside, above the HUDs */
-    #tooltip-production {
-      bottom: 120%;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    #tooltip-use-time,
-    #tooltip-degrade-time,
-    #tooltip-lifespan,
-    #tooltip-structure {
-      bottom: 120%;
-      right: 100%;
-      margin-right: 1rem;
-    }
+
+  
+#tooltip-production {
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#tooltip-use-time,
+#tooltip-degrade-time,
+#tooltip-lifespan {
+  bottom: 120%;
+  right: 100%;
+  margin-right: 1rem;
+}
+
+/* Structure tooltip repositioned to left */
+.hud-topright div:last-child + .hud-tooltip {
+  right: auto;
+  left: -270px;
+  bottom: 130%;
+  margin-right: 0;
+}
+    
+  
     /* Tooltip arrow */
     .hud-tooltip::after {
       content: "";
