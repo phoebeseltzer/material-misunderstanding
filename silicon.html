@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Silicon – </title> <!-- Change to Lead or whatever -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Domine', serif;
+      background-color: #0f1111;
+      color: #e6e6e6;
+      overflow-x: hidden;
+    }
+    a.back-button {
+      position: fixed;
+      top: 2%;
+      left: 3%;
+      text-decoration: none;
+      color: #8feaff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      border: 1px solid #00f0ff66;
+      padding: 0.4rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
+      text-shadow: 0 0 2px #00f0ff;
+      z-index: 10;
+    }
+    .video-block {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      overflow: hidden;
+    }
+    video {
+      position: absolute;
+      top: 0; left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+    }
+    .video-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 6rem;
+      color: rgba(0, 255, 255, 0.15);
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+    /* Add more styles here as needed */
+  </style>
+</head>
+<body>
+
+  <a href="map.html?from=silicon" class="back-button">← Return</a>
+
+  <section class="video-block">
+    <!-- Replace src with your actual video or image -->
+    <video autoplay muted loop playsinline>
+      <source src="videos/placeholder.mp4" type="video/mp4" />
+      <!-- fallback here -->
+    </video>
+    <div class="video-title">Silicon</div>
+  </section>
+
+  <!-- Content area: add your text or interactive elements here -->
+  <section class="essay" style="max-width: 800px; margin: 3rem auto; padding: 0 1rem; font-family: 'Domine', serif; font-size: 1.1rem; color: #ccc;">
+    <p>This is a placeholder page for Silicon. Customize this section with your content.</p>
+  </section>
+
+  <!-- Scroll exit trigger -->
+  <div id="exit-trigger" style="height: 100px;"></div>
+
+  <script>
+    // Scroll return observer - fades out page and redirects when user scrolls down to the trigger
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            document.body.style.transition = 'opacity 1.5s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+              window.location.href = "map.html?from=silicon";
+            }, 1600);
+          }
+        });
+      }, { threshold: 0.9 });
+
+      const trigger = document.getElementById('exit-trigger');
+      if (trigger) {
+        observer.observe(trigger);
+      }
+    });
+  </script>
+
+</body>
+</html>
