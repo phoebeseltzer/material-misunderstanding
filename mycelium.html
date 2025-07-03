@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  
+  <meta charset="UTF-8" />
   <title>Mycelium – The Living Network</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -13,6 +12,8 @@
       color: #e6e6e6;
       font-family: 'Domine', serif;
       overflow-x: hidden;
+      /* add vertical space so scrolling triggers work */
+      min-height: 200vh;
     }
     canvas {
       position: fixed;
@@ -25,38 +26,41 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 3rem 1rem;
+      box-sizing: border-box;
+      flex-direction: column;
+      gap: 2rem;
     }
     .info {
-      position: absolute;
-      text-align: center;
       max-width: 600px;
+      text-align: center;
       padding: 1rem;
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid #00faff66;
       border-radius: 8px;
       font-family: 'Share Tech Mono', monospace;
       backdrop-filter: blur(5px);
+      user-select: none;
     }
     a.back-button {
-  position: fixed;
-  top: 2%;
-  left: 3%;
-  text-decoration: none;
-  color: #8feaff;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.9rem;
-  border: 1px solid #00f0ff66;
-  padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 4px;
-  text-shadow: 0 0 2px #00f0ff;
-  z-index: 10;
-}
-
+      position: fixed;
+      top: 2%;
+      left: 3%;
+      text-decoration: none;
+      color: #8feaff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      border: 1px solid #00f0ff66;
+      padding: 0.4rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
+      text-shadow: 0 0 2px #00f0ff;
+      z-index: 10;
+    }
     .chapter {
       font-size: 0.85rem;
       color: #00faff;
@@ -68,157 +72,102 @@
       font-size: 1.1rem;
       line-height: 1.6;
     }
-    #spiral-path {
-  transition: stroke-dashoffset 0.2s ease-out;
-}
   </style>
 </head>
 <body>
-<body>
-<a href="map.html?from=mycelium" class="back-button">← Return</a>
 
-<svg id="spiral" width="100%" height="100%" viewBox="0 0 600 600"
-     style="position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none;">
-  <path id="spiral-path"
-    d="M300,300
-       m0,-1
-       a1,1 0 1,1 0.1,0
-       m0,-5
-       a6,6 0 1,1 0.1,0
-       m0,-5
-       a11,11 0 1,1 0.1,0
-       m0,-5
-       a16,16 0 1,1 0.1,0
-       m0,-5
-       a21,21 0 1,1 0.1,0
-       m0,-5
-       a26,26 0 1,1 0.1,0
-       m0,-5
-       a31,31 0 1,1 0.1,0
-       m0,-5
-       a36,36 0 1,1 0.1,0
-       m0,-5
-       a41,41 0 1,1 0.1,0
-       m0,-5
-       a46,46 0 1,1 0.1,0
-       m0,-5
-       a51,51 0 1,1 0.1,0"
-    fill="none"
-    stroke="#00faff"
-    stroke-width="1.5"
-    stroke-linecap="round"
-  />
-</svg>
+  <a href="map.html?from=mycelium" class="back-button">← Return</a>
 
-<canvas id="spiralCanvas"></canvas>
-
-<div class="spiral-container">
-  <div class="info" id="infoBox">
-    <div class="chapter">GENESIS</div>
-    <div class="content">Mycelium networks have always existed underground, but only recently have we learned to listen.</div>
+  <div class="spiral-container">
+    <div class="info" id="infoBox">
+      <div class="chapter">GENESIS</div>
+      <div class="content">Mycelium networks have always existed underground, but only recently have we learned to listen.</div>
+    </div>
   </div>
-</div>
 
-<script>
-const canvas = document.getElementById('spiralCanvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  <canvas id="spiralCanvas"></canvas>
 
-let angle = 0;
-let radius = 2;
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
-
-const spiralPath = [];
-
-for (let i = 0; i < 1500; i++) {
-  angle += 0.1;
-  radius += 0.05;
-  const x = centerX + radius * Math.cos(angle);
-  const y = centerY + radius * Math.sin(angle);
-  spiralPath.push({ x, y });
-}
-
-function drawSpiral(path) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
-  ctx.moveTo(path[0].x, path[0].y);
-  for (let i = 1; i < path.length; i++) {
-    ctx.lineTo(path[i].x, path[i].y);
-  }
-  ctx.strokeStyle = '#00faff';
-  ctx.lineWidth = 1.2;
-  ctx.shadowBlur = 4;
-  ctx.shadowColor = '#00faff88';
-  ctx.stroke();
-}
-
-drawSpiral(spiralPath);
-
-// Demo logic: Change text content as user scrolls
-const infoTexts = [
-  { title: 'GENESIS', text: 'Mycelium networks have always existed underground, but only recently have we learned to listen.' },
-  { title: 'SYMBIOSIS', text: 'They connect trees, share nutrients, and carry chemical signals: a fungal internet beneath our feet.' },
-  { title: 'MIMICRY', text: 'Humans now emulate mycelium: packaging, leather, building materials — all from fungal threads.' },
-  { title: 'CIRCULARITY', text: 'Unlike plastic, mycelium returns to the earth. Decomposes. Begins again.' },
-  { title: 'FUTURITY', text: 'What grows next may not be engineered — but cultured.' }
-];
-
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const index = Math.min(Math.floor(scrollY / 300), infoTexts.length - 1);
-  document.getElementById('infoBox').innerHTML = `
-    <div class="chapter">${infoTexts[index].title}</div>
-    <div class="content">${infoTexts[index].text}</div>
-  `;
-});
-</script>
-<script>
-  const spiralPath = document.getElementById('spiral-path');
-
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const maxScroll = document.body.scrollHeight - window.innerHeight;
-
-    // Normalize scroll into a 0–1 range
-    const progress = scrollTop / maxScroll;
-
-    // Animate stroke-dashoffset to "draw" the spiral
-    const pathLength = spiralPath.getTotalLength();
-    spiralPath.style.strokeDasharray = pathLength;
-    spiralPath.style.strokeDashoffset = pathLength * (1 - progress);
-  });
-</script>
-<!-- existing content above -->
-
-<div id="exit-trigger" style="height: 100px;"></div>
+  <!-- Scroll exit trigger -->
+  <div id="exit-trigger" style="height: 100px;"></div>
 
   <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Fade out before redirect
-        document.body.style.transition = 'opacity 1.5s ease';
-        document.body.style.opacity = '0';
+    // Setup canvas and draw smooth spiral
+    const canvas = document.getElementById('spiralCanvas');
+    const ctx = canvas.getContext('2d');
 
-        setTimeout(() => {
-          window.location.href = "map.html?from=mycelium"; // pass param for highlight
-        }, 1600);
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let angle = 0;
+    let radius = 2;
+
+    function drawSpiral() {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+
+      for (let i = 0; i < 1500; i++) {
+        angle += 0.1;
+        radius += 0.05;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+
+      ctx.strokeStyle = '#00faff';
+      ctx.lineWidth = 1.2;
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = '#00faff88';
+      ctx.stroke();
+    }
+
+    drawSpiral();
+
+    // Scroll text changes
+    const infoTexts = [
+      { title: 'GENESIS', text: 'Mycelium networks have always existed underground, but only recently have we learned to listen.' },
+      { title: 'SYMBIOSIS', text: 'They connect trees, share nutrients, and carry chemical signals: a fungal internet beneath our feet.' },
+      { title: 'MIMICRY', text: 'Humans now emulate mycelium: packaging, leather, building materials — all from fungal threads.' },
+      { title: 'CIRCULARITY', text: 'Unlike plastic, mycelium returns to the earth. Decomposes. Begins again.' },
+      { title: 'FUTURITY', text: 'What grows next may not be engineered — but cultured.' }
+    ];
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const index = Math.min(Math.floor(scrollY / 300), infoTexts.length - 1);
+      document.getElementById('infoBox').innerHTML = `
+        <div class="chapter">${infoTexts[index].title}</div>
+        <div class="content">${infoTexts[index].text}</div>
+      `;
+    });
+
+    // Scroll exit observer - fade out + redirect when user scrolls to bottom trigger
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            document.body.style.transition = 'opacity 1.5s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+              window.location.href = "map.html?from=mycelium";
+            }, 1600);
+          }
+        });
+      }, { threshold: 0.9 });
+
+      const trigger = document.getElementById('exit-trigger');
+      if (trigger) {
+        observer.observe(trigger);
       }
     });
-  }, { threshold: 0.9 });
-
-  const trigger = document.getElementById('exit-trigger');
-  if (trigger) {
-    observer.observe(trigger);
-  }
-});
-</script>
-
-</body>
-
+  </script>
 
 </body>
 </html>
