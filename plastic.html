@@ -44,15 +44,16 @@
       opacity: 0.25;
     }
     .hud-bottom {
-      position: absolute;
-      bottom: 5%;
-      left: 5%;
-      display: flex;
-      gap: 1rem; /* Reduced gap */
-      font-family: monospace;
-      color: #8feaff;
-      z-index: 5;
-    }
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  display: flex;
+  gap: 0.5rem; /* much tighter spacing */
+  font-family: monospace;
+  color: #8feaff;
+  z-index: 5;
+}
+
     .hud-panel {
       position: relative;
       background: rgba(0,255,255,0.05);
@@ -87,18 +88,20 @@
       background: #00faff;
       transition: width 0.3s ease-out;
     }
-    .hud-topright {
-      position: absolute;
-      top: 4%;
-      right: 4%;
-      font-family: monospace;
-      color: #8feaff;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      min-width: 180px;
-    }
+    
+.hud-topright {
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  font-family: monospace;
+  color: #8feaff;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem; /* tighter spacing */
+  min-width: 180px;
+}
+
     .hud-topright div {
       position: relative;
       background: rgba(0,255,255,0.05);
@@ -170,16 +173,7 @@
       width: 100%;
       cursor: pointer;
     }
-    #decade-timeline {
-      max-width: 900px;
-      margin: 0 auto 2rem;
-      font-family: monospace;
-      color: #8feaff;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      user-select: none;
-    }
+    
     canvas {
       width: 100%;
       max-width: 900px;
@@ -275,10 +269,6 @@
   <div id="year-caption" class="caption"></div>
 </div>
 
-<div id="decade-timeline">
-  <span>1900</span><span>1910</span><span>1920</span><span>1930</span><span>1940</span><span>1950</span>
-  <span>1960</span><span>1970</span><span>1980</span><span>1990</span><span>2000</span><span>2010</span><span>2020</span>
-</div>
 
 <canvas id="degradation-chart" height="300"></canvas>
 
