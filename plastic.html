@@ -1,62 +1,234 @@
-<script>
-  const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
-  const production=[], cumulative=[], waste=[], degraded=[];
-  let total=0;
-  for(let i=0;i<years.length;i++){
-    const y=years[i];
-    let prod=0;
-    if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
-    else { prod=2*Math.pow(1.07,y-1950); }
-    production.push(+prod.toFixed(1));
-    total+=prod/1000;
-    cumulative.push(+total.toFixed(2));
-    const w=(i>=3)?production[i-3]*0.85:0;
-    waste.push(+w.toFixed(1));
-    degraded.push(y===2025?+(total*0.09).toFixed(2):0);
-  }
-
-  const ctx=document.getElementById('degradation-chart').getContext('2d');
-  const chart=new Chart(ctx,{
-    type:'line',
-    data:{ labels:[], datasets:[
-      { label:'Annual Production (Mt)', data:[], borderColor:'#00f0ff', yAxisID: 'y1', tension:0.25 },
-      { label:'Cumulative Production (Bt)', data:[], borderColor:'#00ff88', yAxisID: 'y2', tension:0.25 },
-      { label:'Estimated Degraded (Bt)', data:[], borderColor:'#ff568f', yAxisID: 'y2', tension:0.25 }
-    ]},
-    options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
-      scales:{ 
-        y1: { type: 'linear', position: 'left', beginAtZero:true, title:{ display:true, text:'Annual (Mt)' }, ticks:{ color:'#ccc' } },
-        y2: { type: 'linear', position: 'right', beginAtZero:true, title:{ display:true, text:'Cumulative (Bt)' }, grid: { drawOnChartArea: false }, ticks:{ color:'#ccc' } },
-        x:{ ticks:{ color:'#ccc' } }
-      },
-      plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plastic – The Synthetic Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Domine', serif;
+      background-color: #0f1111;
+      color: #e6e6e6;
+      overflow-x: hidden;
     }
-  });
+    a.back-button {
+      position: fixed;
+      top: 2%;
+      left: 3%;
+      text-decoration: none;
+      color: #8feaff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      border: 1px solid #00f0ff66;
+      padding: 0.4rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
+      text-shadow: 0 0 2px #00f0ff;
+      z-index: 10;
+    }
+    .video-block {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      background: #111;
+    }
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+    }
+    .hud-container {
+      position: absolute;
+      bottom: 5%;
+      left: 5%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      z-index: 5;
+    }
+    .hud-panel {
+      background: rgba(0,255,255,0.05);
+      padding: 1rem;
+      border-radius: 6px;
+      font-family: monospace;
+      color: #8feaff;
+      border: 1px solid #00f0ff33;
+    }
+    .hud-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8feaffcc;
+    }
+    .hud-metric {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+    .hud-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .hud-fill {
+      height: 100%;
+      width: 0%;
+      background: #00faff;
+      transition: width 0.3s ease-out;
+    }
+    #degradation-chart {
+      width: 100%;
+      max-width: 900px;
+      margin: 3rem auto 1rem;
+    }
+    .slider-wrap {
+      max-width: 900px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    input[type=range] {
+      width: 100%;
+    }
+    .year-caption {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+    }
+    .essay {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+      line-height: 1.7;
+      font-size: 1.1rem;
+    }
+    .chapter {
+      margin-top: 2rem;
+      font-weight: bold;
+      color: #8feaff;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+    .citation {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 3rem;
+      text-align: center;
+    }
+    .citation a { color: #8feaff; }
+  </style>
+</head>
+<body>
 
-  function updateChartToIndex(i) {
-    chart.data.labels = years.slice(0, i + 1);
-    chart.data.datasets[0].data = production.slice(0, i + 1);
-    chart.data.datasets[1].data = cumulative.slice(0, i + 1);
-    chart.data.datasets[2].data = degraded.slice(0, i + 1);
-    chart.update();
-  }
+<a href="map.html" class="back-button">← Return</a>
 
-  document.getElementById('yearSlider').addEventListener('input',(e)=>{
-    const year=+e.target.value;
-    const i=years.indexOf(year);
-    const prod=production[i];
-    const w=waste[i];
-    const cum=cumulative[i];
-    const deg=degraded[i];
-    const percentDeg = cum > 0 ? ((deg / cum) * 100).toFixed(1) : 0;
-    document.getElementById('plastic-count').innerText=prod.toFixed(0);
-    document.getElementById('waste-count').innerText=Math.round(w);
-    document.getElementById('bar-plastic').style.width=(prod/500)*100+'%';
-    document.getElementById('bar-waste').style.width=(w/500)*100+'%';
-    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative total: <b>${cum.toFixed(2)} Bt</b>. <br>Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
-    updateChartToIndex(i);
-  });
+<section class="video-block">
+  <video autoplay muted loop playsinline>
+    <source src="videos/videoplayback.mp4" type="video/mp4" />
+  </video>
 
-  // Initialize chart with first year
-  updateChartToIndex(0);
-</script>
+  <div class="hud-container">
+    <div class="hud-panel">
+      <div class="hud-title">Annual Production</div>
+      <div class="hud-metric"><span id="plastic-count">0</span> Mt</div>
+      <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
+    </div>
+    <div class="hud-panel">
+      <div class="hud-title">Annual Waste</div>
+      <div class="hud-metric"><span id="waste-count">0</span> Mt</div>
+      <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="slider-wrap">
+  <input type="range" id="yearSlider" min="1900" max="2025" value="1900">
+  <div id="year-caption" class="year-caption"></div>
+</div>
+
+<canvas id="degradation-chart"></canvas>
+
+<section class="essay">
+  <p>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic. Originally created as a substitute for ivory, coral, and shell — the form but not the ecology — plastic became our most durable pollutant.</p>
+
+  <div class="chapter">CHAPTER 1: Invention & Moral Intent (1869–1940s)</div>
+  <p>Parkesine and Bakelite were invented as substitutes for scarce organic materials. Plastic was seen as a conservation tool — a moral material that could replace ivory and tortoiseshell without harming ecosystems.</p>
+
+  <div class="chapter">CHAPTER 2: Ubiquity & Acceleration (1950s–1990s)</div>
+  <p>Plastic production explodes with consumerism and packaging. It mimics everything — leather, silk, wood — and becomes a new baseline for convenience. But recycling fails to scale, and systems build around disposability.</p>
+
+  <div class="chapter">CHAPTER 3: Crisis & Recursion (2000s–Present)</div>
+  <p>We now look to bacteria, enzymes, and fungi to decompose the material we invented to resist decomposition. Plastic becomes the first substance we try to biologically erase after embedding it in every system.</p>
+
+  <div class="citation">
+    Based on data from <a href="https://ourworldindata.org/plastic-pollution" target="_blank">Our World in Data</a> and <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank">Geyer et al. (2017)</a>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
+    const production=[], cumulative=[], waste=[], degraded=[];
+    let total=0;
+    for(let i=0;i<years.length;i++){
+      const y=years[i];
+      let prod=0;
+      if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
+      else { prod=2*Math.pow(1.07,y-1950); }
+      production.push(+prod.toFixed(1));
+      total+=prod/1000;
+      cumulative.push(+total.toFixed(2));
+      const w=(i>=3)?production[i-3]*0.85:0;
+      waste.push(+w.toFixed(1));
+      degraded.push(y===2025?+(total*0.09).toFixed(2):0);
+    }
+
+    const ctx=document.getElementById('degradation-chart').getContext('2d');
+    const chart=new Chart(ctx,{
+      type:'line',
+      data:{ labels:[], datasets:[
+        { label:'Annual Production (Mt)', data:[], borderColor:'#00f0ff', yAxisID: 'y1', tension:0.25 },
+        { label:'Cumulative Production (Bt)', data:[], borderColor:'#00ff88', yAxisID: 'y2', tension:0.25 },
+        { label:'Estimated Degraded (Bt)', data:[], borderColor:'#ff568f', yAxisID: 'y2', tension:0.25 }
+      ]},
+      options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
+        scales:{ 
+          y1: { type: 'linear', position: 'left', beginAtZero:true, title:{ display:true, text:'Annual (Mt)' }, ticks:{ color:'#ccc' } },
+          y2: { type: 'linear', position: 'right', beginAtZero:true, title:{ display:true, text:'Cumulative (Bt)' }, grid: { drawOnChartArea: false }, ticks:{ color:'#ccc' } },
+          x:{ ticks:{ color:'#ccc' } }
+        },
+        plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
+      }
+    });
+
+    function updateChartToIndex(i) {
+      chart.data.labels = years.slice(0, i + 1);
+      chart.data.datasets[0].data = production.slice(0, i + 1);
+      chart.data.datasets[1].data = cumulative.slice(0, i + 1);
+      chart.data.datasets[2].data = degraded.slice(0, i + 1);
+      chart.update();
+    }
+
+    const yearSlider = document.getElementById('yearSlider');
+    yearSlider.addEventListener('input',(e)=>{
+      const year=+e.target.value;
+      const i=years.indexOf(year);
+      const prod=production[i];
+      const w=waste[i];
+      const cum=cumulative[i];
+      const deg=degraded[i];
+      const percentDeg = cum > 0 ? ((deg / cum) * 100).toFixed(1) : 0;
+      document.getElementById('plastic-count').innerText=prod.toFixed(0);
+      document.getElementById('waste-count').innerText=Math.round(w);
+      document.getElementById('bar-plastic').style.width=(prod/500)*100+'%';
+      document.getElementById('bar-waste').style.width=(w/500)*100+'%';
+      document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative: <b>${cum.toFixed(2)} Bt</b>. <br>Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
+      update
