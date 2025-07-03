@@ -546,8 +546,7 @@ document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(
       // Update caption below slider
       document.getElementById('year-caption').innerHTML =
         `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
-        `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).` +
-        `<br><em>Designed to disappear in use, destined to remain in form.</em>`;
+        `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).`;
 
       updateChartToIndex(i);
     });
