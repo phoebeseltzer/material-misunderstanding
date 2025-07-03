@@ -4,15 +4,15 @@
   <meta charset="UTF-8" />
   <title>Plastic – The Synthetic Solution</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Domine', serif;
       background-color: #0f1111;
       color: #e6e6e6;
+      overflow-x: hidden;
     }
     a.back-button {
       position: fixed;
@@ -37,8 +37,7 @@
     }
     video {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
@@ -52,20 +51,25 @@
       gap: 2rem;
       font-family: monospace;
       color: #8feaff;
+      z-index: 5;
     }
     .hud-panel {
       background: rgba(0,255,255,0.05);
       padding: 1rem;
       border-radius: 6px;
       border: 1px solid #00f0ff33;
+      min-width: 140px;
     }
     .hud-title {
       font-size: 0.75rem;
       color: #8feaffaa;
       margin-bottom: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
     .hud-metric {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
+      line-height: 1.2;
     }
     .hud-bar {
       height: 6px;
@@ -86,18 +90,28 @@
       right: 4%;
       font-family: monospace;
       color: #8feaff;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      min-width: 180px;
     }
     .hud-topright div {
       background: rgba(0,255,255,0.05);
       padding: 0.6rem;
-      margin-bottom: 0.5rem;
       border-radius: 4px;
       border: 1px solid #00f0ff33;
+      font-size: 0.9rem;
+      text-align: center;
     }
     .slider-wrap {
       max-width: 900px;
-      margin: 4rem auto 2rem;
+      margin: 4rem auto 1rem;
       text-align: center;
+    }
+    input[type=range] {
+      width: 100%;
+      cursor: pointer;
     }
     canvas {
       width: 100%;
@@ -106,14 +120,18 @@
       display: block;
     }
     .caption {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 1rem;
+      max-width: 900px;
+      margin: 1rem auto 3rem;
+      font-size: 1.1rem;
       color: #ccc;
+      text-align: center;
+      font-family: monospace;
+      min-height: 3.2em;
+      line-height: 1.4;
     }
     .essay {
       max-width: 800px;
-      margin: 4rem auto;
+      margin: 4rem auto 6rem;
       padding: 0 1rem;
       line-height: 1.7;
       font-size: 1.1rem;
@@ -145,26 +163,22 @@
 
   <div class="hud-bottom">
     <div class="hud-panel">
-      <div class="hud-title">Annual Production</div>
+      <div class="hud-title">Plastic Produced</div>
       <div class="hud-metric"><span id="plastic-count">0</span> Mt</div>
       <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
-    </div>
-    <div class="hud-panel">
-      <div class="hud-title">Annual Waste</div>
-      <div class="hud-metric"><span id="waste-count">0</span> Mt</div>
-      <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
     </div>
   </div>
 
   <div class="hud-topright">
-    <div><strong>Avg Use Time:</strong> 0.5 yrs</div>
-    <div><strong>Degradation Time:</strong> 400 yrs</div>
-    <div><strong>Structure:</strong> (C₂H₄)<sub>n</sub></div>
+    <div><strong>Avg Use Time</strong><br>0.5 yrs</div>
+    <div><strong>Degradation Time</strong><br>400 yrs</div>
+    <div><strong>Lifespan After Use</strong><br><span id="lifespan-percent">99.9%</span></div>
+    <div><strong>Structure</strong><br>(C₂H₄)<sub>n</sub></div>
   </div>
 </section>
 
 <div class="slider-wrap">
-  <input type="range" id="yearSlider" min="1900" max="2025" value="1900">
+  <input type="range" id="yearSlider" min="1900" max="2025" value="1900" />
   <div id="year-caption" class="caption"></div>
 </div>
 
@@ -183,14 +197,14 @@
   <p>We now look to bacteria, enzymes, and fungi to decompose the material we invented to resist decomposition. Plastic becomes the first substance we try to biologically erase after embedding it in every system.</p>
 
   <div class="citation">
-    Based on data from <a href="https://ourworldindata.org/plastic-pollution" target="_blank">Our World in Data</a> and <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank">Geyer et al. (2017)</a>
+    Based on data from <a href="https://ourworldindata.org/plastic-pollution" target="_blank" rel="noopener noreferrer">Our World in Data</a> and <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" rel="noopener noreferrer">Geyer et al. (2017)</a>
   </div>
 </section>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const years = Array.from({length: 2025 - 1900 + 1}, (_, i) => 1900 + i);
-    const production = [], cumulative = [], waste = [], degraded = [];
+    const production = [], cumulative = [], degraded = [];
     let total = 0;
 
     for (let i = 0; i < years.length; i++) {
@@ -199,8 +213,6 @@
       production.push(+prod.toFixed(1));
       total += prod / 1000;
       cumulative.push(+total.toFixed(2));
-      const w = i >= 3 ? production[i - 3] * 0.85 : 0;
-      waste.push(+w.toFixed(1));
       degraded.push(y === 2025 ? +(total * 0.09).toFixed(2) : 0);
     }
 
@@ -223,21 +235,25 @@
             type: 'linear',
             position: 'left',
             beginAtZero: true,
-            title: { display: true, text: 'Annual (Mt)' },
+            title: { display: true, text: 'Annual Production (Mt)' },
             ticks: { color: '#ccc' }
           },
           y2: {
             type: 'linear',
             position: 'right',
             beginAtZero: true,
-            title: { display: true, text: 'Cumulative (Bt)' },
+            title: { display: true, text: 'Cumulative Production (Bt)' },
             grid: { drawOnChartArea: false },
             ticks: { color: '#ccc' }
           },
-          x: { ticks: { color: '#ccc' } }
+          x: {
+            ticks: { color: '#ccc' }
+          }
         },
         plugins: {
-          legend: { labels: { color: '#e6e6e6' } }
+          legend: {
+            labels: { color: '#e6e6e6' }
+          }
         }
       }
     });
@@ -254,15 +270,17 @@
     slider.addEventListener('input', (e) => {
       const year = +e.target.value;
       const i = years.indexOf(year);
-      const prod = production[i], w = waste[i], cum = cumulative[i], deg = degraded[i];
-      const percentDeg = cum > 0 ? ((deg / cum) * 100).toFixed(1) : 0;
+      const prod = production[i];
+      const cum = cumulative[i];
+      const deg = degraded[i];
+      const lifespanPercent = 99.9; // Fixed lifespan after use (could be refined if you want)
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
-      document.getElementById('waste-count').innerText = Math.round(w);
       document.getElementById('bar-plastic').style.width = (prod / 500) * 100 + '%';
-      document.getElementById('bar-waste').style.width = (w / 500) * 100 + '%';
+      document.getElementById('lifespan-percent').innerText = lifespanPercent + '%';
       document.getElementById('year-caption').innerHTML =
-        `In <b>${year}</b>, production was <b>${prod.toFixed(0)} Mt</b>, waste was <b>${Math.round(w)} Mt</b>.<br>
-         Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
+        `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
+        `Cumulative: <b>${cum.toFixed(2)} Bt</b>. Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).` +
+        `<br><em>Designed to disappear in use, destined to remain in form.</em>`;
       updateChartToIndex(i);
     });
 
