@@ -18,10 +18,10 @@
   const ctx=document.getElementById('degradation-chart').getContext('2d');
   const chart=new Chart(ctx,{
     type:'line',
-    data:{ labels:years, datasets:[
-      { label:'Annual Production (Mt)', data:production, borderColor:'#00f0ff', yAxisID: 'y1', tension:0.25 },
-      { label:'Cumulative Production (Bt)', data:cumulative, borderColor:'#00ff88', yAxisID: 'y2', tension:0.25 },
-      { label:'Estimated Degraded (Bt)', data:degraded, borderColor:'#ff568f', yAxisID: 'y2', tension:0.25 }
+    data:{ labels:[], datasets:[
+      { label:'Annual Production (Mt)', data:[], borderColor:'#00f0ff', yAxisID: 'y1', tension:0.25 },
+      { label:'Cumulative Production (Bt)', data:[], borderColor:'#00ff88', yAxisID: 'y2', tension:0.25 },
+      { label:'Estimated Degraded (Bt)', data:[], borderColor:'#ff568f', yAxisID: 'y2', tension:0.25 }
     ]},
     options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
       scales:{ 
@@ -32,6 +32,14 @@
       plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
     }
   });
+
+  function updateChartToIndex(i) {
+    chart.data.labels = years.slice(0, i + 1);
+    chart.data.datasets[0].data = production.slice(0, i + 1);
+    chart.data.datasets[1].data = cumulative.slice(0, i + 1);
+    chart.data.datasets[2].data = degraded.slice(0, i + 1);
+    chart.update();
+  }
 
   document.getElementById('yearSlider').addEventListener('input',(e)=>{
     const year=+e.target.value;
@@ -46,7 +54,9 @@
     document.getElementById('bar-plastic').style.width=(prod/500)*100+'%';
     document.getElementById('bar-waste').style.width=(w/500)*100+'%';
     document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative total: <b>${cum.toFixed(2)} Bt</b>. <br>Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
-    chart.setActiveElements([{datasetIndex:0,index:i},{datasetIndex:1,index:i},{datasetIndex:2,index:i}]);
-    chart.update();
+    updateChartToIndex(i);
   });
+
+  // Initialize chart with first year
+  updateChartToIndex(0);
 </script>
