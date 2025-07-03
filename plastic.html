@@ -13,7 +13,6 @@
       font-family: 'Domine', serif;
       background-color: #0f1111;
       color: #e6e6e6;
-      overflow-x: hidden;
     }
     a.back-button {
       position: fixed;
@@ -33,9 +32,8 @@
     .video-block {
       position: relative;
       width: 100%;
-      height: 80vh;
+      height: 85vh;
       overflow: hidden;
-      background: #111;
     }
     video {
       position: absolute;
@@ -44,40 +42,37 @@
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
-      opacity: 0.3;
+      opacity: 0.25;
     }
-    .hud-container {
+    .hud-bottom {
       position: absolute;
       bottom: 5%;
       left: 5%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      z-index: 5;
+      display: flex;
+      gap: 2rem;
+      font-family: monospace;
+      color: #8feaff;
     }
     .hud-panel {
       background: rgba(0,255,255,0.05);
       padding: 1rem;
       border-radius: 6px;
-      font-family: monospace;
-      color: #8feaff;
       border: 1px solid #00f0ff33;
     }
     .hud-title {
       font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #8feaffcc;
+      color: #8feaffaa;
+      margin-bottom: 0.2rem;
     }
     .hud-metric {
       font-size: 1.2rem;
-      margin: 0.5rem 0;
     }
     .hud-bar {
       height: 6px;
       background: rgba(255,255,255,0.1);
       border-radius: 3px;
       overflow: hidden;
+      margin-top: 0.4rem;
     }
     .hud-fill {
       height: 100%;
@@ -85,20 +80,33 @@
       background: #00faff;
       transition: width 0.3s ease-out;
     }
-    #degradation-chart {
-      width: 100%;
-      max-width: 900px;
-      margin: 3rem auto 1rem;
+    .hud-topright {
+      position: absolute;
+      top: 4%;
+      right: 4%;
+      font-family: monospace;
+      color: #8feaff;
+    }
+    .hud-topright div {
+      background: rgba(0,255,255,0.05);
+      padding: 0.6rem;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #00f0ff33;
     }
     .slider-wrap {
       max-width: 900px;
-      margin: 2rem auto;
+      margin: 4rem auto 2rem;
       text-align: center;
     }
-    input[type=range] {
+    canvas {
       width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: block;
     }
-    .year-caption {
+    .caption {
+      text-align: center;
       margin-top: 1rem;
       font-size: 1rem;
       color: #ccc;
@@ -135,7 +143,7 @@
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
 
-  <div class="hud-container">
+  <div class="hud-bottom">
     <div class="hud-panel">
       <div class="hud-title">Annual Production</div>
       <div class="hud-metric"><span id="plastic-count">0</span> Mt</div>
@@ -147,14 +155,20 @@
       <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
     </div>
   </div>
+
+  <div class="hud-topright">
+    <div><strong>Avg Use Time:</strong> 0.5 yrs</div>
+    <div><strong>Degradation Time:</strong> 400 yrs</div>
+    <div><strong>Structure:</strong> (C₂H₄)<sub>n</sub></div>
+  </div>
 </section>
 
 <div class="slider-wrap">
   <input type="range" id="yearSlider" min="1900" max="2025" value="1900">
-  <div id="year-caption" class="year-caption"></div>
+  <div id="year-caption" class="caption"></div>
 </div>
 
-<canvas id="degradation-chart"></canvas>
+<canvas id="degradation-chart" height="300"></canvas>
 
 <section class="essay">
   <p>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic. Originally created as a substitute for ivory, coral, and shell — the form but not the ecology — plastic became our most durable pollutant.</p>
@@ -175,37 +189,56 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
-    const production=[], cumulative=[], waste=[], degraded=[];
-    let total=0;
-    for(let i=0;i<years.length;i++){
-      const y=years[i];
-      let prod=0;
-      if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
-      else { prod=2*Math.pow(1.07,y-1950); }
+    const years = Array.from({length: 2025 - 1900 + 1}, (_, i) => 1900 + i);
+    const production = [], cumulative = [], waste = [], degraded = [];
+    let total = 0;
+
+    for (let i = 0; i < years.length; i++) {
+      const y = years[i];
+      let prod = y < 1950 ? Math.max(0.1 * (y - 1907), 0) : 2 * Math.pow(1.07, y - 1950);
       production.push(+prod.toFixed(1));
-      total+=prod/1000;
+      total += prod / 1000;
       cumulative.push(+total.toFixed(2));
-      const w=(i>=3)?production[i-3]*0.85:0;
+      const w = i >= 3 ? production[i - 3] * 0.85 : 0;
       waste.push(+w.toFixed(1));
-      degraded.push(y===2025?+(total*0.09).toFixed(2):0);
+      degraded.push(y === 2025 ? +(total * 0.09).toFixed(2) : 0);
     }
 
-    const ctx=document.getElementById('degradation-chart').getContext('2d');
-    const chart=new Chart(ctx,{
-      type:'line',
-      data:{ labels:[], datasets:[
-        { label:'Annual Production (Mt)', data:[], borderColor:'#00f0ff', yAxisID: 'y1', tension:0.25 },
-        { label:'Cumulative Production (Bt)', data:[], borderColor:'#00ff88', yAxisID: 'y2', tension:0.25 },
-        { label:'Estimated Degraded (Bt)', data:[], borderColor:'#ff568f', yAxisID: 'y2', tension:0.25 }
-      ]},
-      options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
-        scales:{ 
-          y1: { type: 'linear', position: 'left', beginAtZero:true, title:{ display:true, text:'Annual (Mt)' }, ticks:{ color:'#ccc' } },
-          y2: { type: 'linear', position: 'right', beginAtZero:true, title:{ display:true, text:'Cumulative (Bt)' }, grid: { drawOnChartArea: false }, ticks:{ color:'#ccc' } },
-          x:{ ticks:{ color:'#ccc' } }
+    const ctx = document.getElementById('degradation-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'Annual Production (Mt)', data: [], borderColor: '#00f0ff', yAxisID: 'y1', tension: 0.25 },
+          { label: 'Cumulative Production (Bt)', data: [], borderColor: '#00ff88', yAxisID: 'y2', tension: 0.25 },
+          { label: 'Estimated Degraded (Bt)', data: [], borderColor: '#ff568f', yAxisID: 'y2', tension: 0.25 }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { intersect: false, mode: 'index' },
+        scales: {
+          y1: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            title: { display: true, text: 'Annual (Mt)' },
+            ticks: { color: '#ccc' }
+          },
+          y2: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: true,
+            title: { display: true, text: 'Cumulative (Bt)' },
+            grid: { drawOnChartArea: false },
+            ticks: { color: '#ccc' }
+          },
+          x: { ticks: { color: '#ccc' } }
         },
-        plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
+        plugins: {
+          legend: { labels: { color: '#e6e6e6' } }
+        }
       }
     });
 
@@ -217,18 +250,25 @@
       chart.update();
     }
 
-    const yearSlider = document.getElementById('yearSlider');
-    yearSlider.addEventListener('input',(e)=>{
-      const year=+e.target.value;
-      const i=years.indexOf(year);
-      const prod=production[i];
-      const w=waste[i];
-      const cum=cumulative[i];
-      const deg=degraded[i];
+    const slider = document.getElementById('yearSlider');
+    slider.addEventListener('input', (e) => {
+      const year = +e.target.value;
+      const i = years.indexOf(year);
+      const prod = production[i], w = waste[i], cum = cumulative[i], deg = degraded[i];
       const percentDeg = cum > 0 ? ((deg / cum) * 100).toFixed(1) : 0;
-      document.getElementById('plastic-count').innerText=prod.toFixed(0);
-      document.getElementById('waste-count').innerText=Math.round(w);
-      document.getElementById('bar-plastic').style.width=(prod/500)*100+'%';
-      document.getElementById('bar-waste').style.width=(w/500)*100+'%';
-      document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative: <b>${cum.toFixed(2)} Bt</b>. <br>Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
-      update
+      document.getElementById('plastic-count').innerText = prod.toFixed(0);
+      document.getElementById('waste-count').innerText = Math.round(w);
+      document.getElementById('bar-plastic').style.width = (prod / 500) * 100 + '%';
+      document.getElementById('bar-waste').style.width = (w / 500) * 100 + '%';
+      document.getElementById('year-caption').innerHTML =
+        `In <b>${year}</b>, production was <b>${prod.toFixed(0)} Mt</b>, waste was <b>${Math.round(w)} Mt</b>.<br>
+         Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
+      updateChartToIndex(i);
+    });
+
+    updateChartToIndex(0);
+  });
+</script>
+
+</body>
+</html>
