@@ -185,23 +185,21 @@
       position: absolute;
       content: "";
     }
-#tooltip-use-time {
-  top: 0;
-  right: 100%;
-  margin-right: 1rem;
-}
-
-#tooltip-degrade-time {
-  top: 9rem;
-  right: 100%;
-  margin-right: 1rem;
-}
-
-#tooltip-lifespan {
-  top: 18rem;
-  right: 100%;
-  margin-right: 1rem;
-}
+    #tooltip-use-time {
+      top: 0;
+      right: 100%;
+      margin-right: 1rem;
+    }
+    #tooltip-degrade-time {
+      top: 12rem;
+      right: 100%;
+      margin-right: 1rem;
+    }
+    #tooltip-lifespan {
+      top: 25rem;
+      right: 100%;
+      margin-right: 1rem;
+    }
     #tooltip-use-time::after,
     #tooltip-degrade-time::after,
     #tooltip-lifespan::after {
@@ -389,14 +387,15 @@
     const production = [], cumulative = [], degraded = [];
     let total = 0;
 
-// Hide fills on static HUDs (set outlines only)
-  const radius = 50;
-  const circumference = 2 * Math.PI * radius;
-  ['use-time-value', 'degrade-time-value', 'lifespan-percent'].forEach(id => {
-    const el = document.getElementById(id).parentElement.querySelector('.progress');
-    el.style.strokeDasharray = circumference;
-    el.style.strokeDashoffset = circumference; // fully hide fill stroke
-  });
+    // Hide fills on static HUDs (set outlines only)
+    const radius = 50;
+    const circumference = 2 * Math.PI * radius;
+    ['use-time-value', 'degrade-time-value', 'lifespan-percent'].forEach(id => {
+      const el = document.getElementById(id).parentElement.querySelector('.progress');
+      el.style.strokeDasharray = circumference;
+      el.style.strokeDashoffset = circumference; // fully hide fill stroke
+    });
+
     for (let i = 0; i < years.length; i++) {
       const y = years[i];
       let prod = y < 1950 ? Math.max(0.1 * (y - 1907), 0) : 2 * Math.pow(1.07, y - 1950);
@@ -475,7 +474,7 @@
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
       document.getElementById('use-time-value').innerText = "0.5"; // static value
       document.getElementById('degrade-time-value').innerText = "400"; // static value
-      document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
+      document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed
 
       // Update circular progress bars
       updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 500) * 100, 100));
