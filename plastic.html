@@ -14,6 +14,25 @@
       color: #e6e6e6;
       overflow-x: hidden;
     }
+    .ghost-fragment {
+  position: absolute;
+  opacity: 0;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  animation: fadeInOut 10s ease-in-out forwards;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.96); }
+  20% { opacity: 0.15; transform: scale(1.02); }
+  80% { opacity: 0.1; transform: scale(1); }
+  100% { opacity: 0; }
+}
+
     a.back-button {
       position: fixed;
       top: 2%;
@@ -554,6 +573,39 @@
 
     updateChartToIndex(0);
   });
+</script>
+<script>
+const plasticEquations = [
+  "(C₈H₈)n → styrene",
+  "Tg > 100°C",
+  "[–CH₂–CHCl–]ₙ",
+  "polymer backbone = time arrest",
+  "amorphous phase > crystal",
+  "chain length = half-life",
+  "PETase :: hydrolysis",
+  "density = 0.94 g/cm³",
+  "nanoplastic detected in placenta",
+  "π-bond ≠ decay",
+  "synthetic → uncyclical"
+];
+
+function spawnPlasticFragment() {
+  const frag = document.createElement('div');
+  frag.className = 'ghost-fragment';
+  frag.textContent = plasticEquations[Math.floor(Math.random() * plasticEquations.length)];
+
+  frag.style.top = `${Math.random() * window.innerHeight * 0.8}px`;
+  frag.style.left = `${Math.random() * window.innerWidth * 0.8}px`;
+
+  document.body.appendChild(frag);
+  setTimeout(() => frag.remove(), 10000); // Remove after animation
+}
+
+window.addEventListener('scroll', () => {
+  if (Math.random() < 0.2) { // 20% chance per scroll event
+    spawnPlasticFragment();
+  }
+});
 </script>
 
 </body>
