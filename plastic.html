@@ -72,4 +72,65 @@
   <div id="year-caption" style="margin-top:2rem;font-size:1.1rem;line-height:1.7;"></div>
 </section>
 
-<scri
+<section class="essay">
+  <div class="chapter-title">Timeline Chapters</div>
+  <p><strong>1869–1945: Plastic as Promise</strong><br>
+  A moral invention. Plastic mimicked ivory, coral, shell — without taking life.</p>
+  <p><strong>1950–1975: The Rise of Synthetic Ubiquity</strong><br>
+  Mass production begins. Packaging. Convenience. Disposability. Growth becomes exponential.</p>
+  <p><strong>1980–2025: The Age of Accumulation</strong><br>
+  Waste outpaces reuse. Recycling myths collapse. Enzymes and fungi try to fix what humans can't undo.</p>
+
+  <p style="font-size:0.9rem; color:#888;">Data based on: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data</a> & <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" style="color:#8feaff;">Geyer et al. (2017)</a></p>
+</section>
+
+<script>
+  const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
+  const production=[], cumulative=[], waste=[], degraded=[];
+  let total=0;
+  for(let i=0;i<years.length;i++){
+    const y=years[i];
+    let prod=0;
+    if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
+    else if(y<=2015){ prod=2*Math.pow(1.07,y-1950); }
+    else{ prod=381+(y-2015)*10; }
+    production.push(+prod.toFixed(1));
+    total+=prod/1000;
+    cumulative.push(+total.toFixed(2));
+    const w=(i>=3)?production[i-3]*0.85:0;
+    waste.push(+w.toFixed(1));
+    degraded.push(y===2025?+(total*0.09).toFixed(2):0);
+  }
+
+  const ctx=document.getElementById('degradation-chart').getContext('2d');
+  const chart=new Chart(ctx,{
+    type:'line',
+    data:{ labels:years, datasets:[
+      { label:'Annual Production (Mt)', data:production, borderColor:'#00f0ff', tension:0.25 },
+      { label:'Cumulative Production (Bt)', data:cumulative, borderColor:'#00ff88', tension:0.25 },
+      { label:'Estimated Degraded (Bt)', data:degraded, borderColor:'#ff568f', tension:0.25 }
+    ]},
+    options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
+      scales:{ y:{ beginAtZero:true, title:{ display:true, text:'Amount' }, ticks:{ color:'#ccc' } }, x:{ ticks:{ color:'#ccc' } } },
+      plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
+    }
+  });
+
+  document.getElementById('yearSlider').addEventListener('input',(e)=>{
+    const year=+e.target.value;
+    const i=years.indexOf(year);
+    const prod=production[i];
+    const w=waste[i];
+    const cum=cumulative[i];
+    document.getElementById('plastic-count').innerText=prod.toFixed(0);
+    document.getElementById('waste-count').innerText=Math.round(w);
+    document.getElementById('bar-plastic').style.width=(prod/500)*100+'%';
+    document.getElementById('bar-waste').style.width=(w/500)*100+'%';
+    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative total: <b>${cum.toFixed(2)} Bt</b>.`;
+    chart.setActiveElements([{datasetIndex:0,index:i},{datasetIndex:1,index:i},{datasetIndex:2,index:i}]);
+    chart.update();
+  });
+</script>
+
+</body>
+</html>
