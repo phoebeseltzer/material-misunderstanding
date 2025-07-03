@@ -167,6 +167,19 @@
   </video>
 
   <!-- HUD Overlays -->
+
+  <!-- New Dynamic HUD Block -->
+<div class="hud-overlay bottom-left">
+  <div class="hud-title">O₂ SATURATION</div>
+  <div class="hud-bar"><div id="oxygen-fill" class="hud-fill" style="width: 68%;"></div></div>
+
+  <div class="hud-title" style="margin-top:1rem;">GLOBAL MASS</div>
+  <div class="hud-metric"><span id="plastic-count">0</span> billion tons</div>
+
+  <div class="hud-title" style="margin-top:1rem;">TIME SINCE ORIGIN</div>
+  <div class="hud-metric"><span id="year-count">0</span> years</div>
+</div>
+
   <div class="hud-overlay top-left">
     <div class="hud-title">MATERIAL STATUS</div>
     <div class="hud-metric">O₂ DEGRADATION: <span class="hud-value">↑ 3.2%</span></div>
@@ -208,6 +221,51 @@
       video.style.transform = `translateY(${distance * 0.1}px)`;
     }
   });
+</script>
+<script>
+  // Scroll parallax effect
+  const video = document.getElementById('cyanotypeVideo');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const blockTop = document.getElementById('video-block').offsetTop;
+    const distance = scrollY - blockTop;
+    if (distance >= 0 && distance <= 800) {
+      video.style.transform = `translateY(${distance * 0.1}px)`;
+    }
+  });
+
+  // Count-up for plastic mass
+  let plasticStarted = false;
+  function animatePlasticCount() {
+    if (plasticStarted) return;
+    plasticStarted = true;
+
+    let count = 0;
+    const target = 8.3; // You can update this value
+    const plasticCounter = document.getElementById("plastic-count");
+
+    const interval = setInterval(() => {
+      count += 0.1;
+      if (count >= target) {
+        plasticCounter.innerText = target.toFixed(1);
+        clearInterval(interval);
+      } else {
+        plasticCounter.innerText = count.toFixed(1);
+      }
+    }, 100);
+  }
+
+  window.addEventListener("scroll", () => {
+    const section = document.getElementById("video-block");
+    if (section.getBoundingClientRect().top < window.innerHeight) {
+      animatePlasticCount();
+    }
+  });
+
+  // Year tracker from 1869
+  const baseYear = 1869;
+  const currentYear = new Date().getFullYear();
+  document.getElementById("year-count").innerText = currentYear - baseYear;
 </script>
 
 </body>
