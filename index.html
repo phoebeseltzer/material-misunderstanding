@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The System Tried to Understand Itself</title>
   <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
   <style>
     * {
       box-sizing: border-box;
@@ -30,6 +31,7 @@
       font-size: 1.5rem;
       line-height: 1.7;
       letter-spacing: 0.02em;
+      text-align: center;
     }
 
     .fade {
@@ -68,44 +70,47 @@
     }
   </style>
 </head>
-  <audio id="ambient-audio" src="audio/ethel.mp3" preload="auto" loop></audio>
-<script>
-  const audio = document.getElementById('ambient-audio');
-  let hasPlayed = false;
-
-  function fadeInAudio(audio) {
-    audio.volume = 0;
-    audio.play().catch(e => {
-      console.warn("Audio play blocked until user interaction.");
-    });
-
-    const fade = setInterval(() => {
-      if (audio.volume < 1.0) {
-        audio.volume += 0.01;
-      } else {
-        clearInterval(fade);
-      }
-    }, 200);
-  }
-
-  // Trigger audio on scroll or first click
-  window.addEventListener('scroll', () => {
-    if (!hasPlayed) {
-      fadeInAudio(audio);
-      hasPlayed = true;
-    }
-  });
-
-  window.addEventListener('click', () => {
-    if (!hasPlayed) {
-      fadeInAudio(audio);
-      hasPlayed = true;
-    }
-  });
-</script>
 
 <body>
 
+  <!-- ✅ Ambient Audio -->
+  <audio id="ambient-audio" src="audio/ethel.mp3" preload="auto" loop></audio>
+
+  <script>
+    const audio = document.getElementById('ambient-audio');
+    let hasPlayed = false;
+
+    function fadeInAudio(audio) {
+      audio.volume = 0;
+      audio.play().catch(e => {
+        console.warn("Audio play blocked until user interaction.");
+      });
+
+      const fade = setInterval(() => {
+        if (audio.volume < 1.0) {
+          audio.volume += 0.01;
+        } else {
+          clearInterval(fade);
+        }
+      }, 200);
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!hasPlayed) {
+        fadeInAudio(audio);
+        hasPlayed = true;
+      }
+    });
+
+    window.addEventListener('click', () => {
+      if (!hasPlayed) {
+        fadeInAudio(audio);
+        hasPlayed = true;
+      }
+    });
+  </script>
+
+  <!-- ✅ Page Content -->
   <section class="fade">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</section>
 
   <section class="fade">This project begins not with inventions, but with substances — plastic, silicon, salt — things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world. But they carried consequences that were not failures of chemistry — they were failures of relationship.</section>
@@ -124,17 +129,14 @@
     <a href="map.html">ENTER THE ATLAS</a>
   </section>
 
+  <!-- ✅ Fade-in Observer Script -->
   <script>
     const fades = document.querySelectorAll('.fade');
-
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         entry.target.classList.toggle('visible', entry.isIntersecting);
       });
-    }, {
-      threshold: 0.4
-    });
-
+    }, { threshold: 0.4 });
     fades.forEach(fade => observer.observe(fade));
   </script>
 
