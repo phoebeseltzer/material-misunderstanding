@@ -1,132 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plastic – The Synthetic Solution</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plastic Timeline</title>
   <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { margin:0; padding:0; font-family:'Domine', serif; background:#0f1111; color:#e6e6e6; overflow-x:hidden; }
-    a.back-button {
-      position: fixed;
-      top: 3%;
-      left: 3%;
-      text-decoration: none;
-      color: #8feaff;
+    body {
+      margin: 0;
+      font-family: 'Domine', serif;
+      background: #0f1111;
+      color: #e6e6e6;
+      scroll-behavior: smooth;
+    }
+    section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem;
+      text-align: center;
+      transition: background 0.8s;
+    }
+    .title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .sub {
+      font-size: 1.1rem;
+      color: #aaa;
+      max-width: 700px;
+    }
+    #chart-container {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 3rem;
+    }
+    .caption {
+      margin-top: 1.5rem;
       font-size: 0.9rem;
+      color: #8feaff;
       font-family: 'Share Tech Mono', monospace;
-      border: 1px solid #00f0ff66;
-      padding: 0.4rem 1rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 4px;
-      text-shadow: 0 0 2px #00f0ff;
-      z-index: 10;
     }
-    a.back-button:hover {
-      color: #fff;
-      border-color: #00f0ff;
-    }
-    .video-block { position:relative; width:100%; height:85vh; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; }
-    video { position:absolute; top:0; left:0; min-width:100%; min-height:100%; object-fit:cover; opacity:0.3; }
-    .hud-cluster { position:absolute; top:2%; right:3%; display:flex; flex-direction:column; gap:1rem; font-family:monospace; color:#8feaff; text-shadow:0 0 1px #00f0ff88; z-index:5; }
-    .hud-cluster div { background:rgba(0,255,255,0.05); padding:.5rem .8rem; border:1px solid #00f0ff33; border-radius:4px; }
-    .hud-container { position:absolute; bottom:5%; left:5%; display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
-    .hud-panel { background:rgba(0,255,255,0.05); padding:.8rem; border-radius:6px; color:#8feaff; font-family:monospace; border:1px solid #00f0ff33; box-shadow:0 0 5px #00f0ff22 inset; }
-    .hud-title { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:#8feaffcc; }
-    .hud-metric { font-size:1.2rem; margin:.4rem 0; }
-    .unit { font-size:0.8rem; opacity:.7; }
-    .hud-bar { width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden; margin-top:.4rem; }
-    .hud-fill { height:100%; width:0%; background:#00faff; animation:pulse-bar 3s ease-in-out infinite; }
-    @keyframes pulse-bar { 0%,100%{opacity:0.7;}50%{opacity:1;} }
-    #degradation-chart { width:100%; max-width:900px; margin:8vh auto 2rem; }
-    input[type=range] { width:100%; }
-    .slider-labels { display:flex; justify-content:space-between; font-size:.8rem; margin-top:.4rem; color:#888; font-family:monospace; max-width:900px; margin:auto; }
-    .essay { max-width:720px; margin:0 auto 10vh; padding:0 1rem; font-size:1.2rem; line-height:1.8; color:#cccccc; }
   </style>
 </head>
 <body>
 
-<a href="map.html" class="back-button">← Return</a>
+<section id="scene1">
+  <div class="title">Plastic as Promise</div>
+  <div class="sub">1869–1945: A moral invention. Plastic mimicked ivory, coral, shell — without taking life.</div>
+</section>
 
-<section class="video-block" id="video-block">
-  <video autoplay muted loop playsinline>
-    <source src="videos/videoplayback.mp4" type="video/mp4" />
-  </video>
-  <div class="hud-cluster">
-    <div>Avg Use Time: <strong>0.5 yrs</strong></div>
-    <div>Degradation Time: <strong>400 yrs</strong></div>
-    <div>Structure: <strong>(C₂H₄)<sub>n</sub></strong></div>
-  </div>
-  <div class="hud-container">
-    <div class="hud-panel"><div class="hud-title">Total Plastic Produced</div><div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div><div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div></div>
-    <div class="hud-panel"><div class="hud-title">Plastic Waste /yr</div><div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div></div>
+<section id="scene2">
+  <div class="title">The Rise of Synthetic Ubiquity</div>
+  <div class="sub">1950–1975: Mass production begins. Packaging. Convenience. Disposability. Growth becomes exponential.</div>
+  <div id="chart-container">
+    <canvas id="plasticChart"></canvas>
+    <div class="caption" id="caption">In 1950, 2 million tons of plastic were produced.</div>
   </div>
 </section>
 
-<section style="padding:4rem 2vw; max-width:900px; margin:auto;">
-  <input type="range" id="yearSlider" min="1900" max="2025" value="1900">
-  <div class="slider-labels"><span>1900</span><span>1963</span><span>2025</span></div>
-  <canvas id="degradation-chart"></canvas>
-  <div id="year-caption" style="margin-top:2rem;font-size:1.1rem;line-height:1.7;">
-    In 1900, plastic production hadn’t begun in earnest — watch the horizon expand.
-  </div>
+<section id="scene3">
+  <div class="title">The Age of Accumulation</div>
+  <div class="sub">1980–2025: Waste outpaces reuse. Recycling myths collapse. Enzymes and fungi try to fix what humans can't undo.</div>
 </section>
 
-<section class="essay">
-  <p><em>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic.</em></p>
-  <p>Originally created as a substitute for ivory, coral, shell — the form but not the ecology — plastic became our most durable pollutant. It simulates flexibility but resists decay. Over time, it replaced natural cycles with synthetic stasis. Today, we turn to enzymes and microbes, hoping they will undo what we once called innovation.</p>
-  <p style="font-size:0.9rem; color:#888;">Data based on: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data</a> & <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" style="color:#8feaff;">Geyer et al. (2017)</a></p>
+<section id="scene4">
+  <div class="title">Legacy of a Material</div>
+  <div class="sub">Plastic does not biodegrade. It fragments. It lingers. It circulates in water, soil, even blood.</div>
 </section>
 
 <script>
-  const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
-  const production=[], cumulative=[], waste=[], degraded=[];
-  let total=0;
-  for(let i=0;i<years.length;i++){
-    const y=years[i];
-    let prod=0;
-    if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
-    else if(y<=2015){ prod=2*Math.pow(1.07,y-1950); }
-    else{ prod=381+(y-2015)*10; }
-    production.push(+prod.toFixed(1));
-    total+=prod/1000;
-    cumulative.push(+total.toFixed(2));
-    const w=(i>=3)?production[i-3]*0.85:0;
-    waste.push(+w.toFixed(1));
-    degraded.push(y===2025?+(total*0.09).toFixed(2):0);
-  }
-
-  let chart;
-  function renderChart(){
-    const ctx=document.getElementById('degradation-chart').getContext('2d');
-    chart=new Chart(ctx,{
-      type:'line',
-      data:{ labels:years, datasets:[
-        { label:'Cumulative Plastic Produced (Bt)', data:cumulative, borderColor:'#00f0ff', tension:0.25 },
-        { label:'Estimated Degraded Plastic (Bt)', data:degraded, borderColor:'#ff568f', tension:0.25 }
-      ]},
-      options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
-        scales:{ y:{ beginAtZero:true, title:{ display:true, text:'Billion Tons' } } },
-        plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
+  const ctx = document.getElementById('plasticChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2025],
+      datasets: [{
+        label: 'Plastic Production (Million Tons)',
+        data: [2, 8, 30, 60, 100, 200, 300, 360, 480],
+        borderColor: '#00f0ff',
+        tension: 0.3,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Million Tons' },
+          ticks: { color: '#ccc' }
+        },
+        x: {
+          ticks: { color: '#ccc' }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: { color: '#e6e6e6' }
+        }
       }
-    });
-  }
-
-  document.getElementById('yearSlider').addEventListener('input',(e)=>{
-    const year=+e.target.value;
-    const i=years.indexOf(year);
-    const prod=cumulative[i];
-    const w=waste[i];
-    document.getElementById('plastic-count').innerText=prod.toFixed(1);
-    document.getElementById('waste-count').innerText=Math.round(w);
-    document.getElementById('bar-plastic').style.width=(prod/7)*100+'%';
-    document.getElementById('bar-waste').style.width=(w/500)*100+'%';
-    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>. Approx. <b>${Math.round(w)} million tons</b> of plastic became waste.`;
-    if(chart){ chart.tooltip.setActiveElements([{datasetIndex:0,index:i}],{x:0,y:0}); chart.setActiveElements([{datasetIndex:0,index:i}]); chart.update(); }
+    }
   });
 
-  renderChart();
+  const caption = document.getElementById('caption');
+  document.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      caption.textContent = 'In 1950, 2 million tons of plastic were produced.';
+    } else if (y < window.innerHeight * 2) {
+      caption.textContent = 'By 1980, plastic production reached 60 million tons per year.';
+    } else if (y < window.innerHeight * 3) {
+      caption.textContent = 'By 2025, production is projected to exceed 480 million tons annually.';
+    } else {
+      caption.textContent = 'Only ~9% of all plastic ever made has degraded.';
+    }
+  });
 </script>
 
 </body>
