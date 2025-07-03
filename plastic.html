@@ -331,6 +331,14 @@
     .citation a:hover {
       text-decoration: underline;
     }
+    .timeline-text {
+  color: #ff568f;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
   </style>
 </head>
 <body>
@@ -454,6 +462,14 @@ const recursiveSentences = {
   2015: We turn to nature to undo what we did in its name.,
   2025: We invent solutions to problems our solutions invented."
 };
+  
+const quote = timelineMoments[year] || "";
+
+document.getElementById('year-caption').innerHTML =
+  `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
+  `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).` +
+  (quote ? `<div class="timeline-text">"${quote}"</div>` : "");
+  
     // Hide fills on static HUDs (set outlines only)
     const radius = 50;
     const circumference = 2 * Math.PI * radius;
