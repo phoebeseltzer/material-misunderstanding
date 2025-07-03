@@ -68,6 +68,42 @@
     }
   </style>
 </head>
+  <audio id="ambient-audio" src="audio/ethel.mp3" preload="auto" loop></audio>
+<script>
+  const audio = document.getElementById('ambient-audio');
+  let hasPlayed = false;
+
+  function fadeInAudio(audio) {
+    audio.volume = 0;
+    audio.play().catch(e => {
+      console.warn("Audio play blocked until user interaction.");
+    });
+
+    const fade = setInterval(() => {
+      if (audio.volume < 0.2) {
+        audio.volume += 0.01;
+      } else {
+        clearInterval(fade);
+      }
+    }, 200);
+  }
+
+  // Trigger audio on scroll or first click
+  window.addEventListener('scroll', () => {
+    if (!hasPlayed) {
+      fadeInAudio(audio);
+      hasPlayed = true;
+    }
+  });
+
+  window.addEventListener('click', () => {
+    if (!hasPlayed) {
+      fadeInAudio(audio);
+      hasPlayed = true;
+    }
+  });
+</script>
+
 <body>
 
   <section class="fade">Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: Look what we’ve made. It rarely asks: What did this replace? What did it erase?</section>
