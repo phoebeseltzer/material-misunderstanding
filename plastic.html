@@ -58,25 +58,25 @@
 <section class="essay">
   <p><em>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic.</em></p>
   <p>Originally created as a substitute for ivory, coral, shell — the form but not the ecology — plastic became our most durable pollutant. It simulates flexibility but resists decay. Over time, it replaced natural cycles with synthetic stasis. Today, we turn to enzymes and microbes, hoping they will undo what we once called innovation.</p>
-  <p style="font-size:0.9rem; color:#888;">Data source: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data – Plastic Pollution</a></p>
+  <p style="font-size:0.9rem; color:#888;">Data based on: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data</a> & <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" style="color:#8feaff;">Geyer et al. (2017)</a></p>
 </section>
 
 <script>
   const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
-  const production=[], cumulative=[], degraded=[];
+  const production=[], cumulative=[], waste=[], degraded=[];
   let total=0;
   for(let i=0;i<years.length;i++){
     const y=years[i];
     let prod=0;
-    if(y>=1907 && y<=1950) prod=(y-1907)*0.002;
-    else if(y>1950 && y<=2015) prod=2*Math.pow(1.07, y-1950); // exponential
-    else if(y>2015) prod=prod=350+Math.random()*20; // taper but not flat
-    production.push(+prod.toFixed(2));
+    if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
+    else if(y<=2015){ prod=2*Math.pow(1.07,y-1950); }
+    else{ prod=381+(y-2015)*10; }
+    production.push(+prod.toFixed(1));
     total+=prod/1000;
     cumulative.push(+total.toFixed(2));
-    const decayFactor=0.001;
-    const decayed=i>10?production.slice(0,i-10).reduce((a,b)=>a+b*decayFactor,0):0;
-    degraded.push(+decayed.toFixed(2));
+    const w=(i>=3)?production[i-3]*0.85:0;
+    waste.push(+w.toFixed(1));
+    degraded.push(y===2025?+(total*0.09).toFixed(2):0);
   }
 
   let chart;
@@ -84,16 +84,11 @@
     const ctx=document.getElementById('degradation-chart').getContext('2d');
     chart=new Chart(ctx,{
       type:'line',
-      data:{
-        labels:years,
-        datasets:[
-          { label:'Cumulative Plastic Produced (Bt)', data:cumulative, borderColor:'#00f0ff', tension:0.25 },
-          { label:'Estimated Degraded Plastic (Bt)', data:degraded, borderColor:'#ff568f', tension:0.25 }
-        ]
-      },
-      options:{
-        responsive:true,
-        interaction:{ intersect:false, mode:'index' },
+      data:{ labels:years, datasets:[
+        { label:'Cumulative Plastic Produced (Bt)', data:cumulative, borderColor:'#00f0ff', tension:0.25 },
+        { label:'Estimated Degraded Plastic (Bt)', data:degraded, borderColor:'#ff568f', tension:0.25 }
+      ]},
+      options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
         scales:{ y:{ beginAtZero:true, title:{ display:true, text:'Billion Tons' } } },
         plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
       }
@@ -104,17 +99,13 @@
     const year=+e.target.value;
     const i=years.indexOf(year);
     const prod=cumulative[i];
-    const waste=production[i]*0.85;
+    const w=waste[i];
     document.getElementById('plastic-count').innerText=prod.toFixed(1);
-    document.getElementById('waste-count').innerText=Math.round(waste);
-    document.getElementById('bar-plastic').style.width=(prod/10)*100+'%';
-    document.getElementById('bar-waste').style.width=(waste/400)*100+'%';
-    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>. Approx. <b>${Math.round(waste)} million tons</b> of plastic became waste.`;
-    if(chart){
-      chart.tooltip.setActiveElements([{datasetIndex:0,index:i}],{x:0,y:0});
-      chart.setActiveElements([{datasetIndex:0,index:i}]);
-      chart.update();
-    }
+    document.getElementById('waste-count').innerText=Math.round(w);
+    document.getElementById('bar-plastic').style.width=(prod/7)*100+'%';
+    document.getElementById('bar-waste').style.width=(w/500)*100+'%';
+    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, cumulative plastic production was <b>${prod.toFixed(1)} billion tons</b>. Approx. <b>${Math.round(w)} million tons</b> of plastic became waste.`;
+    if(chart){ chart.tooltip.setActiveElements([{datasetIndex:0,index:i}],{x:0,y:0}); chart.setActiveElements([{datasetIndex:0,index:i}]); chart.update(); }
   });
 
   renderChart();
