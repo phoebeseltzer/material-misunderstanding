@@ -89,7 +89,6 @@
       position: relative;
       width: 150px;
       height: 150px;
-      padding: 1.2rem;
       box-sizing: border-box;
       border-radius: 50%;
       background:
@@ -477,12 +476,12 @@
 document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
 
       // Update circular progress bars
-      updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 500) * 100, 100));
+      updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 320) * 100, 100));
      
       // Update bar plastic fill for backward compatibility (optional)
       const barPlastic = document.getElementById('bar-plastic');
       if(barPlastic) {
-        barPlastic.style.width = (prod / 500) * 100 + '%';
+        barPlastic.style.width = (prod / 320) * 100 + '%';
       }
 
       // Update caption below slider
