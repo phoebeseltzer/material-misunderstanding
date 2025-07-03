@@ -72,6 +72,50 @@
       box-shadow: 0 0 10px #00f0ff88;
       transform: scale(1.03);
     }
+
+    /* Glow + subtle glitch keyframes */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px 4px rgba(255, 86, 143, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(255, 86, 143, 1);
+  }
+}
+
+@keyframes glitchMove {
+  0% {
+    transform: translate(0);
+    filter: none;
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    filter: drop-shadow(2px 0 #ff568f);
+  }
+  40% {
+    transform: translate(2px, -2px);
+    filter: drop-shadow(-2px 0 #ff568f);
+  }
+  60% {
+    transform: translate(-1px, 1px);
+    filter: drop-shadow(1px 0 #ff568f);
+  }
+  80% {
+    transform: translate(1px, -1px);
+    filter: drop-shadow(-1px 0 #ff568f);
+  }
+  100% {
+    transform: translate(0);
+    filter: none;
+  }
+}
+
+/* Apply to highlight */
+.material-highlight {
+  animation: glowPulse 2s ease-in-out 2, glitchMove 0.6s ease-in-out 4;
+  animation-fill-mode: forwards;
+}
+
   </style>
 </head>
 <body>
@@ -80,7 +124,7 @@
   <h1>Material Atlas</h1>
 
   <div class="container">
-    <a href="plastic.html" class="node">Plastic<br><small>(the synthetic solution)</small></a>
+<a href="plastic.html?from=plastic" class="node" id="plastic-area">Plastic<br><small>(the synthetic solution)</small></a>
     <a href="carbon.html" class="node">Carbon<br><small>(misunderstood metabolism)</small></a>
     <a href="salt.html" class="node">Salt<br><small>(the hidden preservative)</small></a>
     <a href="silicon.html" class="node">Silicon<br><small>(memory carved in sand)</small></a>
@@ -121,5 +165,25 @@
 
     animate();
   </script>
+<script>
+  // Get URL param 'from'
+  const urlParams = new URLSearchParams(window.location.search);
+  const from = urlParams.get('from');
+
+  if (from) {
+    // Try to find a node matching the from value (e.g. 'plastic')
+    const node = document.getElementById(`${from}-area`);
+    if (node) {
+      node.classList.add('highlighted'); // Add highlight class
+
+      // Optional: Scroll into view smoothly
+      node.scrollIntoView({behavior: 'smooth', block: 'center'});
+
+      // You can also add a little pulse animation or style in CSS for .highlighted
+    }
+  }
+</script>
+
+
 </body>
 </html>
