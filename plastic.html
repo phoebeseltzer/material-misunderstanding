@@ -1,89 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plastic – The Synthetic Solution</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { margin:0; padding:0; font-family:'Domine', serif; background:#0f1111; color:#e6e6e6; overflow-x:hidden; }
-    a.back-button {
-      position: fixed;
-      top: 3%;
-      left: 3%;
-      text-decoration: none;
-      color: #8feaff;
-      font-size: 0.9rem;
-      font-family: 'Share Tech Mono', monospace;
-      border: 1px solid #00f0ff66;
-      padding: 0.4rem 1rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 4px;
-      text-shadow: 0 0 2px #00f0ff;
-      z-index: 10;
-    }
-    a.back-button:hover {
-      color: #fff;
-      border-color: #00f0ff;
-    }
-    .video-block { position:relative; width:100%; height:85vh; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; }
-    video { position:absolute; top:0; left:0; min-width:100%; min-height:100%; object-fit:cover; opacity:0.3; }
-    .hud-cluster { position:absolute; top:2%; right:3%; display:flex; flex-direction:column; gap:1rem; font-family:monospace; color:#8feaff; text-shadow:0 0 1px #00f0ff88; z-index:5; }
-    .hud-cluster div { background:rgba(0,255,255,0.05); padding:.5rem .8rem; border:1px solid #00f0ff33; border-radius:4px; }
-    .hud-container { position:absolute; bottom:5%; left:5%; display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
-    .hud-panel { background:rgba(0,255,255,0.05); padding:.8rem; border-radius:6px; color:#8feaff; font-family:monospace; border:1px solid #00f0ff33; box-shadow:0 0 5px #00f0ff22 inset; }
-    .hud-title { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:#8feaffcc; }
-    .hud-metric { font-size:1.2rem; margin:.4rem 0; }
-    .unit { font-size:0.8rem; opacity:.7; }
-    .hud-bar { width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden; margin-top:.4rem; }
-    .hud-fill { height:100%; width:0%; background:#00faff; animation:pulse-bar 3s ease-in-out infinite; }
-    @keyframes pulse-bar { 0%,100%{opacity:0.7;}50%{opacity:1;} }
-    #degradation-chart { width:100%; max-width:900px; margin:8vh auto 2rem; }
-    input[type=range] { width:100%; }
-    .slider-labels { display:flex; justify-content:space-between; font-size:.8rem; margin-top:.4rem; color:#888; font-family:monospace; max-width:900px; margin:auto; }
-    .essay { max-width:720px; margin:0 auto 10vh; padding:0 1rem; font-size:1.2rem; line-height:1.8; color:#cccccc; }
-    .chapter-title { color: #8feaff; font-family: 'Share Tech Mono', monospace; font-size: 1rem; margin-top: 2.5rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  </style>
-</head>
-<body>
-
-<a href="map.html" class="back-button">← Return</a>
-
-<section class="video-block" id="video-block">
-  <video autoplay muted loop playsinline>
-    <source src="videos/videoplayback.mp4" type="video/mp4" />
-  </video>
-  <div class="hud-cluster">
-    <div>Avg Use Time: <strong>0.5 yrs</strong></div>
-    <div>Degradation Time: <strong>400 yrs</strong></div>
-    <div>Structure: <strong>(C₂H₄)<sub>n</sub></strong></div>
-  </div>
-  <div class="hud-container">
-    <div class="hud-panel"><div class="hud-title">Annual Production</div><div class="hud-metric"><span id="plastic-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div></div>
-    <div class="hud-panel"><div class="hud-title">Waste Generated</div><div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div></div>
-  </div>
-</section>
-
-<section style="padding:4rem 2vw; max-width:900px; margin:auto;">
-  <input type="range" id="yearSlider" min="1900" max="2025" value="1900">
-  <div class="slider-labels"><span>1900</span><span>1963</span><span>2025</span></div>
-  <canvas id="degradation-chart"></canvas>
-  <div id="year-caption" style="margin-top:2rem;font-size:1.1rem;line-height:1.7;"></div>
-</section>
-
-<section class="essay">
-  <div class="chapter-title">Timeline Chapters</div>
-  <p><strong>1869–1945: Plastic as Promise</strong><br>
-  A moral invention. Plastic mimicked ivory, coral, shell — without taking life.</p>
-  <p><strong>1950–1975: The Rise of Synthetic Ubiquity</strong><br>
-  Mass production begins. Packaging. Convenience. Disposability. Growth becomes exponential.</p>
-  <p><strong>1980–2025: The Age of Accumulation</strong><br>
-  Waste outpaces reuse. Recycling myths collapse. Enzymes and fungi try to fix what humans can't undo.</p>
-
-  <p style="font-size:0.9rem; color:#888;">Data based on: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data</a> & <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" style="color:#8feaff;">Geyer et al. (2017)</a></p>
-</section>
-
 <script>
   const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
   const production=[], cumulative=[], waste=[], degraded=[];
@@ -92,8 +6,7 @@
     const y=years[i];
     let prod=0;
     if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
-    else if(y<=2015){ prod=2*Math.pow(1.07,y-1950); }
-    else{ prod=381+(y-2015)*10; }
+    else { prod=2*Math.pow(1.07,y-1950); }
     production.push(+prod.toFixed(1));
     total+=prod/1000;
     cumulative.push(+total.toFixed(2));
@@ -106,12 +19,16 @@
   const chart=new Chart(ctx,{
     type:'line',
     data:{ labels:years, datasets:[
-      { label:'Annual Production (Mt)', data:production, borderColor:'#00f0ff', tension:0.25 },
-      { label:'Cumulative Production (Bt)', data:cumulative, borderColor:'#00ff88', tension:0.25 },
-      { label:'Estimated Degraded (Bt)', data:degraded, borderColor:'#ff568f', tension:0.25 }
+      { label:'Annual Production (Mt)', data:production, borderColor:'#00f0ff', yAxisID: 'y1', tension:0.25 },
+      { label:'Cumulative Production (Bt)', data:cumulative, borderColor:'#00ff88', yAxisID: 'y2', tension:0.25 },
+      { label:'Estimated Degraded (Bt)', data:degraded, borderColor:'#ff568f', yAxisID: 'y2', tension:0.25 }
     ]},
     options:{ responsive:true, interaction:{ intersect:false, mode:'index' },
-      scales:{ y:{ beginAtZero:true, title:{ display:true, text:'Amount' }, ticks:{ color:'#ccc' } }, x:{ ticks:{ color:'#ccc' } } },
+      scales:{ 
+        y1: { type: 'linear', position: 'left', beginAtZero:true, title:{ display:true, text:'Annual (Mt)' }, ticks:{ color:'#ccc' } },
+        y2: { type: 'linear', position: 'right', beginAtZero:true, title:{ display:true, text:'Cumulative (Bt)' }, grid: { drawOnChartArea: false }, ticks:{ color:'#ccc' } },
+        x:{ ticks:{ color:'#ccc' } }
+      },
       plugins:{ legend:{ labels:{ color:'#e6e6e6' } } }
     }
   });
@@ -122,15 +39,14 @@
     const prod=production[i];
     const w=waste[i];
     const cum=cumulative[i];
+    const deg=degraded[i];
+    const percentDeg = cum > 0 ? ((deg / cum) * 100).toFixed(1) : 0;
     document.getElementById('plastic-count').innerText=prod.toFixed(0);
     document.getElementById('waste-count').innerText=Math.round(w);
     document.getElementById('bar-plastic').style.width=(prod/500)*100+'%';
     document.getElementById('bar-waste').style.width=(w/500)*100+'%';
-    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative total: <b>${cum.toFixed(2)} Bt</b>.`;
+    document.getElementById('year-caption').innerHTML=`In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>, with <b>${Math.round(w)} Mt</b> waste. Cumulative total: <b>${cum.toFixed(2)} Bt</b>. <br>Estimated degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${percentDeg}%</b>)`;
     chart.setActiveElements([{datasetIndex:0,index:i},{datasetIndex:1,index:i},{datasetIndex:2,index:i}]);
     chart.update();
   });
 </script>
-
-</body>
-</html>
