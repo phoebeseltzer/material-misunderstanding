@@ -14,7 +14,6 @@
       color: #e6e6e6;
       overflow-x: hidden;
     }
-
     .ghost-fragment {
       position: absolute;
       opacity: 0;
@@ -26,58 +25,174 @@
       white-space: nowrap;
       z-index: 10;
     }
-
     .ghost-fragment.visible {
       opacity: 0.15;
     }
-
     @keyframes fadeInOut {
       0% { opacity: 0; transform: scale(0.96); }
       20% { opacity: 0.15; transform: scale(1.02); }
       80% { opacity: 0.1; transform: scale(1); }
       100% { opacity: 0; }
     }
-
-    /* KEEP YOUR EXISTING STYLES HERE (back-button, HUDs, video, essay, chart, etc.) */
-    /* You already have all other correct and clean layout/styles — just keep them below this */
+    .back-button {
+      position: fixed;
+      top: 2%;
+      left: 3%;
+      text-decoration: none;
+      color: #8feaff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      border: 1px solid #00f0ff66;
+      padding: 0.4rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
+      text-shadow: 0 0 2px #00f0ff;
+      z-index: 10;
+    }
+    .video-block {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      overflow: hidden;
+    }
+    video {
+      position: absolute;
+      top: 0; left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+    }
+    .video-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 6rem;
+      color: rgba(0, 255, 255, 0.15);
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+    .slider-wrap {
+      max-width: 900px;
+      margin: 4rem auto 1rem;
+      text-align: center;
+    }
+    input[type=range] {
+      width: 100%;
+      cursor: pointer;
+    }
+    canvas {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: block;
+    }
+    .caption {
+      max-width: 900px;
+      margin: 1rem auto 3rem;
+      font-size: 1.1rem;
+      color: #ccc;
+      text-align: center;
+      font-family: monospace;
+      min-height: 3.2em;
+      line-height: 1.4;
+    }
+    .chapter {
+      margin-top: 2rem;
+      font-weight: bold;
+      color: #00faff;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+    .citation {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 3rem;
+      text-align: center;
+    }
+    .citation a {
+      color: #00faff;
+      text-decoration: none;
+    }
+    .citation a:hover {
+      text-decoration: underline;
+    }
+    .essay {
+      max-width: 800px;
+      margin: 4rem auto 6rem;
+      padding: 0 1rem;
+      line-height: 1.7;
+      font-size: 1.1rem;
+    }
+    .enter-button {
+      text-align: center;
+      margin: 6rem auto;
+    }
+    .enter-button a {
+      display: inline-block;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0.04em;
+      color: #8feaff;
+      background: rgba(0, 255, 255, 0.06);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 5px;
+      text-decoration: none;
+      box-shadow: 0 0 6px #00f0ff33;
+      transition: all 0.3s ease;
+    }
+    .enter-button a:hover {
+      background: rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 10px #00f0ff88;
+      transform: scale(1.03);
+    }
   </style>
 </head>
-
 <body>
 
 <a href="map.html" class="back-button">← Return</a>
 
-<!-- VIDEO SECTION + HUDs -->
 <section class="video-block">
   <video autoplay muted loop playsinline>
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
   <div class="video-title">Plastic</div>
-  <!-- HUD elements here... (unchanged from your current code) -->
 </section>
 
-<!-- CHART SLIDER + CANVAS -->
 <div class="slider-wrap">
   <input type="range" id="yearSlider" min="1900" max="2025" value="1900" />
   <div id="year-caption" class="caption"></div>
 </div>
 <canvas id="degradation-chart" height="300"></canvas>
 
-<!-- ESSAY CONTENT -->
 <section class="essay">
-  <p>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic...</p>
-  <!-- Chapters... -->
+  <p>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic. Originally created as a substitute for ivory, coral, and shell — the form but not the ecology — plastic became our most durable pollutant.</p>
+
+  <div class="chapter">CHAPTER 1: Invention & Moral Intent (1869–1940s)</div>
+  <p>Parkesine and Bakelite were invented as substitutes for scarce organic materials. Plastic was seen as a conservation tool — a moral material that could replace ivory and tortoiseshell without harming ecosystems.</p>
+
+  <div class="chapter">CHAPTER 2: Ubiquity & Acceleration (1950s–1990s)</div>
+  <p>Plastic production explodes with consumerism and packaging. It mimics everything — leather, silk, wood — and becomes a new baseline for convenience. But recycling fails to scale, and systems build around disposability.</p>
+
+  <div class="chapter">CHAPTER 3: Crisis & Recursion (2000s–Present)</div>
+  <p>We now look to bacteria, enzymes, and fungi to decompose the material we invented to resist decomposition. Plastic becomes the first substance we try to biologically erase after embedding it in every system.</p>
+
+  <div class="citation">
+    Based on data from <a href="https://ourworldindata.org/plastic-pollution" target="_blank" rel="noopener noreferrer">Our World in Data</a> and <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" rel="noopener noreferrer">Geyer et al. (2017)</a>
+  </div>
 </section>
 
-<!-- OPTIONAL: Add scroll space for testing -->
-<div style="height: 100vh;"></div>
+<section class="fade enter-button">
+  <a href="index.html?loop=plastic">Plastic does not return. But you do.</a>
+</section>
 
-<!-- EXISTING CHART + SLIDER SCRIPT -->
-<script>
-  // (Keep all your current Chart.js and slider logic here)
-</script>
-
-<!-- ✅ GHOST FRAGMENTS SCRIPT -->
 <script>
 const plasticEquations = [
   "(C₈H₈)n → styrene",
@@ -97,30 +212,105 @@ function spawnPlasticFragment() {
   const frag = document.createElement('div');
   frag.className = 'ghost-fragment visible';
   frag.textContent = plasticEquations[Math.floor(Math.random() * plasticEquations.length)];
-
   frag.style.top = `${Math.random() * window.innerHeight * 0.8}px`;
   frag.style.left = `${Math.random() * window.innerWidth * 0.8}px`;
-
   document.body.appendChild(frag);
-  setTimeout(() => frag.remove(), 10000); // Remove after animation
+  setTimeout(() => frag.remove(), 10000);
 }
 
 window.addEventListener('scroll', () => {
-  console.log("Scroll detected");
   if (Math.random() < 0.25) {
-    console.log("Spawning a ghost fragment");
     spawnPlasticFragment();
   }
 });
-
-
-  
 </script>
-  
-  <section class="fade enter-button">
-  <a href="index.html?loop=plastic">Plastic does not return. But you do. </a>
-</section>
-  
+
+<script>
+const years = Array.from({length: 126}, (_, i) => 1900 + i);
+const production = [], cumulative = [], degraded = [];
+let total = 0;
+
+for (let i = 0; i < years.length; i++) {
+  const y = years[i];
+  let prod = y < 1950 ? Math.max(0.1 * (y - 1907), 0) : 2 * Math.pow(1.07, y - 1950);
+  production.push(+prod.toFixed(1));
+  total += prod / 1000;
+  cumulative.push(+total.toFixed(2));
+  degraded.push(y === 2025 ? +(total * 0.09).toFixed(2) : 0);
+}
+
+const ctx = document.getElementById('degradation-chart').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      { label: 'Annual Production (Mt)', data: [], borderColor: '#00f0ff', yAxisID: 'y1', tension: 0.25 },
+      { label: 'Cumulative Production (Bt)', data: [], borderColor: '#00ff88', yAxisID: 'y2', tension: 0.25 },
+      { label: 'Estimated Degraded (Bt)', data: [], borderColor: '#ff568f', yAxisID: 'y2', tension: 0.25 }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { intersect: false, mode: 'index' },
+    scales: {
+      y1: {
+        type: 'linear',
+        position: 'left',
+        beginAtZero: true,
+        title: { display: true, text: 'Annual Production (Mt)' },
+        ticks: { color: '#ccc' }
+      },
+      y2: {
+        type: 'linear',
+        position: 'right',
+        beginAtZero: true,
+        title: { display: true, text: 'Cumulative Production (Bt)' },
+        grid: { drawOnChartArea: false },
+        ticks: { color: '#ccc' }
+      },
+      x: {
+        ticks: {
+          color: '#ccc',
+          stepSize: 10,
+          callback: function(value) {
+            return this.getLabelForValue(value) % 10 === 0 ? this.getLabelForValue(value) : '';
+          }
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: { color: '#e6e6e6' }
+      }
+    }
+  }
+});
+
+function updateChartToIndex(i) {
+  chart.data.labels = years.slice(0, i + 1);
+  chart.data.datasets[0].data = production.slice(0, i + 1);
+  chart.data.datasets[1].data = cumulative.slice(0, i + 1);
+  chart.data.datasets[2].data = degraded.slice(0, i + 1);
+  chart.update();
+}
+
+document.getElementById('yearSlider').addEventListener('input', (e) => {
+  const year = +e.target.value;
+  const i = years.indexOf(year);
+  const prod = production[i];
+  const cum = cumulative[i];
+  const deg = degraded[i];
+
+  document.getElementById('year-caption').innerHTML =
+    `In <b>${year}</b>, plastic production was <b>${prod.toFixed(0)} Mt</b>.<br>` +
+    `Cumulative: <b>${cum.toFixed(2)} Bt</b>, degraded: <b>${deg.toFixed(2)} Bt</b> (<b>${((deg / cum) * 100).toFixed(1)}%</b>).`;
+
+  updateChartToIndex(i);
+});
+
+updateChartToIndex(0);
+</script>
+
 </body>
 </html>
-
