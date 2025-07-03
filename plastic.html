@@ -22,17 +22,14 @@
       top: 2%;
       left: 3%;
       text-decoration: none;
-      color: #aaa;
+      color: #8feaff;
       font-size: 0.9rem;
-      border: 1px solid #888;
+      border: 1px solid #00f0ff66;
       padding: 0.4rem 1rem;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
+      text-shadow: 0 0 2px #00f0ff;
       z-index: 10;
-    }
-
-    a.back-button:hover {
-      color: #fff;
-      border-color: #fff;
     }
 
     .video-block {
@@ -53,20 +50,29 @@
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
-      opacity: 0.25;
+      opacity: 0.2;
+      filter: grayscale(100%) contrast(1.1);
     }
 
-    .chemical-label {
+    .hud-cluster {
       position: absolute;
-      top: 3%;
+      top: 2%;
       right: 3%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
       font-family: monospace;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
       color: #8feaff;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.4rem 0.6rem;
-      border-radius: 5px;
-      text-shadow: 0 0 2px #00f0ff55;
+      text-shadow: 0 0 1px #00f0ff88;
+      z-index: 5;
+    }
+
+    .hud-cluster div {
+      background: rgba(0, 255, 255, 0.05);
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #00f0ff33;
+      border-radius: 4px;
     }
 
     .hud-container {
@@ -76,33 +82,33 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
-      backdrop-filter: blur(6px);
     }
 
     .hud-panel {
-      background: rgba(20, 30, 40, 0.4);
+      background: rgba(0, 255, 255, 0.05);
       padding: 0.8rem;
       border-radius: 6px;
       color: #8feaff;
       font-family: monospace;
-      text-shadow: 0 0 2px #00f0ff33;
+      border: 1px solid #00f0ff33;
+      box-shadow: 0 0 5px #00f0ff22 inset;
     }
 
     .hud-title {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #ffffffaa;
+      color: #8feaffcc;
     }
 
     .hud-metric {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin: 0.4rem 0;
     }
 
     .unit {
-      font-size: 0.7rem;
-      opacity: 0.8;
+      font-size: 0.8rem;
+      opacity: 0.7;
     }
 
     .hud-bar {
@@ -111,19 +117,40 @@
       background: rgba(255,255,255,0.1);
       border-radius: 3px;
       overflow: hidden;
+      margin-top: 0.4rem;
     }
 
     .hud-fill {
       height: 100%;
       width: 0%;
       background: #00faff;
-      transition: width 2s ease-out;
+      animation: pulse-bar 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-bar {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
     }
 
     #degradation-chart {
       width: 100%;
       max-width: 900px;
       margin: 8vh auto 2rem;
+    }
+
+    input[type=range] {
+      width: 100%;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+      color: #888;
+      font-family: monospace;
+      max-width: 900px;
+      margin: auto;
     }
 
     .essay {
@@ -145,41 +172,42 @@
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
 
-  <div class="chemical-label">(C₂H₄)<sub>n</sub></div>
-    <div class="hud-panel">
-      <div class="hud-title">AVG USE TIME</div>
-      <div class="hud-metric">~<span id="avg-lifetime">0.5</span><span class="unit"> yrs</span></div>
-    </div>
-    <div class="hud-panel">
-      <div class="hud-title">EST. DEGRADATION TIME</div>
-      <div class="hud-metric">~<span id="degrade-time">400</span><span class="unit"> yrs</span></div>
-    </div>
+  <div class="hud-cluster">
+    <div>Avg Use Time: <strong>0.5 yrs</strong></div>
+    <div>Degradation Time: <strong>400 yrs</strong></div>
+    <div>Structure: <strong>(C₂H₄)<sub>n</sub></strong></div>
+  </div>
+
   <div class="hud-container">
     <div class="hud-panel">
-      <div class="hud-title">TOTAL PLASTIC PRODUCED</div>
-      <div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div>
+      <div class="hud-title">Total Plastic Produced</div>
+      <div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div>
       <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
     </div>
     <div class="hud-panel">
-      <div class="hud-title">PLASTIC WASTE GENERATED /yr</div>
-      <div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div>
+      <div class="hud-title">Plastic Waste /yr</div>
+      <div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div>
       <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
     </div>
-
   </div>
 </section>
 
 <section style="padding: 4rem 2vw; max-width: 900px; margin: auto;">
-  <input type="range" id="yearSlider" min="1950" max="2025" value="2025" style="width: 100%; margin-bottom: 1rem;">
+  <input type="range" id="yearSlider" min="1950" max="2025" value="2025">
+  <div class="slider-labels">
+    <span>1950</span>
+    <span>1985</span>
+    <span>2025</span>
+  </div>
   <canvas id="degradation-chart"></canvas>
   <div id="year-caption" style="margin-top: 2rem; font-size: 1.1rem; line-height: 1.7;">
-    In 2025, cumulative plastic production is projected to exceed <b>8.3 billion tons</b>, while only a fraction has degraded.
+    In 2025, cumulative plastic production is projected to exceed <b>8.3 billion tons</b>.
   </div>
 </section>
 
 <section class="essay">
-  <p>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic.<br><br>
-  Originally created as a substitute for ivory, coral, shell — the form but not the ecology — plastic became our most durable pollutant. It simulates flexibility but resists decay. Over time, it replaced natural cycles with synthetic stasis. Today, we turn to enzymes and microbes, hoping they will undo what we once called innovation.</p>
+  <p><em>Plastic was invented to imitate nature. Now we imitate nature to dismantle plastic.</em></p>
+  <p>Originally created as a substitute for ivory, coral, shell — the form but not the ecology — plastic became our most durable pollutant. It simulates flexibility but resists decay. Over time, it replaced natural cycles with synthetic stasis. Today, we turn to enzymes and microbes, hoping they will undo what we once called innovation.</p>
 </section>
 
 <script>
