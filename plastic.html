@@ -30,15 +30,12 @@
       z-index: 10;
     }
     .video-block {
-           
       position: relative;
       width: 100%;
       height: 85vh;
       overflow: hidden;
-
     }
     video {
-
       position: absolute;
       top: 0; left: 0;
       min-width: 100%;
@@ -46,21 +43,21 @@
       object-fit: cover;
       opacity: 0.25;
     }
-      .video-title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 6rem;
-  color: rgba(0, 255, 255, 0.15);
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-  pointer-events: none;
-  user-select: none;
-  z-index: 3;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
+    .video-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 6rem;
+      color: rgba(0, 255, 255, 0.15);
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
     .hud-bottom {
       position: absolute;
       bottom: 7%; /* pushed up to avoid tooltip overlap */
@@ -134,6 +131,8 @@
       letter-spacing: 0.04em;
       text-shadow: 0 0 6px #00faff;
       user-select: text;
+      position: relative;
+      z-index: 1; /* above svg circle */
     }
     .hud-circular .label {
       font-size: 0.85rem;
@@ -142,18 +141,21 @@
       color: #00b3ccdd;
       text-transform: uppercase;
       user-select: text;
+      position: relative;
+      z-index: 1; /* above svg circle */
     }
     .svg-circle {
       position: absolute;
-      top: 10px; left: 10px;
-      width: 110px;
-      height: 110px;
+      top: 0;
+      left: 0;
+      width: 170px;
+      height: 170px;
       transform: rotate(-90deg);
-      z-index: 0;
+      z-index: 0; /* behind text */
     }
     .svg-circle circle {
       fill: none;
-      stroke-width: 10;
+      stroke-width: 8;
       stroke-linecap: round;
     }
     .svg-circle .bg {
@@ -183,46 +185,45 @@
       z-index: 100;
     }
     .hud-circular-large {
-  width: 170px;
-  height: 170px;
-  padding: 1.5rem;
-  position: relative;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at center, #001f3f 60%, transparent 80%),
-    repeating-conic-gradient(rgba(0,255,255,0.1) 0deg 15deg, transparent 15deg 20deg);
-  box-shadow:
-    0 0 14px #00faffcc,
-    inset 0 0 22px #00eaffcc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #00faff;
-  text-align: center;
-  cursor: default;
-  user-select: none;
-  outline-offset: 2px;
-}
-
-.hud-circular-large .svg-circle {
-  width: 130px !important;
-  height: 130px !important;
-  top: 10px !important;
-  left: 10px !important;
-}
-
-.hud-circular-large .value {
-  font-size: 2.5rem;
-  white-space: nowrap;
-  overflow: visible;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 6px #00faff;
-  user-select: text;
-}
-
+      width: 170px;
+      height: 170px;
+      padding: 1.5rem;
+      position: relative;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #001f3f 60%, transparent 80%),
+        repeating-conic-gradient(rgba(0,255,255,0.1) 0deg 15deg, transparent 15deg 20deg);
+      box-shadow:
+        0 0 14px #00faffcc,
+        inset 0 0 22px #00eaffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00faff;
+      text-align: center;
+      cursor: default;
+      user-select: none;
+      outline-offset: 2px;
+    }
+    .hud-circular-large .svg-circle {
+      width: 170px !important;
+      height: 170px !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+    .hud-circular-large .value {
+      font-size: 2.5rem;
+      white-space: nowrap;
+      overflow: visible;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 6px #00faff;
+      user-select: text;
+      position: relative;
+      z-index: 1;
+    }
     /* Plastic Produced tooltip right side */
     #tooltip-production {
       top: 0;
@@ -340,12 +341,12 @@
   <video autoplay muted loop playsinline>
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
- <div class="video-title">Plastic</div>
+  <div class="video-title">Plastic</div>
   <div class="hud-bottom">
-<div class="hud-circular hud-circular-large" tabindex="0" aria-describedby="tooltip-production">
-      <svg class="svg-circle" viewBox="0 0 140 140" aria-hidden="true">
-        <circle class="bg" r="60" cx="70" cy="70"></circle>
-        <circle class="progress" r="60" cx="70" cy="70" stroke-dasharray="377" stroke-dashoffset="377"></circle>
+    <div class="hud-circular hud-circular-large" tabindex="0" aria-describedby="tooltip-production">
+      <svg class="svg-circle" viewBox="0 0 170 170" aria-hidden="true">
+        <circle class="bg" r="78" cx="85" cy="85"></circle>
+        <circle class="progress" r="78" cx="85" cy="85" stroke-dasharray="490" stroke-dashoffset="490"></circle>
       </svg>
       <div class="value"><span id="plastic-count">0</span> Mt</div>
       <div class="label">Plastic Produced</div>
@@ -532,7 +533,7 @@
       document.getElementById('plastic-count').innerText = prod.toFixed(0);
       document.getElementById('use-time-value').innerText = "0.5"; // static value
       document.getElementById('degrade-time-value').innerText = "400"; // static value
-document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
+      document.getElementById('lifespan-percent').innerText = lifespanPercent.toFixed(1) + '%';
 
       // Update circular progress bars
       updateCircularProgress(document.querySelector('.hud-bottom .hud-circular'), Math.min((prod / 320) * 100, 100));
