@@ -60,8 +60,8 @@
     <div>Structure: <strong>(C₂H₄)<sub>n</sub></strong></div>
   </div>
   <div class="hud-container">
-    <div class="hud-panel"><div class="hud-title">Annual Plastic Production</div><div class="hud-metric"><span id="plastic-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div></div>
-    <div class="hud-panel"><div class="hud-title">Plastic Waste /yr</div><div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div></div>
+    <div class="hud-panel"><div class="hud-title">Annual Production</div><div class="hud-metric"><span id="plastic-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div></div>
+    <div class="hud-panel"><div class="hud-title">Waste Generated</div><div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div><div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div></div>
   </div>
 </section>
 
@@ -72,55 +72,4 @@
   <div id="year-caption" style="margin-top:2rem;font-size:1.1rem;line-height:1.7;"></div>
 </section>
 
-<section class="essay">
-  <div class="chapter-title">1. We can't understand systems we're embedded within</div>
-  <p>We built an entire economy around a material we knew wouldn’t decompose.</p>
-
-  <div class="chapter-title">2. Imitation of nature without relationship is extractive</div>
-  <p>Plastic was a stand-in for ivory, coral, shell — the form, but not the ecosystem.</p>
-
-  <div class="chapter-title">3. Modern knowledge without embodied practice is brittle</div>
-  <p>Now we rely on enzymes to clean up what we no longer know how to live without.</p>
-
-  <div class="chapter-title">4. Plastic resists time</div>
-  <p>It simulates flexibility but resists decay. It replaced natural cycles with synthetic stasis.</p>
-
-  <div class="chapter-title">5. Imitation became replacement</div>
-  <p>Plastic was the first widely used material engineered to resist biological breakdown — and today, we ask nature to solve it for us.</p>
-
-  <div class="chapter-title">Timeline Chapters</div>
-  <p><strong>1869–1945: Plastic as Promise</strong><br>
-  A moral invention. Plastic mimicked ivory, coral, shell — without taking life.</p>
-  <p><strong>1950–1975: The Rise of Synthetic Ubiquity</strong><br>
-  Mass production begins. Packaging. Convenience. Disposability. Growth becomes exponential.</p>
-  <p><strong>1980–2025: The Age of Accumulation</strong><br>
-  Waste outpaces reuse. Recycling myths collapse. Enzymes and fungi try to fix what humans can't undo.</p>
-
-  <p style="font-size:0.9rem; color:#888;">Data based on: <a href="https://ourworldindata.org/plastic-pollution" target="_blank" style="color:#8feaff;">Our World In Data</a> & <a href="https://www.science.org/doi/10.1126/sciadv.1700782" target="_blank" style="color:#8feaff;">Geyer et al. (2017)</a></p>
-</section>
-
-<script>
-  const years = Array.from({length:2025-1900+1}, (_,i)=>1900+i);
-  const production=[], cumulative=[], waste=[], degraded=[];
-  let total=0;
-  for(let i=0;i<years.length;i++){
-    const y=years[i];
-    let prod=0;
-    if(y<1950){ prod=Math.max(0.1*(y-1907),0); }
-    else if(y<=2015){ prod=2*Math.pow(1.07,y-1950); }
-    else{ prod=381+(y-2015)*10; }
-    production.push(+prod.toFixed(1));
-    total+=prod/1000;
-    cumulative.push(+total.toFixed(2));
-    const w=(i>=3)?production[i-3]*0.85:0;
-    waste.push(+w.toFixed(1));
-    degraded.push(y===2025?+(total*0.09).toFixed(2):0);
-  }
-
-  let chart;
-  function renderChart(){
-    const ctx=document.getElementById('degradation-chart').getContext('2d');
-    chart=new Chart(ctx,{
-      type:'line',
-      data:{ labels:years, datasets:[
-        { label:'Annual Plastic Production (Mt)', data:production, borderColor:'#00f0ff', tension:
+<scri
