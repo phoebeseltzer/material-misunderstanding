@@ -44,16 +44,15 @@
       opacity: 0.25;
     }
     .hud-bottom {
-  position: absolute;
-  bottom: 5%;
-  left: 5%;
-  display: flex;
-  gap: 0.5rem; /* much tighter spacing */
-  font-family: monospace;
-  color: #8feaff;
-  z-index: 5;
-}
-
+      position: absolute;
+      bottom: 5%;
+      left: 5%;
+      display: flex;
+      gap: 0.5rem; /* tighter spacing */
+      font-family: monospace;
+      color: #8feaff;
+      z-index: 5;
+    }
     .hud-panel {
       position: relative;
       background: rgba(0,255,255,0.05);
@@ -88,20 +87,18 @@
       background: #00faff;
       transition: width 0.3s ease-out;
     }
-    
-.hud-topright {
-  position: absolute;
-  top: 4%;
-  right: 4%;
-  font-family: monospace;
-  color: #8feaff;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem; /* tighter spacing */
-  min-width: 180px;
-}
-
+    .hud-topright {
+      position: absolute;
+      top: 4%;
+      right: 4%;
+      font-family: monospace;
+      color: #8feaff;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem; /* tighter spacing */
+      min-width: 180px;
+    }
     .hud-topright div {
       position: relative;
       background: rgba(0,255,255,0.05);
@@ -111,6 +108,29 @@
       font-size: 0.9rem;
       text-align: center;
       cursor: pointer;
+      outline-offset: 2px;
+    }
+    .hud-topleft {
+      position: absolute;
+      top: 4%;
+      left: 4%;
+      font-family: monospace;
+      color: #8feaff;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-width: 140px;
+    }
+    .hud-topleft div {
+      position: relative;
+      background: rgba(0,255,255,0.05);
+      padding: 0.6rem;
+      border-radius: 4px;
+      border: 1px solid #00f0ff33;
+      font-size: 0.9rem;
+      text-align: center;
+      cursor: default;
       outline-offset: 2px;
     }
     /* Tooltip styles */
@@ -132,30 +152,18 @@
       z-index: 100;
     }
     /* Position tooltips outside, above the HUDs */
-
-  
-#tooltip-production {
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-#tooltip-use-time,
-#tooltip-degrade-time,
-#tooltip-lifespan {
-  bottom: 120%;
-  right: 100%;
-  margin-right: 1rem;
-}
-
-/* Structure tooltip repositioned to left */
-.hud-topright div:last-child + .hud-tooltip {
-  right: auto;
-  left: -270px;
-  bottom: 130%;
-  margin-right: 0;
-}
-    
-  
+    #tooltip-production {
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    #tooltip-use-time,
+    #tooltip-degrade-time,
+    #tooltip-lifespan {
+      bottom: 120%;
+      right: 100%;
+      margin-right: 1rem;
+    }
     /* Tooltip arrow */
     .hud-tooltip::after {
       content: "";
@@ -177,14 +185,13 @@
     }
     .slider-wrap {
       max-width: 900px;
-      margin: 4rem auto 0.5rem;
+      margin: 4rem auto 1rem;
       text-align: center;
     }
     input[type=range] {
       width: 100%;
       cursor: pointer;
     }
-    
     canvas {
       width: 100%;
       max-width: 900px;
@@ -265,12 +272,11 @@
     <div id="tooltip-lifespan" class="hud-tooltip" role="tooltip">
       Over 99% of plastic’s existence unfolds post-disposal, polluting landscapes far longer than it ever served.
     </div>
+  </div>
 
-    <div tabindex="0" aria-describedby="tooltip-structure">
+  <div class="hud-topleft">
+    <div>
       <strong>Structure</strong><br>(C₂H₄)<sub>n</sub>
-    </div>
-    <div id="tooltip-structure" class="hud-tooltip" role="tooltip">
-      Polyethylene — a carbon chain polymer, deceptively simple yet deeply embedded in modern life and waste.
     </div>
   </div>
 </section>
@@ -279,7 +285,6 @@
   <input type="range" id="yearSlider" min="1900" max="2025" value="1900" />
   <div id="year-caption" class="caption"></div>
 </div>
-
 
 <canvas id="degradation-chart" height="300"></canvas>
 
