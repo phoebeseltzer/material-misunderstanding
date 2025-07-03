@@ -167,21 +167,25 @@
   </script>
 <script>
   // Get URL param 'from'
-  const urlParams = new URLSearchParams(window.location.search);
-  const from = urlParams.get('from');
+const urlParams = new URLSearchParams(window.location.search);
+const from = urlParams.get('from');
 
-  if (from) {
-    // Try to find a node matching the from value (e.g. 'plastic')
-    const node = document.getElementById(`${from}-area`);
-    if (node) {
-      node.classList.add('material-highlighted'); // Add highlight class
+if (from) {
+  // Try to find a node matching the from value (e.g. 'plastic')
+  const node = document.getElementById(`${from}-area`);
+  if (node) {
+    node.classList.add('material-highlight'); // Add highlight class
 
-      // Optional: Scroll into view smoothly
-      node.scrollIntoView({behavior: 'smooth', block: 'center'});
+    // Scroll into view smoothly
+    node.scrollIntoView({behavior: 'smooth', block: 'center'});
 
-      // You can also add a little pulse animation or style in CSS for .highlighted
-    }
+    // Remove highlight after animation finishes
+    node.addEventListener('animationend', () => {
+      node.classList.remove('material-highlight');
+    }, { once: true });
   }
+}
+
 </script>
 
 
