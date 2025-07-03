@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Plastic – The Synthetic Solution</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       margin: 0;
@@ -13,24 +14,7 @@
       background-color: #0f1111;
       color: #e6e6e6;
       scroll-behavior: smooth;
-    }
-
-    a.back-button {
-      position: fixed;
-      top: 2%;
-      left: 3%;
-      text-decoration: none;
-      color: #aaa;
-      font-size: 0.9rem;
-      border: 1px solid #888;
-      padding: 0.4rem 1rem;
-      background: transparent;
-      z-index: 10;
-    }
-
-    a.back-button:hover {
-      color: #fff;
-      border-color: #fff;
+      overflow-x: hidden;
     }
 
     section {
@@ -39,32 +23,10 @@
       margin: auto;
     }
 
-    .intro {
-      text-align: center;
-      padding-top: 20vh;
-    }
-
-    .intro h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      color: #aaa;
-    }
-
-    .meta {
-      font-size: 0.9rem;
-      color: #777;
-      margin-top: 0.5rem;
-    }
-
     .video-block {
       position: relative;
       width: 100%;
-      height: 60vh;
-      margin: 6vh auto;
+      height: 80vh;
       background: #111;
       display: flex;
       align-items: center;
@@ -72,7 +34,7 @@
       overflow: hidden;
     }
 
-    .video-block video {
+    video {
       position: absolute;
       top: 0;
       left: 0;
@@ -80,84 +42,67 @@
       min-height: 100%;
       object-fit: cover;
       opacity: 0.25;
-      transform: translateY(0px);
-      transition: transform 0.3s ease-out;
     }
 
-    .hud-overlay {
+    .hud-container {
       position: absolute;
-      max-width: 220px;
-      font-family: monospace;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.15);
-      padding: 0.8rem 1rem;
-      font-size: 0.75rem;
-      color: #8feaff;
-      border-radius: 5px;
-      text-shadow: 0 0 1px #00f0ff;
-      backdrop-filter: blur(4px);
+      bottom: 5%;
+      left: 5%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      backdrop-filter: blur(6px);
     }
 
-    .top-left { top: 5%; left: 5%; }
-    .top-right { top: 5%; right: 5%; }
-    .bottom-left { bottom: 5%; left: 5%; }
+    .hud-panel {
+      background: rgba(20, 30, 40, 0.4);
+      padding: 0.8rem;
+      border-radius: 6px;
+      color: #8feaff;
+      font-family: monospace;
+      text-shadow: 0 0 2px #00f0ff33;
+    }
 
     .hud-title {
-      font-size: 0.75rem;
-      font-weight: bold;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: #ffffffaa;
-      margin-bottom: 0.2rem;
     }
 
     .hud-metric {
-      margin: 0.2rem 0;
-      font-size: 0.85rem;
-      color: #c6f6ff;
+      font-size: 1.1rem;
+      margin: 0.4rem 0;
+    }
+
+    .unit {
+      font-size: 0.7rem;
+      opacity: 0.8;
     }
 
     .hud-bar {
       width: 100%;
       height: 6px;
       background: rgba(255,255,255,0.1);
-      margin-top: 6px;
-      border-radius: 2px;
+      border-radius: 3px;
       overflow: hidden;
     }
 
     .hud-fill {
       height: 100%;
-      background: #00f0ff;
-      animation: pulse-bar 4s ease-in-out infinite;
+      width: 0%;
+      background: #00faff;
+      transition: width 2s ease-out;
     }
 
-    @keyframes pulse-bar {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-
-    .essay {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      margin-bottom: 10vh;
-    }
-
-    .closing {
-      text-align: center;
-      font-style: italic;
-      color: #aaa;
-      margin-bottom: 15vh;
+    #degradation-chart {
+      width: 100%;
+      max-width: 900px;
+      margin: 8vh auto;
     }
   </style>
 </head>
 <body>
-
-<a href="map.html" class="back-button">← Back to Atlas</a>
-
-<section class="intro">
-  <h1>Plastic</h1>
-  <p class="subtitle">The synthetic solution</p>
-  <p class="meta">Invented 1869 as an ivory substitute</p>
-</section>
 
 <section class="video-block" id="video-block">
   <video autoplay muted loop playsinline id="cyanotypeVideo">
@@ -165,105 +110,119 @@
     Your browser does not support the video tag.
   </video>
 
-  <!-- HUD Block -->
-  <div class="hud-overlay bottom-left">
- 
-    <div class="hud-title" style="margin-top:1rem;">GLOBAL MASS</div>
-    <div class="hud-metric"><span id="plastic-count">0</span> billion tons</div>
-
-    <div class="hud-title" style="margin-top:1rem;">WASTE GENERATED</div>
-    <div class="hud-metric"><span id="waste-count">0</span> million tons</div>
-
-    <div class="hud-title" style="margin-top:1rem;">TIME SINCE ORIGIN</div>
-    <div class="hud-metric"><span id="year-count">0</span> years</div>
-  </div>
-
-  <div class="hud-overlay top-left">
-    <div class="hud-title">MATERIAL STATUS</div>
-    <div class="hud-metric">O₂ DEGRADATION: <span class="hud-value">↑ 3.2%</span></div>
-    <div class="hud-bar">
-      <div class="hud-fill" style="width: 60%"></div>
+  <!-- HUD -->
+  <div class="hud-container">
+    <div class="hud-panel">
+      <div class="hud-title">GLOBAL MASS</div>
+      <div class="hud-metric"><span id="plastic-count">0.0</span><span class="unit"> Bt</span></div>
+      <div class="hud-bar"><div id="bar-plastic" class="hud-fill"></div></div>
+    </div>
+    <div class="hud-panel">
+      <div class="hud-title">WASTE GENERATED /yr</div>
+      <div class="hud-metric"><span id="waste-count">0</span><span class="unit"> Mt</span></div>
+      <div class="hud-bar"><div id="bar-waste" class="hud-fill"></div></div>
+    </div>
+    <div class="hud-panel">
+      <div class="hud-title">AVG LIFESPAN</div>
+      <div class="hud-metric">~<span id="avg-lifetime">2</span><span class="unit"> yrs</span></div>
+    </div>
+    <div class="hud-panel">
+      <div class="hud-title">DEGRADATION TIME</div>
+      <div class="hud-metric">~<span id="degrade-time">400</span><span class="unit"> yrs</span></div>
     </div>
   </div>
-
-  <div class="hud-overlay top-right">
-    <div class="hud-title">STRUCTURE</div>
-    <div class="hud-metric">(C₂H₄)<sub>n</sub></div>
-  </div>
 </section>
 
-<section class="essay">
-  <p>
-    [Insert your full text here — beginning with imitation, the moral logic of substitution, expansion through war, consumer freedom, scientific longevity, ecological embeddedness, and recursive biological correction.]
-  </p>
-</section>
-
-<section class="closing">
-  <p>It still works. That’s the problem.</p>
-</section>
+<!-- Interactive Timeline Chart -->
+<canvas id="degradation-chart"></canvas>
 
 <script>
-  // Parallax effect
-  const video = document.getElementById('cyanotypeVideo');
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const blockTop = document.getElementById('video-block').offsetTop;
-    const distance = scrollY - blockTop;
-    if (distance >= 0 && distance <= 800) {
-      video.style.transform = `translateY(${distance * 0.1}px)`;
-    }
+  let animated = false;
+
+  // Static data (can be replaced with API in future)
+  const years = Array.from({length: 2025 - 1950 + 1}, (_, i) => 1950 + i);
+  const production = [];
+  const cumulative = [];
+  const degraded = [];
+  let totalProd = 0;
+
+  years.forEach((year, i) => {
+    let yearly = year <= 2017 ? (year - 1949) * 0.1 : 0.4;
+    totalProd += yearly;
+    production.push(+yearly.toFixed(2));
+    cumulative.push(+totalProd.toFixed(2));
+    let decay = i > 10 ? production.slice(0, i - 10).reduce((a, b) => a + b * 0.001, 0) : 0;
+    degraded.push(+decay.toFixed(2));
   });
 
-  // Year counter
-  const baseYear = 1869;
-  const currentYear = new Date().getFullYear();
-  document.getElementById("year-count").innerText = currentYear - baseYear;
+  // Counter animation
+  function animateHUD(prodT, wasteT) {
+    if (animated) return;
+    animated = true;
+    const pc = document.getElementById('plastic-count');
+    const wc = document.getElementById('waste-count');
+    let cp = 0, cw = 0;
+    const steps = 100, sp = prodT / steps, sw = wasteT / steps;
 
-  // HUD Animation Script
-  const plasticStarted = { prod: false, waste: false };
-
-  async function fetchOWID(id) {
-    const url = `https://ourworldindata.org/grapher/${id}.json`;
-    const resp = await fetch(url);
-    const json = await resp.json();
-    const series = json.data;
-    const lastYear = Object.keys(series).pop();
-    return series[lastYear].y;
+    const interval = setInterval(() => {
+      cp += sp; cw += sw;
+      pc.innerText = cp.toFixed(1);
+      wc.innerText = Math.round(cw);
+      document.getElementById('bar-plastic').style.width = (cp / prodT * 100) + '%';
+      document.getElementById('bar-waste').style.width = (cw / wasteT * 100) + '%';
+      if (cp >= prodT && cw >= wasteT) clearInterval(interval);
+    }, 20);
   }
 
-  function animateCount(el, target, key) {
-    if (plasticStarted[key]) return;
-    plasticStarted[key] = true;
-    let count = 0;
-    const step = target / (2000 / 50);
-
-    const timer = setInterval(() => {
-      count = Math.min(count + step, target);
-      el.innerText = target >= 1000000
-        ? (count / 1000000000).toFixed(1)
-        : count.toFixed(0);
-      if (count >= target) clearInterval(timer);
-    }, 50);
-  }
-
-  async function initHUD() {
-    const [prodT, wasteT] = await Promise.all([
-      fetchOWID('cumulative-global-plastics'),
-      fetchOWID('plastic-waste-generation-total')
-    ]);
-    window.addEventListener('scroll', () => {
-      const vidPos = document.getElementById('video-block')
-        .getBoundingClientRect().top;
-      if (vidPos < window.innerHeight) {
-        animateCount(document.getElementById('plastic-count'), prodT, 'prod');
-        animateCount(document.getElementById('waste-count'), wasteT, 'waste');
+  // Chart rendering
+  function renderChart() {
+    const ctx = document.getElementById('degradation-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [
+          {
+            label: 'Cumulative Plastic Produced (Bt)',
+            data: cumulative,
+            borderColor: '#00f0ff',
+            tension: 0.25
+          },
+          {
+            label: 'Estimated Degraded Plastic (Bt)',
+            data: degraded,
+            borderColor: '#ff568f',
+            tension: 0.25
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Billion Tons'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#e6e6e6' }
+          }
+        }
       }
     });
   }
 
-  initHUD();
+  window.addEventListener('scroll', () => {
+    const top = document.getElementById('video-block').getBoundingClientRect().top;
+    if (top < window.innerHeight * 0.8) animateHUD(8.3, 350);
+  });
+
+  renderChart();
 </script>
 
 </body>
 </html>
-
