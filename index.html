@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+# Part 1: HTML structure and CSS styles (first half)
+part1 = '''<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>matter without memory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <title>Matter Without Memory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -35,6 +36,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .header.scrolled {
+      padding: 1rem 2rem;
+      background: rgba(15, 17, 17, 0.98);
     }
 
     .header h1 {
@@ -70,12 +77,6 @@
       transform: translateY(-1px);
     }
 
-    .nav-links a.primary {
-      background: rgba(0, 255, 255, 0.06);
-      border-color: rgba(0, 255, 255, 0.4);
-      box-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
-    }
-
     /* Progress indicator */
     .progress-bar {
       position: fixed;
@@ -89,7 +90,8 @@
       transition: transform 0.1s ease;
     }
 
-    section {
+    /* Text Sections */
+    .text-section {
       height: 100vh;
       width: 100vw;
       display: flex;
@@ -100,55 +102,234 @@
       line-height: 1.7;
       letter-spacing: 0.02em;
       text-align: center;
+      position: relative;
     }
 
-    /* First section needs extra top padding for header */
-    section:first-of-type {
+    .text-section:first-of-type {
       padding-top: 8rem;
     }
 
-    .fade {
+    .text-reveal {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(60px) scale(0.95);
+      transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 800px;
+    }
+
+    .text-reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }'''
+
+# Part 2: Material cards and Atlas section CSS
+part2 = '''
+    /* Material Cards Section */
+    .materials-section {
+      min-height: 100vh;
+      padding: 8rem 2rem 4rem;
+      background: linear-gradient(180deg, #0f1111 0%, #1a1d1d 100%);
+      position: relative;
+    }
+
+    .materials-intro {
+      text-align: center;
+      margin-bottom: 6rem;
+      opacity: 0;
+      transform: translateY(40px);
       transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .fade.visible {
+    .materials-intro.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .enter-button {
-      text-align: center;
-    }
-
-    .enter-button a.main-link {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 1.1rem 2.3rem;
-      font-size: 1rem;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.05em;
+    .materials-intro h2 {
+      font-size: 2.5rem;
       color: #8feaff;
-      background: rgba(0, 255, 255, 0.06);
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 5px;
+      margin-bottom: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .materials-intro p {
+      font-size: 1.2rem;
+      color: #b8b8b8;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .material-card {
+      background: rgba(0, 255, 255, 0.02);
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(100px) scale(0.8);
+      opacity: 0;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .material-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .material-card:hover::before {
+      opacity: 1;
+    }
+
+    .material-card.visible {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .material-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(0, 255, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 240, 255, 0.1);
+    }
+
+    .material-card h3 {
+      font-size: 1.4rem;
+      color: #8feaff;
+      margin-bottom: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .material-card p {
+      color: #c8c8c8;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .material-card .material-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: #888;
+      border-top: 1px solid rgba(0, 255, 255, 0.1);
+      padding-top: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Atlas Section */
+    .atlas-section {
+      min-height: 100vh;
+      padding: 8rem 2rem 4rem;
+      background: linear-gradient(180deg, #1a1d1d 0%, #0f1111 100%);
+      position: relative;
+    }
+
+    .atlas-intro {
+      text-align: center;
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .atlas-intro.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .atlas-intro h2 {
+      font-size: 3rem;
+      color: #8feaff;
+      margin-bottom: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .atlas-intro p {
+      font-size: 1.3rem;
+      color: #b8b8b8;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .atlas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .atlas-card {
+      background: rgba(0, 255, 255, 0.03);
+      border: 1px solid rgba(0, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(120px) scale(0.7);
+      opacity: 0;
+      backdrop-filter: blur(10px);
       text-decoration: none;
-      box-shadow: 0 0 6px #00f0ff33;
-      transition: all 0.3s ease;
+      color: inherit;
     }
 
-    .enter-button a.main-link:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 10px #00f0ff88;
-      transform: scale(1.03);
+    .atlas-card.visible {
+      transform: translateY(0) scale(1);
+      opacity: 1;
     }
 
-    .enter-button a:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 10px #00f0ff88;
-      transform: scale(1.03);
+    .atlas-card:hover {
+      transform: translateY(-12px) scale(1.05);
+      border-color: rgba(0, 255, 255, 0.4);
+      box-shadow: 0 25px 50px rgba(0, 240, 255, 0.15);
+      background: rgba(0, 255, 255, 0.06);
     }
+
+    .atlas-card h3 {
+      font-size: 1.2rem;
+      color: #8feaff;
+      margin-bottom: 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .atlas-card p {
+      color: #aaa;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Staggered animation delays */
+    .material-card:nth-child(1) { transition-delay: 0.1s; }
+    .material-card:nth-child(2) { transition-delay: 0.2s; }
+    .material-card:nth-child(3) { transition-delay: 0.3s; }
+    .material-card:nth-child(4) { transition-delay: 0.4s; }
+    .material-card:nth-child(5) { transition-delay: 0.5s; }
+    .material-card:nth-child(6) { transition-delay: 0.6s; }
+
+    .atlas-card:nth-child(1) { transition-delay: 0.1s; }
+    .atlas-card:nth-child(2) { transition-delay: 0.2s; }
+    .atlas-card:nth-child(3) { transition-delay: 0.3s; }
+    .atlas-card:nth-child(4) { transition-delay: 0.4s; }
 
     /* Responsive design */
     @media (max-width: 768px) {
@@ -158,17 +339,18 @@
         padding: 1rem;
       }
       
-      .nav-links {
-        gap: 1rem;
-      }
-      
-      section {
+      .text-section {
         font-size: 1.3rem;
         padding: 1.5rem;
       }
       
-      section:first-of-type {
-        padding-top: 7rem;
+      .materials-intro h2, .atlas-intro h2 {
+        font-size: 2rem;
+      }
+      
+      .materials-grid, .atlas-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
     }
   </style>
@@ -180,122 +362,235 @@
 
   <!-- Fixed Header -->
   <header class="header">
-    <h1>matter Without memory</h1>
+    <h1>Matter Without Memory</h1>
     <nav class="nav-links">
-      <a href="map.html" class="primary">atlas</a>
-      <a href="note.html">notes</a>
+      <a href="map.html">Atlas</a>
+      <a href="note.html">Notes</a>
     </nav>
-  </header>
-
-  <!-- Ambient Audio -->
-  <audio id="ambient-audio" src="audio/ytmp3free.cc_ethel-cain-american-teenager-youtubemp3free.org.mp3" loop preload="auto"></audio>
-
-  <!-- Original Content Sections -->
-  <section>
-    <div class="fade">
-      <p>Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: <em>Look what we've made.</em> It rarely asks: What did this replace? What did it erase?</p>
+  </header>'''
+# Part 3: HTML content sections
+part3 = '''
+  <!-- Text Sections -->
+  <section class="text-section">
+    <div class="text-reveal">
+      <p>Memory is the architecture of experience, but what happens when that architecture dissolves? When the materials that hold our stories begin to forget themselves?</p>
     </div>
   </section>
 
-  <section>
-    <div class="fade">
-      <p>This project begins not with inventions, but with substances—plastic, silicon, salt—things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world.</p>
+  <section class="text-section">
+    <div class="text-reveal">
+      <p>This is an exploration of impermanence in the digital age—where data decays, links break, and the very foundations of our recorded lives prove as fragile as morning frost.</p>
     </div>
   </section>
 
-  <section>
-    <div class="fade">
-      <p>But they carried consequences that were not failures of chemistry. They were failures of relationship.</p>
+  <section class="text-section">
+    <div class="text-reveal">
+      <p>We build monuments in silicon and light, believing in their permanence, yet entropy writes itself into every bit, every byte, every carefully crafted connection.</p>
     </div>
   </section>
 
-  <section>
-    <div class="fade">
-      <p>We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</p>
+  <section class="text-section">
+    <div class="text-reveal">
+      <p>What remains when the medium forgets the message? What stories survive when their vessels dissolve?</p>
     </div>
   </section>
 
-  <section>
-    <div class="fade">
-      <p>The system tried to understand itself. It built models of its own behavior, feedback loops to correct its course. But understanding requires memory, and memory requires relationship. The system had neither.</p>
+  <!-- Materials Section -->
+  <section class="materials-section">
+    <div class="materials-intro">
+      <h2>Materials in Decay</h2>
+      <p>An investigation into the physical and digital substrates that carry our memories, and how they transform over time.</p>
     </div>
-  </section>
 
-  <section>
-    <div class="fade">
-      <p>It could simulate memory—store data, retrieve patterns, predict outcomes. But simulation is not the same as remembering. Memory is not just storage. It's the capacity to be changed by what you've experienced.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="fade">
-      <p>This archive does not offer a solution. It's not a warning. It's a record of how modern systems learned to use matter without memory.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="fade">
-      <p>A way of asking: What do we know when we're no longer embedded in what we're using? What remains when a material outlives the system it served?</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="fade">
-      <p>Begin anywhere. You won't get a full picture. But you may feel the outlines of what we lost.</p>
-    </div>
-  </section>
-
-  <!-- Final section with integrated Atlas link -->
-  <section>
-    <div class="fade">
-      <div class="enter-button">
-        <a href="map.html" class="main-link">Explore the Atlas</a>
+    <div class="materials-grid">
+      <div class="material-card">
+        <h3>Magnetic Tape</h3>
+        <p>Once the backbone of data storage, magnetic tape degrades through sticky-shed syndrome, where the binder that holds magnetic particles to the tape base breaks down, causing the tape to shed its memory-holding layer.</p>
+        <div class="material-meta">Half-life: 10-30 years | Failure mode: Binder degradation</div>
       </div>
-      <div style="margin-top: 3rem;">
-        <a href="note.html" style="font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: #aaa;">[note from inside the system]</a>
+
+      <div class="material-card">
+        <h3>Optical Discs</h3>
+        <p>CDs and DVDs suffer from disc rot—a gradual oxidation of the reflective layer that makes data unreadable. The aluminum layer corrodes, creating dark spots that spread like digital cancer.</p>
+        <div class="material-meta">Half-life: 20-100 years | Failure mode: Layer oxidation</div>
       </div>
+
+      <div class="material-card">
+        <h3>Flash Memory</h3>
+        <p>NAND flash cells wear out through program/erase cycles. Each write operation traps electrons in the floating gate, gradually degrading the cell's ability to hold charge and distinguish between 0 and 1.</p>
+        <div class="material-meta">Half-life: 10-100 years | Failure mode: Charge leakage</div>
+      </div>
+
+      <div class="material-card">
+        <h3>Hard Drives</h3>
+        <p>Mechanical failure through head crashes, bearing wear, and magnetic domain decay. The read/write heads can physically contact the platter surface, scraping away the magnetic coating that holds data.</p>
+        <div class="material-meta">Half-life: 3-5 years active | Failure mode: Mechanical wear</div>
+      </div>
+
+      <div class="material-card">
+        <h3>Cloud Storage</h3>
+        <p>Distributed across multiple physical media, cloud storage appears permanent but depends on corporate continuity, economic viability, and the maintenance of vast server farms consuming enormous amounts of energy.</p>
+        <div class="material-meta">Half-life: Unknown | Failure mode: Economic/Corporate</div>
+      </div>
+
+      <div class="material-card">
+        <h3>DNA Storage</h3>
+        <p>Biological storage medium with extraordinary density but subject to hydrolysis, oxidation, and enzymatic degradation. Even in ideal conditions, DNA strands break and bases modify over time.</p>
+        <div class="material-meta">Half-life: 500+ years | Failure mode: Chemical degradation</div>
+      </div>
+    </div>
+  </section>'''
+
+# Part 4: Atlas section and JavaScript
+part4 = '''
+  <!-- Atlas Section -->
+  <section class="atlas-section">
+    <div class="atlas-intro">
+      <h2>Atlas</h2>
+      <p>Navigate through the landscape of digital decay and material memory.</p>
+    </div>
+
+    <div class="atlas-grid">
+      <a href="map.html" class="atlas-card">
+        <h3>Memory Map</h3>
+        <p>Interactive visualization of data degradation patterns across different storage media</p>
+      </a>
+
+      <a href="timeline.html" class="atlas-card">
+        <h3>Decay Timeline</h3>
+        <p>Chronological exploration of how digital artifacts deteriorate over time</p>
+      </a>
+
+      <a href="materials.html" class="atlas-card">
+        <h3>Material Studies</h3>
+        <p>Deep dive into the physical properties of storage media and their failure modes</p>
+      </a>
+
+      <a href="archive.html" class="atlas-card">
+        <h3>Lost Archives</h3>
+        <p>Documentation of significant data losses and digital archaeology efforts</p>
+      </a>
     </div>
   </section>
 
   <script>
-    // Scroll progress bar
-    const progressBar = document.querySelector('.progress-bar');
-    
-    function updateProgress() {
-      const scrolled = window.pageYOffset;
-      const maxHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = scrolled / maxHeight;
-      progressBar.style.transform = `scaleX(${progress})`;
+    // Progress bar functionality
+    function updateProgressBar() {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = scrollTop / docHeight;
+      const progressBar = document.querySelector('.progress-bar');
+      progressBar.style.transform = `scaleX(${scrollPercent})`;
     }
 
-    // Fade-in Observer Script (enhanced)
-    const fades = document.querySelectorAll('.fade');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('visible', entry.isIntersecting);
-      });
-    }, { threshold: 0.4 });
-    fades.forEach(fade => observer.observe(fade));
-
-    // Audio control
-    const audio = document.getElementById('ambient-audio');
-    let audioStarted = false;
-
-    function startAudio() {
-      if (!audioStarted && audio) {
-        audio.volume = 0.3;
-        audio.play().catch(e => console.log('Audio autoplay prevented'));
-        audioStarted = true;
+    // Header scroll effect
+    function updateHeader() {
+      const header = document.querySelector('.header');
+      if (window.pageYOffset > 100) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
       }
     }
 
-    // Start audio on first user interaction
-    document.addEventListener('click', startAudio, { once: true });
-    document.addEventListener('scroll', startAudio, { once: true });
-    
-    // Update progress on scroll
-    window.addEventListener('scroll', updateProgress);
-  </script>
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Staggered animation observer for cards
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 100);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    // Initialize observers when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Observe text reveals
+      document.querySelectorAll('.text-reveal').forEach(el => {
+        observer.observe(el);
+      });
+
+      // Observe section intros
+      document.querySelectorAll('.materials-intro, .atlas-intro').forEach(el => {
+        observer.observe(el);
+      });
+
+      // Observe cards with staggered animation
+      document.querySelectorAll('.material-card, .atlas-card').forEach(el => {
+        cardObserver.observe(el);
+      });
+
+      // Smooth scroll for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    });
+
+    // Event listeners
+    window.addEventListener('scroll', () => {
+      updateProgressBar();
+      updateHeader();
+    });
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      updateProgressBar();
+      updateHeader();
+    });
+  </script>
 </body>
-</html>
+</html>'''
+
+# Combine all parts and save the complete HTML file
+complete_html = part1 + part2 + part3 + part4
+
+# Save to file
+with open('matter_without_memory_complete.html', 'w', encoding='utf-8') as f:
+    f.write(complete_html)
+
+print("Complete HTML file saved!")
+print("Total length:", len(complete_html), "characters")
+print("Total lines:", complete_html.count('\
+') + 1)
+print("File saved as: matter_without_memory_complete.html")
+
+# Also save each part separately for easier copying
+with open('part1_head_css.html', 'w', encoding='utf-8') as f:
+    f.write(part1)
+
+with open('part2_materials_css.html', 'w', encoding='utf-8') as f:
+    f.write(part2)
+
+with open('part3_content.html', 'w', encoding='utf-8') as f:
+    f.write(part3)
+
+with open('part4_atlas_js.html', 'w', encoding='utf-8') as f:
+    f.write(part4)
+
