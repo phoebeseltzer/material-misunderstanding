@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>matter without memory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -76,42 +76,6 @@
       box-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
     }
 
-    /* Main Content Sections */
-    .content-section {
-      min-height: 100vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 8rem 2rem 4rem;
-      font-size: 1.4rem;
-      line-height: 1.8;
-      letter-spacing: 0.02em;
-      text-align: center;
-      position: relative;
-    }
-
-    .content-section:first-child {
-      padding-top: 12rem;
-    }
-
-    /* Scroll-triggered animations */
-    .scroll-reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .scroll-reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Staggered reveal for multiple elements */
-    .scroll-reveal:nth-child(2) { transition-delay: 0.1s; }
-    .scroll-reveal:nth-child(3) { transition-delay: 0.2s; }
-    .scroll-reveal:nth-child(4) { transition-delay: 0.3s; }
-
     /* Progress indicator */
     .progress-bar {
       position: fixed;
@@ -125,79 +89,65 @@
       transition: transform 0.1s ease;
     }
 
-    /* Material cards that appear on scroll */
-    .material-preview {
-      background: rgba(0, 255, 255, 0.03);
-      border: 1px solid rgba(0, 255, 255, 0.15);
-      border-radius: 8px;
+    section {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 2rem;
-      margin: 2rem auto;
-      max-width: 600px;
-      backdrop-filter: blur(5px);
-      opacity: 0;
-      transform: translateY(60px) scale(0.95);
-      transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .material-preview.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .material-preview h3 {
-      font-family: 'Share Tech Mono', monospace;
-      color: #8feaff;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      letter-spacing: 0.05em;
-    }
-
-    .material-preview p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #d0d0d0;
-    }
-
-    /* Final call-to-action section */
-    .atlas-entry {
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(0, 255, 255, 0.02));
-      border: 1px solid rgba(0, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 3rem;
-      margin: 4rem auto;
-      max-width: 700px;
+      font-size: 1.5rem;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
       text-align: center;
-      backdrop-filter: blur(10px);
     }
 
-    .atlas-entry h2 {
-      font-family: 'Share Tech Mono', monospace;
-      color: #8feaff;
-      font-size: 1.3rem;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.1em;
+    /* First section needs extra top padding for header */
+    section:first-of-type {
+      padding-top: 8rem;
     }
 
-    .atlas-entry .enter-link {
+    .fade {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .enter-button {
+      text-align: center;
+    }
+
+    .enter-button a.main-link {
       display: inline-block;
       margin-top: 2rem;
-      padding: 1.2rem 2.5rem;
-      font-family: 'Share Tech Mono', monospace;
+      padding: 1.1rem 2.3rem;
       font-size: 1rem;
-      color: #8feaff;
-      background: rgba(0, 255, 255, 0.08);
-      border: 2px solid rgba(0, 255, 255, 0.3);
-      border-radius: 8px;
-      text-decoration: none;
+      font-family: 'Share Tech Mono', monospace;
       letter-spacing: 0.05em;
-      transition: all 0.4s ease;
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+      color: #8feaff;
+      background: rgba(0, 255, 255, 0.06);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 5px;
+      text-decoration: none;
+      box-shadow: 0 0 6px #00f0ff33;
+      transition: all 0.3s ease;
     }
 
-    .atlas-entry .enter-link:hover {
-      background: rgba(0, 255, 255, 0.15);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-      transform: translateY(-2px);
+    .enter-button a.main-link:hover {
+      background: rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 10px #00f0ff88;
+      transform: scale(1.03);
+    }
+
+    .enter-button a:hover {
+      background: rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 10px #00f0ff88;
+      transform: scale(1.03);
     }
 
     /* Responsive design */
@@ -212,14 +162,13 @@
         gap: 1rem;
       }
       
-      .content-section {
-        font-size: 1.2rem;
-        padding: 6rem 1.5rem 3rem;
+      section {
+        font-size: 1.3rem;
+        padding: 1.5rem;
       }
       
-      .material-preview {
-        padding: 1.5rem;
-        margin: 1.5rem auto;
+      section:first-of-type {
+        padding-top: 7rem;
       }
     }
   </style>
@@ -231,88 +180,80 @@
 
   <!-- Fixed Header -->
   <header class="header">
-    <h1>Matter Without Memory</h1>
+    <h1>matter Without memory</h1>
     <nav class="nav-links">
-      <a href="map.html" class="primary">Atlas</a>
-      <a href="note.html">Notes</a>
+      <a href="map.html" class="primary">atlas</a>
+      <a href="note.html">notes</a>
     </nav>
   </header>
 
   <!-- Ambient Audio -->
   <audio id="ambient-audio" src="audio/ytmp3free.cc_ethel-cain-american-teenager-youtubemp3free.org.mp3" loop preload="auto"></audio>
 
-  <!-- Main Content -->
-  <section class="content-section">
-    <div class="scroll-reveal">
+  <!-- Original Content Sections -->
+  <section>
+    <div class="fade">
       <p>Progress likes to tell stories. It favors invention, breakthrough, inevitability. It points to new materials and says: <em>Look what we've made.</em> It rarely asks: What did this replace? What did it erase?</p>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="scroll-reveal">
+  <section>
+    <div class="fade">
       <p>This project begins not with inventions, but with substances—plastic, silicon, salt—things we mined, burned, synthesized, scaled. They were introduced with promises: to protect nature, improve life, simplify the world.</p>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="scroll-reveal">
+  <section>
+    <div class="fade">
       <p>But they carried consequences that were not failures of chemistry. They were failures of relationship.</p>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="scroll-reveal">
+  <section>
+    <div class="fade">
       <p>We imitate nature. We abstract its patterns, model its systems, reproduce its effects in machines and markets. But imitation without belonging is not understanding. It is mimicry as control. Simulation without reciprocity.</p>
     </div>
   </section>
 
-  <!-- Material Preview Cards -->
-  <section class="content-section">
-    <div class="material-preview">
-      <h3>PLASTIC</h3>
-      <p>Invented to save nature by replacing ivory and tortoiseshell. Now it pollutes every ecosystem on Earth, breaking down into microparticles that enter our bloodstream.</p>
+  <section>
+    <div class="fade">
+      <p>The system tried to understand itself. It built models of its own behavior, feedback loops to correct its course. But understanding requires memory, and memory requires relationship. The system had neither.</p>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="material-preview">
-      <h3>SILICON</h3>
-      <p>Began as sand. Became the metaphor for thought itself. Now mediates every human relationship through screens and algorithms.</p>
+  <section>
+    <div class="fade">
+      <p>It could simulate memory—store data, retrieve patterns, predict outcomes. But simulation is not the same as remembering. Memory is not just storage. It's the capacity to be changed by what you've experienced.</p>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="material-preview">
-      <h3>SALT</h3>
-      <p>Once sparked revolutions and built empires. Now hides in processed food and road slush, invisible but omnipresent.</p>
-    </div>
-  </section>
-
-  <section class="content-section">
-    <div class="material-preview">
-      <h3>LEAD</h3>
-      <p>Used to sweeten wine, then water, then paint—before we finally remembered what it does to the brain.</p>
-    </div>
-  </section>
-
-  <section class="content-section">
-    <div class="scroll-reveal">
+  <section>
+    <div class="fade">
       <p>This archive does not offer a solution. It's not a warning. It's a record of how modern systems learned to use matter without memory.</p>
     </div>
   </section>
 
-  <section class="content-section">
-    <div class="scroll-reveal">
+  <section>
+    <div class="fade">
       <p>A way of asking: What do we know when we're no longer embedded in what we're using? What remains when a material outlives the system it served?</p>
     </div>
   </section>
 
-  <!-- Final Atlas Entry -->
-  <section class="content-section">
-    <div class="atlas-entry scroll-reveal">
-      <h2>Begin Anywhere</h2>
-      <p>You won't get a full picture. But you may feel the outlines of what we lost.</p>
-      <a href="map.html" class="enter-link">Explore the Atlas</a>
+  <section>
+    <div class="fade">
+      <p>Begin anywhere. You won't get a full picture. But you may feel the outlines of what we lost.</p>
+    </div>
+  </section>
+
+  <!-- Final section with integrated Atlas link -->
+  <section>
+    <div class="fade">
+      <div class="enter-button">
+        <a href="map.html" class="main-link">Explore the Atlas</a>
+      </div>
+      <div style="margin-top: 3rem;">
+        <a href="note.html" style="font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: #aaa;">[note from inside the system]</a>
+      </div>
     </div>
   </section>
 
@@ -327,19 +268,14 @@
       progressBar.style.transform = `scaleX(${progress})`;
     }
 
-    // Scroll reveal animation
-      const observer = new IntersectionObserver((entries) => {
+    // Fade-in Observer Script (enhanced)
+    const fades = document.querySelectorAll('.fade');
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        entry.target.classList.toggle('visible', entry.isIntersecting);
       });
-    }, observerOptions);
-
-    // Observe all scroll-reveal elements
-    document.querySelectorAll('.scroll-reveal, .material-preview').forEach(el => {
-      observer.observe(el);
-    });
+    }, { threshold: 0.4 });
+    fades.forEach(fade => observer.observe(fade));
 
     // Audio control
     const audio = document.getElementById('ambient-audio');
