@@ -2,36 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Matter Without Memory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Domine&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     html, body {
       height: 100%;
       scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
       background-color: #0f1111;
       color: #e6e6e6;
       font-family: 'Domine', serif;
-      overflow-x: hidden;
+      overflow-y: scroll;
     }
 
-    /* Video */
+    /* Background Video */
     #bg-video {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.15;
+      opacity: 0.07;
       z-index: -1;
     }
 
-    /* Header */
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #8feaff, #00f0ff);
+      z-index: 1001;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    /* Transparent Header */
     .header {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 1000;
       padding: 1.5rem 2rem;
       background: transparent;
@@ -41,10 +61,7 @@
     }
 
     .header h1 {
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: #8feaff;
-      letter-spacing: 0.05em;
+      display: none;
     }
 
     .nav-links {
@@ -70,21 +87,64 @@
 
     .menu-toggle {
       display: none;
+      font-size: 1.5rem;
+      color: #8feaff;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
-    /* Sections */
-    .scroll-wrapper {
-      scroll-snap-type: y mandatory;
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: rgba(15, 17, 17, 0.95);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    /* Hero Title */
+    .hero-title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 5rem;
+      color: rgba(0, 255, 255, 0.15);
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .hero-block {
+      scroll-snap-align: start;
+      height: 100vh;
+      position: relative;
     }
 
     .text-section {
-      height: 100vh;
       scroll-snap-align: start;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 2rem;
-      background: transparent;
       text-align: center;
       font-size: 2rem;
       line-height: 1.8;
@@ -93,8 +153,8 @@
     .text-reveal {
       opacity: 0;
       transform: translateY(60px) scale(0.95);
-      transition: all 1.5s ease;
-      max-width: 800px;
+      transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 900px;
     }
 
     .text-reveal.visible {
@@ -102,8 +162,8 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Atlas */
     .materials-section {
+      scroll-snap-align: none;
       padding: 8rem 2rem 4rem;
       background: linear-gradient(180deg, #0f1111 0%, #1a1d1d 100%);
     }
@@ -136,7 +196,7 @@
       color: inherit;
       transform: translateY(100px) scale(0.8);
       opacity: 0;
-      transition: all 0.6s ease;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       backdrop-filter: blur(10px);
     }
 
@@ -183,32 +243,25 @@
       cursor: pointer;
       z-index: 1000;
     }
-
-    .progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #8feaff, #00f0ff);
-      z-index: 1001;
-      transform-origin: left;
-      transform: scaleX(0);
-    }
   </style>
 </head>
 <body>
+  <!-- Background Video -->
   <video autoplay loop muted playsinline id="bg-video">
     <source src="videos/videoplayback.mp4" type="video/mp4" />
   </video>
 
-  <audio id="ambient-audio" autoplay loop muted playsinline>
+  <!-- Ambient Audio -->
+  <audio id="ambient-audio" loop playsinline>
     <source src="audio/ytmp3free.cc_ethel-cain-housofpsychoticwomn-official-visualizer-youtubemp3free.org.mp3" type="audio/mpeg" />
   </audio>
 
+  <!-- Progress Bar -->
   <div class="progress-bar"></div>
 
+  <!-- Header with Nav Only -->
   <header class="header">
-    <h1>Matter Without Memory</h1>
+    <h1 style="display:none;">Matter Without Memory</h1>
     <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
     <nav class="nav-links">
       <a href="#materials">Atlas</a>
@@ -216,39 +269,37 @@
     </nav>
   </header>
 
+  <!-- Audio Toggle -->
   <button id="audio-toggle" aria-label="Toggle ambient audio">🎵</button>
 
-  <main class="scroll-wrapper">
-    <section class="text-section"><div class="text-reveal"><p>Progress likes to tell stories. It favors invention, breakthrough, inevitability. It rarely asks: What did this replace? What did it erase?</p></div></section>
-    <section class="text-section"><div class="text-reveal"><p>They carried consequences that were not failures of chemistry. They were failures of relationship.</p></div></section>
-    <section class="text-section"><div class="text-reveal"><p>This archive does not offer a solution. It's a record of how modern systems learned to use matter without memory.</p></div></section>
-    <section class="text-section"><div class="text-reveal"><p>What do we know when we're no longer embedded in what we're using?</p></div></section>
-  </main>
+  <!-- Hero Title Section -->
+  <section class="hero-block">
+    <div class="hero-title">Matter Without Memory</div>
+  </section>
 
+  <!-- Poetic Scroll Sections -->
+  <section class="text-section"><div class="text-reveal"><p>Progress likes to tell stories. It favors invention, breakthrough, inevitability. It rarely asks: What did this replace? What did it erase?</p></div></section>
+  <section class="text-section"><div class="text-reveal"><p>They carried consequences that were not failures of chemistry. They were failures of relationship.</p></div></section>
+  <section class="text-section"><div class="text-reveal"><p>This archive does not offer a solution. It's a record of how modern systems learned to use matter without memory.</p></div></section>
+  <section class="text-section"><div class="text-reveal"><p>What do we know when we're no longer embedded in what we're using?</p></div></section>
+
+  <!-- Material Atlas -->
   <section id="materials" class="materials-section">
     <div class="materials-intro text-reveal">
       <h2>Material Atlas</h2>
     </div>
     <div class="materials-grid">
       <a href="plastic.html" class="material-card">
-        <h3>Plastic</h3>
-        <p>[Subtext]</p>
-        <div class="material-meta">Lifespan: 10–30 years | Failure mode: Binder degradation</div>
+        <h3>Plastic</h3><p>[Subtext]</p><div class="material-meta">Lifespan: 10–30 years | Failure mode: Binder degradation</div>
       </a>
       <a href="lead.html" class="material-card">
-        <h3>Lead</h3>
-        <p>[Subtext]</p>
-        <div class="material-meta">Half-life: 20–100 years | Failure mode: Layer oxidation</div>
+        <h3>Lead</h3><p>[Subtext]</p><div class="material-meta">Half-life: 20–100 years | Failure mode: Layer oxidation</div>
       </a>
       <a href="silicon.html" class="material-card">
-        <h3>Silicon</h3>
-        <p>[Subtext]</p>
-        <div class="material-meta">Half-life: 10–100 years | Failure mode: Charge leakage</div>
+        <h3>Silicon</h3><p>[Subtext]</p><div class="material-meta">Half-life: 10–100 years | Failure mode: Charge leakage</div>
       </a>
       <a href="dna.html" class="material-card">
-        <h3>DNA Storage</h3>
-        <p>Biological storage medium with extraordinary density...</p>
-        <div class="material-meta">Half-life: 500+ years | Failure mode: Chemical degradation</div>
+        <h3>DNA Storage</h3><p>Biological storage medium with extraordinary density...</p><div class="material-meta">Half-life: 500+ years | Failure mode: Chemical degradation</div>
       </a>
     </div>
   </section>
@@ -266,17 +317,21 @@
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.text-reveal, .material-card').forEach(el => observer.observe(el));
 
-      document.getElementById('audio-toggle').addEventListener('click', () => {
-        const audio = document.getElementById('ambient-audio');
-        audio.muted = !audio.muted;
+      document.querySelector('.menu-toggle').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
       });
 
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
-        });
+      const toggleButton = document.getElementById('audio-toggle');
+      const audio = document.getElementById('ambient-audio');
+
+      toggleButton.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play().catch(err => console.log("Audio play blocked:", err));
+          toggleButton.textContent = '🔇';
+        } else {
+          audio.pause();
+          toggleButton.textContent = '🎵';
+        }
       });
     });
 
