@@ -421,18 +421,6 @@ part3 = '''
       </div>
 
       <div class="material-card">
-        <h3>Hard Drives</h3>
-        <p>Mechanical failure through head crashes, bearing wear, and magnetic domain decay. The read/write heads can physically contact the platter surface, scraping away the magnetic coating that holds data.</p>
-        <div class="material-meta">Half-life: 3-5 years active | Failure mode: Mechanical wear</div>
-      </div>
-
-      <div class="material-card">
-        <h3>Cloud Storage</h3>
-        <p>Distributed across multiple physical media, cloud storage appears permanent but depends on corporate continuity, economic viability, and the maintenance of vast server farms consuming enormous amounts of energy.</p>
-        <div class="material-meta">Half-life: Unknown | Failure mode: Economic/Corporate</div>
-      </div>
-
-      <div class="material-card">
         <h3>DNA Storage</h3>
         <p>Biological storage medium with extraordinary density but subject to hydrolysis, oxidation, and enzymatic degradation. Even in ideal conditions, DNA strands break and bases modify over time.</p>
         <div class="material-meta">Half-life: 500+ years | Failure mode: Chemical degradation</div>
@@ -440,34 +428,31 @@ part3 = '''
     </div>
   </section>'''
 
-# Part 4: Atlas section and JavaScript
-part4 = '''
   <!-- Atlas Section -->
   <section class="atlas-section">
     <div class="atlas-intro">
-      <h2>Atlas</h2>
-      <p>Navigate through the landscape of digital decay and material memory.</p>
+      <h2>Explore</h2>
     </div>
 
     <div class="atlas-grid">
       <a href="map.html" class="atlas-card">
         <h3>Memory Map</h3>
-        <p>Interactive visualization of data degradation patterns across different storage media</p>
+        <p>Interactive visualization of degradation patterns across different media</p>
       </a>
 
       <a href="timeline.html" class="atlas-card">
         <h3>Decay Timeline</h3>
-        <p>Chronological exploration of how digital artifacts deteriorate over time</p>
+        <p>Chronological exploration of how artifacts deteriorate over time</p>
       </a>
 
       <a href="materials.html" class="atlas-card">
         <h3>Material Studies</h3>
-        <p>Deep dive into the physical properties of storage media and their failure modes</p>
+        <p>Deep dive into the physical properties of media and their failure modes</p>
       </a>
 
       <a href="archive.html" class="atlas-card">
         <h3>Lost Archives</h3>
-        <p>Documentation of significant data losses and digital archaeology efforts</p>
+        <p>Documents/photos</p>
       </a>
     </div>
   </section>
@@ -566,30 +551,4 @@ part4 = '''
   </script>
 </body>
 </html>'''
-
-# Combine all parts and save the complete HTML file
-complete_html = part1 + part2 + part3 + part4
-
-# Save to file
-with open('matter_without_memory_complete.html', 'w', encoding='utf-8') as f:
-    f.write(complete_html)
-
-print("Complete HTML file saved!")
-print("Total length:", len(complete_html), "characters")
-print("Total lines:", complete_html.count('\
-') + 1)
-print("File saved as: matter_without_memory_complete.html")
-
-# Also save each part separately for easier copying
-with open('part1_head_css.html', 'w', encoding='utf-8') as f:
-    f.write(part1)
-
-with open('part2_materials_css.html', 'w', encoding='utf-8') as f:
-    f.write(part2)
-
-with open('part3_content.html', 'w', encoding='utf-8') as f:
-    f.write(part3)
-
-with open('part4_atlas_js.html', 'w', encoding='utf-8') as f:
-    f.write(part4)
 
