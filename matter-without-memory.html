@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matter Without Memory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .start-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+        }
+        
+        .start-button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .start-button:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .video-section {
+            height: 400vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scroll-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(80vw, 600px);
+            height: min(80vh, 600px);
+            object-fit: contain;
+            z-index: 1;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.2);
+        }
+        
+        .content-overlay {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 3rem;
+            background: rgba(0,0,0,0.85);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            margin-top: 100vh;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+        }
+        
+        .content-overlay h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .content-overlay p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .debug-info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: monospace;
+            z-index: 100;
+            border: 1px solid #333;
+            min-width: 250px;
+        }
+        
+        .end-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #1a1a1a, #0a0a0a);
+            text-align: center;
+        }
+        
+        .end-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #ffa726);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .scroll-video {
+                width: 90vw;
+                height: 50vh;
+            }
+            
+            .content-overlay {
+                margin: 2rem;
+                padding: 2rem;
+            }
+            
+            .content-overlay h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="start-section">
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(45deg, #ff6b6b, #ffa726); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Matter Without Memory</h1>
+        <p style="font-size: 1.3rem; opacity: 0.7; margin-bottom: 2rem;">Digital artifacts in perpetual decay</p>
+        <button class="start-button" onclick="startExperience()">Enter the Void</button>
+    </div>
+    
+    <div class="video-section" id="videoSection" style="display: none;">
+        <video class="scroll-video" id="scrollVideo" muted playsinline preload="auto">
+            <source src="videos/sem.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <div class="content-overlay">
+            <h2>Fragments</h2>
+            <p>Each scroll reveals another layer of digital decay. The memory fragments shift and dissolve, leaving traces of what once was.</p>
+        </div>
+    </div>
+    
+    <div class="end-section" id="endSection" style="display: none;">
+        <h2>Memory Collected</h2>
+        <p style="font-size: 1.2rem; opacity: 0.7;">The fragments have been gathered, but their meaning remains elusive.</p>
+    </div>
+    
+    <div class="debug-info" id="debugInfo">
+        <div>Status: Waiting to begin</div>
+        <div>Video: Not loaded</div>
+        <div>Scroll: 0%</div>
+        <div>Time: 0.00s</div>
+    </div>
+    
+    <script>
+        let video;
+        let isVideoReady = false;
+        let debugInfo = document.getElementById('debugInfo');
+        let progressBar = document.getElementById('progressBar');
+        
+        function updateDebug(status, videoStatus, scrollPercent, currentTime) {
+            debugInfo.innerHTML = `
+                <div>Status: ${status}</div>
+                <div>Video: ${videoStatus}</div>
+                <div>Scroll: ${scrollPercent}%</div>
+                <div>Time: ${currentTime}s</div>
+            `;
+        }
+        
+        function startExperience() {
+            // Hide start section, show video section
+            document.querySelector('.start-section').style.display = 'none';
+            document.getElementById('videoSection').style.display = 'flex';
+            document.getElementById('endSection').style.display = 'flex';
+            
+            // Initialize video
+            video = document.getElementById('scrollVideo');
+            
+            updateDebug('Loading video...', 'Loading', '0', '0.00');
+            
+            video.addEventListener('loadedmetadata', function() {
+                updateDebug('Video ready', `Loaded (${video.duration.toFixed(2)}s)`, '0', '0.00');
+                isVideoReady = true;
+                initScrollControl();
+            });
+            
+            video.addEventListener('error', function(e) {
+                updateDebug('Video error', 'Failed to load', '0', '0.00');
+                console.error('Video error:', e);
+            });
+            
+            video.addEventListener('canplay', function() {
+                updateDebug('Video can play', 'Ready', '0', '0.00');
+            });
+            
+            // Force load
+            video.load();
+        }
+        
+        function initScrollControl() {
+            if (!isVideoReady) return;
+            
+            function updateVideoTime() {
+                const scrollTop = window.pageYOffset;
+                const videoSectionElement = document.getElementById('videoSection');
+                const videoSectionStart = videoSectionElement.offsetTop;
+                const videoSectionHeight = videoSectionElement.offsetHeight;
+                
+                // Calculate scroll progress through video section
+                const scrollProgress = Math.max(0, Math.min(1, 
+                    (scrollTop - videoSectionStart) / (videoSectionHeight - window.innerHeight)
+                ));
+                
+                // Update progress bar
+                progressBar.style.width = (scrollProgress * 100) + '%';
+                
+                if (video.duration) {
+                    const targetTime = scrollProgress * video.duration;
+                    
+                    // Only update if the difference is significant (reduces jitter)
+                    if (Math.abs(video.currentTime - targetTime) > 0.1) {
+                        video.currentTime = targetTime;
+                    }
+                    
+                    updateDebug(
+                        'Scrolling',
+                        `Playing (${video.duration.toFixed(2)}s)`,
+                        (scrollProgress * 100).toFixed(1),
+                        targetTime.toFixed(2)
+                    );
+                }
+            }
+            
+            // Throttled scroll handler for better performance
+            let ticking = false;
+            function handleScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        updateVideoTime();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll);
+            
+            // Initial call
+            updateVideoTime();
+        }
+        
+        // Smooth scrolling enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'auto';
+        });
+    </script>
+</body>
+</html>
